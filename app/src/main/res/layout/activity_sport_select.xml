@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bgparent">
+    <RelativeLayout
+        android:id="@+id/rl_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10"
+            android:src="@mipmap/icon_more"
+            android:layout_alignParentLeft="true"
+            />
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/main_log"
+        android:layout_width="150.0dip"
+        android:layout_height="80.0dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60.0dip"
+        android:src="@mipmap/main_logo" />
+    <LinearLayout
+        android:layout_below="@+id/main_log"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:id="@+id/ll_record"
+        android:background="@drawable/btn_version_white_corners_bg"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="100dp">
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="time"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="distance"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="calories"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="alarm"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_v"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_mileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_warings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_cycle"
+        android:layout_centerHorizontal="true"
+        android:text="Choose your sport."
+        android:layout_marginBottom="120dp"
+        android:textColor="@color/white"
+        android:textSize="15.0dip" />
+
+    <ImageView
+        android:id="@+id/iv_hike"
+        android:layout_width="135.0dip"
+        android:layout_height="93.0dip"
+        android:layout_above="@+id/iv_cycle"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:src="@mipmap/main_lift_w" />
+
+    <ImageView
+        android:id="@+id/iv_run"
+        android:layout_width="135.0dip"
+        android:layout_height="93.0dip"
+        android:layout_above="@+id/iv_cycle"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:src="@mipmap/main_run_w" />
+
+    <ImageView
+        android:id="@+id/iv_cycle"
+        android:layout_width="135.0dip"
+        android:layout_height="93.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:src="@mipmap/main_cycle_g" />
+
+</RelativeLayout>

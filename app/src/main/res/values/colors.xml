@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="btn_version_corners_color">#4a91c7</color>
+<color name="bg_red">#C70704</color>
+    <color name="btn_bg_red">#E84544</color>
+    <color name="gray">#F0F0F0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="tab_selected">#28bebc</color>
+    <color name="tab_normal">#5f6a7c</color>
+    <color name="font_back">#5f6a7c</color>
+    <color name="red">#FF0000</color>
+    <color name="dark_red">#C43C3C</color>
+    <color name="bluddde">#459FF3</color>
+    <color name="dark">#000000</color>
+    <color name="zt">#38d7db</color>
+    <color name="transparent">#00000000</color>
+    <color name="bgparent">#3DC4E9</color>
+    <color name="bg_color_grep">#e1e1e1</color>
+    <color name="text_color_grep">#1c1c1c</color>
+    <color name="colorTextOrange">#fba545</color>
+</resources>

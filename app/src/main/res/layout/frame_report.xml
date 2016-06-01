@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#D1D2D4" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/osChart"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#D1D2D4" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/xgylChart"
+                android:layout_width="310dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#D1D2D4" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/jzdChart"
+                android:layout_width="330dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#D1D2D4" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bpChart"
+                android:layout_width="320dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
