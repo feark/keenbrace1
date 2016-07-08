@@ -11,7 +11,7 @@ public class SharePreferUtil {
 	private static final String PASSWORD = "PassWord";
 	public static final String FULLNAME = "FullName";
 	public static final String AGE = "age";
-	public static final String SEX = "sex";
+	public static final String GENDER = "gender";
 	public static final String UCODE = "uCode";
 	public static final String ISAUTOLOGIN = "isAutoLogin";
 	public static final String ISRBPWD = "isRbpwd";

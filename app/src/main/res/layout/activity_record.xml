@@ -150,7 +150,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/tx_warings"
+                android:id="@+id/tx_warnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -162,7 +162,7 @@
         android:id="@+id/lv_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        kb:slv_right_view_width="160dp"
+        kb:slv_right_view_width="80dp"
         android:scrollbars="none"
         android:fadingEdge="none"
         android:divider="@null"

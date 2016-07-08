@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.storage.RunWaring;
 import com.keenbrace.util.DateUitl;
 
 import android.Manifest;
@@ -188,6 +187,7 @@ public class FragmentMapGoogle extends Fragment implements
         return longitude;
     }
 
+    /*
     public void startRun(RunWaring rw) {
         startMarker = aMap.addMarker(new MarkerOptions().icon(
                 BitmapDescriptorFactory.fromResource(R.mipmap.start_map))
@@ -196,6 +196,7 @@ public class FragmentMapGoogle extends Fragment implements
         rw.setLatitude(latitude);
         rw.setLongitude(longitude);
     }
+    */
 
     @Override
     public void onDestroy() {

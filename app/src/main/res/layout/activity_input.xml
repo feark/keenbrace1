@@ -8,7 +8,6 @@
 
     <LinearLayout
         style="@style/match_wrap"
-        android:layout_below="@+id/top_menu"
         android:paddingLeft="@dimen/space_25"
         android:paddingRight="@dimen/space_25"
         android:paddingTop="@dimen/space_10"

@@ -179,7 +179,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tv_speed_S"
+                    android:id="@+id/tv_speed_t"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -191,7 +191,7 @@
                     android:id="@+id/tv_speed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_speed_S"
+                    android:layout_below="@+id/tv_speed_t"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="0"
@@ -204,7 +204,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tv_distance_s"
+                    android:id="@+id/tv_distance_t"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -216,7 +216,7 @@
                     android:id="@+id/tv_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_distance_s"
+                    android:layout_below="@+id/tv_distance_t"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="00:00"
@@ -229,7 +229,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tv_Calories_s"
+                    android:id="@+id/tv_calories_t"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -241,7 +241,7 @@
                     android:id="@+id/tv_calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_Calories_s"
+                    android:layout_below="@+id/tv_calories_t"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="0"

@@ -9,11 +9,10 @@ import com.keenbrace.AppContext;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.KeenbraceDBHelper;
+import com.keenbrace.bean.RunResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.utils.PreferenceHelper;
 import com.keenbrace.greendao.User;
-import com.keenbrace.storage.WaringModel;
 
 import butterknife.Bind;
 
@@ -43,9 +42,8 @@ public class SplashActivity extends BaseActivity {
                 }
                 if(PreferenceHelper.readBoolean(AppContext.getInstance(),
                         UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, false)){
-
                   String account=  PreferenceHelper.readString(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, "");
-                    User user= KeenbraceDBHelper.getInstance(SplashActivity.this).queryUserByLoginName(account);
+                    User user= RunResultDBHelper.getInstance(SplashActivity.this).queryUserByLoginName(account);
                     Constant.user=user;
                     readyGoThenKill(MainActivity.class);
                 }else{
@@ -67,7 +65,7 @@ public class SplashActivity extends BaseActivity {
         readXml();
     }
     public void readXml() {
-
+        /*
         WaringModel wm = new WaringModel();
         wm.setCondition("膝盖压力过大 ");
         wm.setGrade(2);
@@ -100,10 +98,10 @@ public class SplashActivity extends BaseActivity {
         wm3.setCondition("");
         wm3.setGrade(3);
         wm3.setIndex("3");
-        wm3.setTitle("Stride Angle Too Big");
+        wm3.setTitle("Over Stride");
         wm3.setInfo("步幅过大—脚尖着地 ");
         wm3.setResult("Overstriding has been shown to increase stress on the body.Further, overstriding leads to a straighter knee and a more aggressive heel strike which significantly reduces the knee muscles’ ability to absorb shock. The shock is then transferred to the knee menisci, knee joint and on to the hip and back joints.");
-        wm3.setFunction("1.Maintain approximately 170-180 steps per minute\n2.Count 30 steps per leg in 20 seconds for a 180 cadence\n3.Don't lift your leg too high");
+        wm3.setFunction(".Increase your cadence");
         int[] bids3 = new int[]{R.raw.big_stride_boy, R.raw.smaill_stride_boy};
         int[] gids3 = new int[]{R.raw.big_stride_girl, R.raw.smaill_stride_girl};
         wm3.setBids(bids3);
@@ -114,10 +112,10 @@ public class SplashActivity extends BaseActivity {
         wm32.setCondition("");
         wm32.setGrade(3);
         wm32.setIndex("32");
-        wm32.setTitle("Stride Angle Too Big");
+        wm32.setTitle("Over Stride");
         wm32.setInfo("步幅过大—脚尖着地 ");
         wm32.setResult("Overstriding has been shown to increase stress on the body.Further, overstriding leads to a straighter knee and a more aggressive heel strike which significantly reduces the knee muscles’ ability to absorb shock. The shock is then transferred to the knee menisci, knee joint and on to the hip and back joints.");
-        wm32.setFunction("Overstriding has been shown to increase stress on the body.Further, overstriding leads to a straighter knee and a more aggressive heel strike which significantly reduces the knee muscles’ ability to absorb shock. The shock is then transferred to the knee menisci, knee joint and on to the hip and back joints. ");
+        wm32.setFunction(".Increase your cadence. do not land with your heel");
         int[] bids32 = new int[]{R.raw.big_stride_boy, R.raw.smaill_stride_boy};
         int[] gids32 = new int[]{R.raw.big_stride_girl, R.raw.smaill_stride_girl};
         wm32.setBids(bids32);
@@ -185,7 +183,7 @@ public class SplashActivity extends BaseActivity {
         wm0.setTitle("start to run!");
         wm0.setInfo("开始动中");
         wm0.setResult(" ");
-        wm0.setFunction("");
+        wm0.setFunction("Run");
         int[] bids0 = new int[]{R.raw.stand_boy};
         int[] gids0 = new int[]{R.raw.stand_girl};
         wm0.setBids(bids0);
@@ -196,9 +194,9 @@ public class SplashActivity extends BaseActivity {
         wm10.setCondition("");
         wm10.setGrade(2);
         wm10.setIndex("10");
-        wm10.setTitle("Vertical Oscillation Too Large");
-        wm10.setInfo("股四头肌疲劳 ");
-        wm10.setFunction("1.Land softly underneath a bent knee\n2.Stand tall, gaze forward\n3.Keep chest forward and shoulders back and relaxed");
+        wm10.setTitle("Vertical Oscillation High");
+        wm10.setInfo("Vertical Oscillation High");
+        wm10.setFunction(".Land fast and softer");
         wm10.setResult("Larger Vertical oscillation means larger vertical ground reaction force ");
         int[] bids10 = new int[]{R.raw.zzwlgd_big_boy, R.raw.zzwlgd_big_boy};
         int[] gids10 = new int[]{R.raw.zzwlgd_big_girl, R.raw.zzwlgd_big_girl};
@@ -219,7 +217,7 @@ public class SplashActivity extends BaseActivity {
         wm11.setBids(bids11);
         wm11.setGids(gids11);
         UtilConstants.WaringMap.put("11", wm11);
-
+        */
 
     }
 }

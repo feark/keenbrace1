@@ -1,11 +1,13 @@
 package com.keenbrace.activity;
 
+//这个位置把登录的名字与密码放在 RunResultDBHelper里管理是不对的 后面要改正 ken
 
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -13,11 +15,9 @@ import com.amazonaws.services.cognitosync.model.transform.LambdaThrottledExcepti
 import com.keenbrace.AppConfig;
 import com.keenbrace.AppContext;
 import com.keenbrace.R;
-import com.keenbrace.api.KeenbraceRetrofit;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.KeenbraceDBHelper;
-import com.keenbrace.bean.response.LoginResponse;
+import com.keenbrace.bean.RunResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.utils.DateUtils;
 import com.keenbrace.core.utils.PreferenceHelper;
@@ -39,36 +39,40 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.et_pwd)
     EditText etPwd;
     @Bind(R.id.btn_login)
-    Button btnLogin;
+    ImageView btnLogin;
 
     @OnClick(R.id.btn_login) void login(){
         if(StringUtils.isEmpty(etAccount.getText())){
-            Snackbar.make(btnLogin, "请输入账号", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(btnLogin, "account name", Snackbar.LENGTH_SHORT).show();
             return;
         }
         if(StringUtils.isEmpty(etPwd.getText())){
-            Snackbar.make(btnLogin, "请输入密码", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(btnLogin, "password", Snackbar.LENGTH_SHORT).show();
             return;
         }
         loginLogic();
     };
 
     @OnClick (R.id.btn_register) void register(){
-        readyGo(RegisterActivity.class);
+        //readyGo(RegisterActivity.class);
+        Toast.makeText(
+                this,
+                "Register is not opened yet, please login as visitor",
+                Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick (R.id.btn_test) void forgetPwd(){
+    @OnClick (R.id.btn_visitor) void forgetPwd(){
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
-        PreferenceHelper.write(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, "test");
+        PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT,"test");
         User user=new User();
         user.setLoginName("test");
         user.setPassword("test");
         user.setWeight(75);
         user.setHeight(175);
-        user.setSex(1);
-        user.setBirthday("1987-01-01");
+        user.setGender(1);
+        user.setBirthday(DateUtils.convertServerDate2("1987-01-01 00:00:00"));
         user.setNickname("test");
-        user.setId(KeenbraceDBHelper.getInstance(this).insertUser(user));
+        user.setId(RunResultDBHelper.getInstance(this).insertUser(user));
 
 
     Constant.user=user;
@@ -83,11 +87,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        if(toolbar!=null)
-        {
-            toolbar.setTitle("登录");
-
-        }
         etAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -112,51 +111,27 @@ public class LoginActivity extends BaseActivity {
 
 
     private void loginLogic(){
-         showWaitDialog();
 
-        Observable<LoginResponse> observable = new KeenbraceRetrofit()
-                .createBaseApi()
-                .login("2",etAccount.getText().toString(),
-                        etPwd.getText().toString(),
-                        "");
+        PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
+        PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, etAccount.getText().toString());
 
-        _subscriptions.add(observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        hideWaitDialog();
-                        Toast.makeText(LoginActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onNext(LoginResponse loginResponse) {
-                        hideWaitDialog();
-                        if (loginResponse.getResultCode().equals("0")) {
-                            AppContext.set(AppConfig.KEY_HAS_LOGIN, true);
-                            AppContext.set(AppConfig.PATIENT_ID, loginResponse.getUser().getId()+"");
-                            AppContext.set(AppConfig.KEY_ACCOUNT, etAccount.getText().toString());
-                            PreferenceHelper.write(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
-                            PreferenceHelper.write(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, etAccount.getText().toString());
-                            User user=loginResponse.getUser();
-                            KeenbraceDBHelper.getInstance(LoginActivity.this).insertUser(user);
-                            Constant.user=user;
+       User user= RunResultDBHelper.getInstance(this).queryUserByLoginName( etAccount.getText().toString());
+        if(user==null)
+        {
+            user=new User();
+            user.setLoginName(etAccount.getText().toString());
+            user.setPassword(etPwd.getText().toString());
+            user.setWeight(75);
+            user.setHeight(175);
+            user.setGender(1);
+            user.setBirthday(DateUtils.convertServerDate2("1987-01-01 00:00:00"));
+            user.setNickname("test");
+           user.setId(RunResultDBHelper.getInstance(this).insertUser(user));
 
-                            readyGo(MainActivity.class);
-                            finish();
-                        }else {
-                            String msg = loginResponse.getMsg();
-                            if (StringUtils.isEmpty(msg)) {
-                                msg = "登录失败";
-                            }
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }));
-
-
+        }
+        Constant.user=user;
+        readyGo(MainActivity.class);
+        finish();
     }
 
 

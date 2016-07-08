@@ -51,7 +51,7 @@ public abstract class KeenBraceActivity extends FragmentActivity
                 toolbar.setTitle("");
 //                setSupportActionBar(toolbar);
                 if(hasBackButton()){
-
+                    //这里是左上角的返回箭头按钮 ken
                     toolbar.setNavigationIcon(R.mipmap.icon_white_arrow);
                     toolbar.setNavigationOnClickListener(new OnClickListener() {
                         @Override

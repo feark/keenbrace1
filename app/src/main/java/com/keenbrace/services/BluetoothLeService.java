@@ -125,7 +125,7 @@ public class BluetoothLeService extends Service {
 
             //Log.e(TAG, "get device name:=" + device.getName());
 
-            if (null != device.getName() && !"".equals(device.getName()) && device.getName().contains("KeenBrace")) {
+            if (null != device.getName() && !"".equals(device.getName()) && device.getName().contains("KeenBrace_Sports")) {
                 final Intent intentAction = new Intent(
                         BluetoothLeService.BLEAPI_GATT_FOUNDDEVICE);
                 intentAction.putExtra("device", device);
@@ -216,7 +216,7 @@ public class BluetoothLeService extends Service {
             if (writeCharacteristic != null && UtilConstants.user != null) {
 
                 int sex = 0;
-                if ("boy".equals(UtilConstants.user.getSex())) {
+                if ("male".equals(UtilConstants.user.getGender())) {
                     sex = 0;
                 } else
                     sex = 1;
@@ -532,21 +532,27 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.writeCharacteristic(characteristic);
     }
 
-    public void startRun(int t, Date d) {
+    public void startRun(int t, byte sport_type, Date d) {
 
-        byte[] sends = new byte[8];
+        byte[] sends = new byte[9];
 
         sends[0] = 0x55;
-        if (t == 1)
+        if (t == 1) {
             sends[1] = 0x01;
-        else
+        }
+        else {
             sends[1] = 0x00;
+        }
+
         sends[2] = (byte) (d.getYear() - 100);
         sends[3] = (byte) d.getMonth();
         sends[4] = (byte) d.getDay();
         sends[5] = (byte) d.getHours();
         sends[6] = (byte) d.getMinutes();
         sends[7] = (byte) d.getSeconds();
+
+        sends[8] = sport_type;
+
         BluetoothConstant.mwriteCharacteristic.setValue(sends);
         writeCharacteristic(BluetoothConstant.mwriteCharacteristic);
         BluetoothGattDescriptor descriptor = BluetoothConstant.mreadCharacteristic

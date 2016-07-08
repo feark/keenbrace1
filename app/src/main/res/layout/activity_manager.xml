@@ -8,111 +8,14 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-
-    <RelativeLayout
-        android:id="@+id/time"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
-
-        <TextView
-            android:id="@+id/tv_nowday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10.0dip"
-            android:layout_marginTop="5.0dip"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/tv_nowtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10.0dip"
-            android:layout_marginTop="5.0dip"
-            android:text="Haren View ,CA .5:45 PM" />
-
-        <ImageView
-            android:id="@+id/iv_trainer"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp"
-            android:background="@mipmap/trainer" />
-
-
-    </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/time" />
-
-    <RelativeLayout
-        android:id="@+id/rl_start"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@null"
-        android:paddingBottom="10dp">
-
-        <Button
-            android:id="@+id/btn_start"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:background="@mipmap/start"
-            android:textColor="#ffffffff"
-            android:textSize="20.0dip" />
-
-        <Button
-            android:id="@+id/btn_stop"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:background="@mipmap/pause"
-            android:textColor="#ffffffff"
-            android:textSize="20.0dip"
-            android:visibility="gone" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_continue"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/btn_continue"
-                android:textColor="#ffffffff"
-                android:textSize="15.0dip"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btn_end"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@mipmap/btn_finish"
-                android:textColor="#ffffffff"
-                android:textSize="15.0dip"
-                android:visibility="gone" />
-
-        </RelativeLayout>
-    </RelativeLayout>
     <LinearLayout
         android:id="@+id/ly_tab"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/toolbar"
         android:background="@color/bgparent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rl_performance"
@@ -157,5 +60,130 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ly_tab">
+
+        <TextView
+            android:id="@+id/tv_nowday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginTop="5.0dip"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_nowtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginTop="5.0dip"
+            android:text="Haren View ,CA .5:45 PM" />
+
+        <ImageView
+            android:id="@+id/iv_trainer"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="25dp"
+            android:background="@mipmap/trainer"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/time"
+        android:visibility="visible">
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_start"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/start"
+            android:textColor="#ffffffff"
+            android:textSize="20.0dip" />
+
+        <Button
+            android:id="@+id/btn_pause"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/pause"
+            android:textColor="#ffffffff"
+            android:textSize="20.0dip"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout2">
+
+            <Button
+                android:id="@+id/btn_continue"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/btn_continue"
+                android:textColor="#ffffffff"
+                android:textSize="15.0dip"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_end"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@mipmap/btn_finish"
+                android:textColor="#ffffffff"
+                android:textSize="15.0dip"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/switch2runner"
+                android:src="@mipmap/runner_button"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:layout_gravity="left|top" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/switch2map"
+                android:src="@mipmap/map_button"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right|top"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -7,8 +7,7 @@ import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
-import com.keenbrace.storage.User;
-import com.keenbrace.storage.WaringModel;
+//import com.keenbrace.storage.WaringModel;
 import com.keenbrace.util.SharePreferUtil;
 
 
@@ -25,7 +24,7 @@ import android.widget.RelativeLayout;
 
 public class LogoActivity extends Activity implements OnClickListener {
 
-    User user;
+    //User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,9 @@ public class LogoActivity extends Activity implements OnClickListener {
             public void run() {
 
                 Intent intent = new Intent();
-                intent.setClass(LogoActivity.this, SportSelectActivity.class);
+                //ken 直接到主界面
+                //intent.setClass(LogoActivity.this, SportSelectActivity.class);
+                intent.setClass(LogoActivity.this, MainMenuActivity.class);
                 startActivity(intent);
             }
         };
@@ -54,7 +55,8 @@ public class LogoActivity extends Activity implements OnClickListener {
             BluetoothConstant.mDeviceAddress = address;
         }
         try {
-            readXml();
+            //ken
+            //readXml();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -83,8 +85,11 @@ public class LogoActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        //转到新的Activity
         Intent intent = new Intent();
-        intent.setClass(LogoActivity.this, SportSelectActivity.class);
+        //intent.setClass(LogoActivity.this, SportSelectActivity.class);
+        //直接跳到运动Activity
+        intent.setClass(LogoActivity.this, MainMenuActivity.class);
         startActivity(intent);
 
     }
@@ -96,8 +101,9 @@ public class LogoActivity extends Activity implements OnClickListener {
 
     }
 
+    /*
     public void readXml() {
-
+        //初始化提示信息
         WaringModel wm = new WaringModel();
         wm.setCondition("膝盖压力过大 ");
         wm.setGrade(2);
@@ -121,6 +127,7 @@ public class LogoActivity extends Activity implements OnClickListener {
         wm2.setInfo("脚落地点（1--脚尖，2--脚跟）");
         wm2.setResult("Should not change one's foot strike habit suddenly, otherwise there is a big chance to have Achilles tendon injuries. ");
         wm2.setFunction("Should not change one's foot strike habit suddenly, otherwise there is a big chance to have Achilles tendon injuries. ");
+        //对应的gif资源
         int[] ids2 = new int[]{R.raw.jiaogen, R.raw.jiaozhang, R.raw.jiaozhi};
         wm2.setBids(ids2);
         wm2.setGids(ids2);
@@ -130,7 +137,7 @@ public class LogoActivity extends Activity implements OnClickListener {
         wm3.setCondition("");
         wm3.setGrade(3);
         wm3.setIndex("3");
-        wm3.setTitle("Stride Angle Too Big");
+        wm3.setTitle("Stride Too Long");
         wm3.setInfo("步幅过大—脚尖着地 ");
         wm3.setResult("Overstriding has been shown to increase stress on the body.Further, overstriding leads to a straighter knee and a more aggressive heel strike which significantly reduces the knee muscles’ ability to absorb shock. The shock is then transferred to the knee menisci, knee joint and on to the hip and back joints.");
         wm3.setFunction("1.Maintain approximately 170-180 steps per minute\n2.Count 30 steps per leg in 20 seconds for a 180 cadence\n3.Don't lift your leg too high");
@@ -226,10 +233,10 @@ public class LogoActivity extends Activity implements OnClickListener {
         wm10.setCondition("");
         wm10.setGrade(2);
         wm10.setIndex("10");
-        wm10.setTitle("Vertical Oscillation Too Large");
-        wm10.setInfo("股四头肌疲劳 ");
-        wm10.setFunction("1.Land softly underneath a bent knee\n2.Stand tall, gaze forward\n3.Keep chest forward and shoulders back and relaxed");
-        wm10.setResult("Larger Vertical oscillation means larger vertical ground reaction force ");
+        wm10.setTitle("Vertical Oscillation High");
+        wm10.setInfo("Vertical Oscillation High");
+        wm10.setFunction("Increase running cadence and land softer");
+        wm10.setResult("High Vertical oscillation means larger vertical ground reaction force ");
         int[] bids10 = new int[]{R.raw.zzwlgd_big_boy, R.raw.zzwlgd_big_boy};
         int[] gids10 = new int[]{R.raw.zzwlgd_big_girl, R.raw.zzwlgd_big_girl};
         wm10.setBids(bids10);
@@ -251,5 +258,5 @@ public class LogoActivity extends Activity implements OnClickListener {
         UtilConstants.WaringMap.put("11", wm11);
 
 
-    }
+    }*/
 }

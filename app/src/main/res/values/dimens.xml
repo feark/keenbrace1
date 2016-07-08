@@ -9,6 +9,7 @@
 
     <dimen name="shadow_width">15dp</dimen>
     <dimen name="slidingmenu_offset">80dp</dimen>
+
     <style name="widget_gifview" parent="@android:style/Widget"></style>
 
     <style name="ProgressBar_Horizontal">
@@ -18,5 +19,8 @@
         <item name="android:minHeight">20dip</item>
         <item name="android:maxHeight">20dip</item>
     </style>
+
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

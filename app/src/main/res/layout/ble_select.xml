@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_local"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="60dp"
         android:layout_centerVertical="true">
 
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="请选择蓝牙设备"
+            android:text="Choose Your KeenBrace_Sports"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
@@ -42,16 +42,16 @@
 
     <ListView
         android:id="@+id/blelist"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:divider="@null"></ListView>
 
     <Button
-        android:id="@+id/cancle"
+        android:id="@+id/cancel"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:text="取消"
+        android:text="Cancel"
         android:background="@null"
         android:textColor="#FFFFFF"
         android:textSize="20dp" />

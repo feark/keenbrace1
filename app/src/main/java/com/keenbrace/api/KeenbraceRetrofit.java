@@ -33,9 +33,9 @@ import retrofit2.RxJavaCallAdapterFactory;
  */
 public class KeenbraceRetrofit {
 
-    public   BaseApi createBaseApi(){
+    public  BaseApi createBaseApi(){
         Retrofit  retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.111:8080/KeenBraceWAR/")
+                .baseUrl("")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(getUnsafeOkHttpClient())
@@ -57,19 +57,19 @@ public class KeenbraceRetrofit {
                     return true;
                 }
             });
-//            builder.addInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    Request original = chain.request();
-//
-//                    Request request = original.newBuilder()
-//                            .header("ApiVersion", "1.3")
-//                            .header("AppKey", "20200")
-//                            .method(original.method(), original.body())
-//                            .build();
-//                    return chain.proceed(request);
-//                }
-//            });
+            builder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+
+                    Request request = original.newBuilder()
+                            .header("ApiVersion", "1.3")
+                            .header("AppKey", "20200")
+                            .method(original.method(), original.body())
+                            .build();
+                    return chain.proceed(request);
+                }
+            });
 
             return builder.build();
         } catch (Exception e) {
@@ -110,19 +110,19 @@ public class KeenbraceRetrofit {
                     return true;
                 }
             });
-//            builder.addInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    Request original = chain.request();
-//
-//                    Request request = original.newBuilder()
-//                            .header("ApiVersion", "1.0")
-//                            .header("AppKey", "60200")
-//                            .method(original.method(), original.body())
-//                            .build();
-//                    return chain.proceed(request);
-//                }
-//            });
+            builder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+
+                    Request request = original.newBuilder()
+                            .header("ApiVersion", "1.0")
+                            .header("AppKey", "60200")
+                            .method(original.method(), original.body())
+                            .build();
+                    return chain.proceed(request);
+                }
+            });
 
             return builder.build();
         } catch (Exception e) {

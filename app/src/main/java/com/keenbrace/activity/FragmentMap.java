@@ -20,7 +20,6 @@ import com.amap.api.maps2d.model.PolylineOptions;
 import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.services.BluetoothConstant;
-import com.keenbrace.storage.RunWaring;
 import com.keenbrace.util.DateUitl;
 
 import android.content.Context;
@@ -174,6 +173,7 @@ public class FragmentMap extends Fragment implements OnClickListener,
 		return longitude;
 	}
 
+	/*
 	public void startRun(RunWaring rw) {
 		startMarker = aMap.addMarker(new MarkerOptions().icon(
 				BitmapDescriptorFactory.fromResource(R.mipmap.start_map))
@@ -182,6 +182,7 @@ public class FragmentMap extends Fragment implements OnClickListener,
 		rw.setLatitude(latitude);
 		rw.setLongitude(longitude);
 	}
+	*/
 
 	@Override
 	public void onDestroy() {

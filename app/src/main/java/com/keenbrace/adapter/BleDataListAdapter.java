@@ -1,13 +1,14 @@
 package com.keenbrace.adapter;
 
+//这个文件是与历史结果列表相关的 ken
+
 import java.util.List;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.keenbrace.R;
 import com.keenbrace.activity.ViewRecordActivity;
 
-import com.keenbrace.greendao.KeenBrace;
-import com.keenbrace.storage.BleData;
+import com.keenbrace.greendao.RunResult;
 import com.keenbrace.util.DateUitl;
 import com.keenbrace.util.StringUtil;
 
@@ -22,23 +23,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BleDataListAdapter extends BaseAdapter {
-    private List<KeenBrace> bleDatas;
+    private List<RunResult> bleDatas;
     Context context;
 
-    public BleDataListAdapter(Context context, List<KeenBrace> datas) {
+    public BleDataListAdapter(Context context, List<RunResult> datas) {
         super();
         this.context = context;
         bleDatas = datas;
 
     }
 
-    public void addBleData(KeenBrace device) {
+    public void addBleData(RunResult device) {
         if (!bleDatas.contains(device)) {
             bleDatas.add(device);
         }
     }
 
-    public KeenBrace getDevice(int position) {
+    public RunResult getDevice(int position) {
         return bleDatas.get(position);
     }
 
@@ -70,8 +71,6 @@ public class BleDataListAdapter extends BaseAdapter {
 
             viewHolder.tv_startTime = (TextView) view
                     .findViewById(R.id.tv_startTime);
-            viewHolder.tx_pj = (TextView) view
-                    .findViewById(R.id.tx_pj);
             viewHolder.tv_bp = (TextView) view
                     .findViewById(R.id.tv_bp);
             viewHolder.tv_jl = (TextView) view
@@ -85,12 +84,11 @@ public class BleDataListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        final KeenBrace data = bleDatas.get(i);
+        final RunResult data = bleDatas.get(i);
         viewHolder.tv_startTime.setText(DateUitl.getDateTimeFromLong2String(data.getStartTime()));
         viewHolder.tv_bp.setText(context.getResources().getString(R.string.bp_template, data.getCadence()));
-        viewHolder.tx_pj.setText(context.getResources().getString(R.string.pj_template, data.getSumscore()));
         viewHolder.tv_jl.setText(context.getResources().getString(R.string.jl_template, StringUtil.formatToLC("" + data.getMileage())));
-        viewHolder.tv_time.setText(context.getResources().getString(R.string.time_template, DateUitl.getDateFormat4(data.getTimelength())));
+        viewHolder.tv_time.setText(context.getResources().getString(R.string.time_template, DateUitl.getDateFormat4(data.getDuration())));
         viewHolder.rl_goto.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -107,7 +105,6 @@ public class BleDataListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView tv_startTime;
-        TextView tx_pj;
         TextView tv_bp;
         TextView tv_jl;
         TextView tv_time;

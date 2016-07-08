@@ -254,7 +254,7 @@
                     android:id="@+id/tv_kv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="KeenBrace V1.0"
+                    android:text="KeenBrace_Sports V1.0"
                     android:textColor="@color/font_back"
                     android:textSize="20dp" />
 
@@ -326,26 +326,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="#D1D2D4" />
-
-        <RelativeLayout
-            android:id="@+id/rl_quit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/bgparent"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login out"
-                android:textColor="@color/font_back"
-                android:textSize="20dp"
-                android:layout_centerInParent="true"
-                />
-        </RelativeLayout>
-
     </LinearLayout>
 
 </RelativeLayout>

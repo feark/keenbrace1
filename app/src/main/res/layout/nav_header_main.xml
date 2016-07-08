@@ -23,7 +23,7 @@
             android:id="@+id/tv_account"
             style="@style/wrap_wrap"
             android:textSize="@dimen/text_size_18"
-            android:textColor="@color/black"
+            android:textColor="#8b8b8b"
             />
     </LinearLayout>
     <View
@@ -32,13 +32,6 @@
         android:background="#d1d1d1"
         />
 
-    <TextView
-        style="@style/match_wrap"
-        android:textSize="@dimen/text_size_22"
-        android:textColor="@color/black"
-        android:layout_marginTop="@dimen/space_5"
-        android:layout_marginBottom="@dimen/space_5"
-        android:text="个人信息"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -47,195 +40,187 @@
         android:scrollbars="none"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_name"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/name"
-                    />
-                <TextView
-                    android:id="@+id/tv_name"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_gender"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/gender"
-                    />
-                <TextView
-                    android:id="@+id/tv_gender"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_birthday"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/birthday"
-                    />
-                <TextView
-                    android:id="@+id/tv_birthday"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_email"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/email"
-                    />
-                <TextView
-                    android:id="@+id/tv_email"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_mobile"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/mobile"
-                    />
-                <TextView
-                    android:id="@+id/tv_mobile"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_height"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/height"
-                    />
-                <TextView
-                    android:id="@+id/tv_height"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/match_wrap"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-                <ImageView
-                    style="@style/wrap_wrap"
-                    android:layout_margin="@dimen/space_5"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/icon_more_weight"
-                    />
-                <TextView
-                    style="@style/wrap_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="@color/gray_33"
-                    android:text="@string/weight"
-                    />
-                <TextView
-                    android:id="@+id/tv_weight"
-                    style="@style/weight_wrap"
-                    android:textSize="@dimen/text_size_16"
-                    android:gravity="right"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-        </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="324dp"
+        android:layout_weight="5.25">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_friend"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_friend"
+                android:src="@mipmap/side_friends"
+                android:layout_marginBottom="15dp" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="FRIEND"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_plan">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_plan"
+                android:src="@mipmap/side_plan"
+                android:layout_marginBottom="15dp" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="PLAN"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView7"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_medal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_medal"
+                android:src="@mipmap/side_medal"
+                android:layout_marginBottom="15dp" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="MEDAL"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/ll_store">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_store"
+                android:src="@mipmap/side_store" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="STORE"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView9"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_history">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_history"
+                android:src="@mipmap/side_history"
+                android:layout_marginBottom="15dp" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="HISTORY"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_challenge"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/side_challenge"
+                android:src="@mipmap/side_challenge"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                style="@style/wrap_wrap"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="#747474"
+                android:text="CHALLENGE"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
     <RelativeLayout
         style="@style/match_wrap"
         android:layout_marginTop="@dimen/space_5"
         android:gravity="bottom"
-        >
+        android:layout_height="42dp">
         <TextView
             android:id="@+id/tv_edit"
             style="@style/wrap_wrap"
@@ -243,8 +228,8 @@
             android:layout_marginBottom="@dimen/space_5"
             android:textSize="@dimen/text_size_15"
             android:gravity="center_vertical"
-            android:text="修改个人资料"
-            />
+            android:text="change profile"
+            android:visibility="gone" />
         <View
             android:id="@+id/line_bottom"
             android:layout_width="match_parent"
@@ -252,7 +237,7 @@
             android:layout_below="@id/tv_edit"
             android:background="#d1d1d1"
             android:layout_centerVertical="true"
-            />
+            android:visibility="gone" />
         <TextView
             android:id="@+id/tv_settings"
             style="@style/wrap_wrap"
@@ -262,8 +247,27 @@
             android:layout_marginBottom="@dimen/space_5"
             android:gravity="center_vertical"
             android:textSize="@dimen/text_size_15"
-            android:text="设置"
-            />
+            android:text="setup"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="60.0dip"
+            android:layout_height="45.0dip"
+            android:id="@+id/profile_setting"
+            android:src="@mipmap/profile_setting"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/system_setting"
+            android:layout_marginEnd="30dp"
+            android:layout_toRightOf="@+id/system_setting" />
+
+        <ImageView
+            android:layout_width="70.0dip"
+            android:layout_height="45.0dip"
+            android:id="@+id/system_setting"
+            android:src="@mipmap/system_setting"
+            android:layout_marginEnd="42dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 

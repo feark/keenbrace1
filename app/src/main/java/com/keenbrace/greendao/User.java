@@ -9,15 +9,26 @@ public class User {
     private Long id;
     private String userID;
     private String Nickname;
-    private Integer sex;
-    private String birthday;
+    private Integer gender;
+    private java.util.Date birthday;
+    private Integer height;
+    private Integer weight;
+    private String fitness_level;
+    private Integer experience;
+    private Integer big_goal;
+    private Integer target_weight;
+    private Integer target_distance;
+    private Integer target_speed;
+    private Integer times;
+    private String equipment;
+    private Integer fields;
+    private String medals;
     private String email;
     private String mobile;
     private String picturePath;
-    private Integer height;
-    private Integer weight;
     private String loginName;
     private String password;
+    private String fileName;
 
     public User() {
     }
@@ -26,19 +37,30 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, String userID, String Nickname, Integer sex, String birthday, String email, String mobile, String picturePath, Integer height, Integer weight, String loginName, String password) {
+    public User(Long id, String userID, String Nickname, Integer gender, java.util.Date birthday, Integer height, Integer weight, String fitness_level, Integer experience, Integer big_goal, Integer target_weight, Integer target_distance, Integer target_speed, Integer times, String equipment, Integer fields, String medals, String email, String mobile, String picturePath, String loginName, String password, String fileName) {
         this.id = id;
         this.userID = userID;
         this.Nickname = Nickname;
-        this.sex = sex;
+        this.gender = gender;
         this.birthday = birthday;
+        this.height = height;
+        this.weight = weight;
+        this.fitness_level = fitness_level;
+        this.experience = experience;
+        this.big_goal = big_goal;
+        this.target_weight = target_weight;
+        this.target_distance = target_distance;
+        this.target_speed = target_speed;
+        this.times = times;
+        this.equipment = equipment;
+        this.fields = fields;
+        this.medals = medals;
         this.email = email;
         this.mobile = mobile;
         this.picturePath = picturePath;
-        this.height = height;
-        this.weight = weight;
         this.loginName = loginName;
         this.password = password;
+        this.fileName = fileName;
     }
 
     public Long getId() {
@@ -65,20 +87,116 @@ public class User {
         this.Nickname = Nickname;
     }
 
-    public Integer getSex() {
-        return sex;
+    public Integer getGender() {
+        return gender;
     }
 
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
-    public String getBirthday() {
+    public java.util.Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(java.util.Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public String getFitness_level() {
+        return fitness_level;
+    }
+
+    public void setFitness_level(String fitness_level) {
+        this.fitness_level = fitness_level;
+    }
+
+    public Integer getExperience() {
+        return experience;
+    }
+
+    public void setExperience(Integer experience) {
+        this.experience = experience;
+    }
+
+    public Integer getBig_goal() {
+        return big_goal;
+    }
+
+    public void setBig_goal(Integer big_goal) {
+        this.big_goal = big_goal;
+    }
+
+    public Integer getTarget_weight() {
+        return target_weight;
+    }
+
+    public void setTarget_weight(Integer target_weight) {
+        this.target_weight = target_weight;
+    }
+
+    public Integer getTarget_distance() {
+        return target_distance;
+    }
+
+    public void setTarget_distance(Integer target_distance) {
+        this.target_distance = target_distance;
+    }
+
+    public Integer getTarget_speed() {
+        return target_speed;
+    }
+
+    public void setTarget_speed(Integer target_speed) {
+        this.target_speed = target_speed;
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
+    }
+
+    public Integer getFields() {
+        return fields;
+    }
+
+    public void setFields(Integer fields) {
+        this.fields = fields;
+    }
+
+    public String getMedals() {
+        return medals;
+    }
+
+    public void setMedals(String medals) {
+        this.medals = medals;
     }
 
     public String getEmail() {
@@ -105,22 +223,6 @@ public class User {
         this.picturePath = picturePath;
     }
 
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
     public String getLoginName() {
         return loginName;
     }
@@ -135,6 +237,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
 }

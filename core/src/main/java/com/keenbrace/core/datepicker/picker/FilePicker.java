@@ -150,7 +150,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     protected void setContentViewBefore() {
         final boolean isPickFile = mode.equals(Mode.File);
         setCancelVisible(!isPickFile);
-        setSubmitText(isPickFile ? "取消" : "确定");
+        setSubmitText(isPickFile ? "Cancel" : "Confirm");
         super.setOnConfirmListener(new OnConfirmListener() {
             @Override
             public void onConfirm() {

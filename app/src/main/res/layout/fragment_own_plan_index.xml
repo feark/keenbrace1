@@ -1,0 +1,236 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.keenbrace.fragment.OwnPlanIndexFragment"
+    android:background="@color/bgparent">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="145dp"
+            android:layout_alignTop="@+id/iv_littleBoy"
+            android:layout_alignParentStart="true"
+            android:id="@+id/rl_triceps">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Triceps"
+                android:id="@+id/tx_triceps"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_chest"
+            android:layout_below="@+id/rl_triceps"
+            android:layout_alignStart="@+id/rl_triceps"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Chest"
+                android:id="@+id/tx_chest"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_shoulder"
+            android:layout_alignBottom="@+id/rl_triceps"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Shoulder"
+                android:id="@+id/tx_shoulder"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_biceps"
+            android:layout_below="@+id/rl_shoulder"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Biceps"
+                android:id="@+id/tx_biceps"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_back"
+            android:layout_below="@+id/rl_chest"
+            android:layout_alignStart="@+id/rl_chest"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Back"
+                android:id="@+id/tx_back"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_cardio"
+            android:layout_below="@+id/rl_biceps"
+            android:layout_alignStart="@+id/rl_biceps"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Cardio"
+                android:id="@+id/tx_cardio"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_forearm"
+            android:layout_below="@+id/rl_back"
+            android:layout_alignStart="@+id/rl_cardio">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Forearm"
+                android:id="@+id/tx_forearm"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_glutes"
+            android:layout_below="@+id/rl_forearm"
+            android:layout_alignStart="@+id/rl_abs"
+            android:layout_marginLeft="-15dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Glutes"
+                android:id="@+id/tx_glutes"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_abs"
+            android:layout_below="@+id/rl_back"
+            android:layout_alignStart="@+id/rl_back"
+            android:layout_marginTop="-2dp"
+            android:layout_marginLeft="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Abs"
+                android:id="@+id/tx_abs"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="3dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_upperleg"
+            android:layout_marginTop="26dp"
+            android:layout_below="@+id/rl_glutes"
+            android:layout_alignStart="@+id/rl_forearm" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Upper leg"
+                android:id="@+id/tx_upperleg"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="1dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_lowerleg"
+            android:layout_marginTop="35dp"
+            android:layout_below="@+id/rl_upperleg"
+            android:layout_alignStart="@+id/rl_glutes"
+            android:layout_marginLeft="-21dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Lower leg"
+                android:id="@+id/tx_lowerleg"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="20dp"
+            android:id="@+id/rl_wholebody"
+            android:layout_alignBottom="@+id/rl_lowerleg"
+            android:layout_alignEnd="@+id/rl_upperleg" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Whole"
+                android:id="@+id/tx_wholebody"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
+            android:id="@+id/iv_littleBoy"
+            android:layout_gravity="center"
+            android:src="@mipmap/male"
+            android:layout_marginTop="41dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+</FrameLayout>

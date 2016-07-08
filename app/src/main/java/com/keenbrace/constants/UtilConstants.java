@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.keenbrace.greendao.User;
-import com.keenbrace.storage.WaringModel;
 
 public class UtilConstants {
 
     public static User user;
 
-    public static HashMap<String, WaringModel> WaringMap = new HashMap<String, WaringModel>();
+    //这个是构造类似结构体数组的方法 ken
+    //public static HashMap<String, WaringModel> WaringMap = new HashMap<String, WaringModel>();
 
     /*
      * You should replace these values with your own. See the README for details
@@ -33,5 +33,12 @@ public class UtilConstants {
     public static final String SHARE_PREF = "keenbrace_share.pref";
     public static final String KEY_HAS_LOGIN = "has_login";
     public static final String KEY_ACCOUNT  ="key_account";
+
+    //不同的运动种类
+    public static final int sport_running = 0;
+    public static final int sport_squat = 1;
+    public static final int sport_dumbbell = 2;
+    public static final int sport_plank = 3;
+    public static final int sport_pullup = 4;
 
 }

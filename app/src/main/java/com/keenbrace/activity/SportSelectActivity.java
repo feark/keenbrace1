@@ -9,24 +9,33 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-
 import com.keenbrace.R;
 
-import butterknife.OnClick;
+
 
 public class SportSelectActivity extends Activity {
     ImageView iv_run;
+    ImageView iv_squat;
+    ImageView iv_dumbbell;
+    ImageView iv_plank;
+    ImageView iv_pushup;
+    //private static final String[] SPORTS = new String[]{"Running", "Squats", "Dumb Bells", "Plank"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sport_select);
 
+        /*
+        //创建运动选择器 不显示 没找到原因 ken
+        WheelView wva = (WheelView) findViewById(R.id.sports_wheel);
+
+        wva.setOffset(1);
+        wva.setItems(Arrays.asList(SPORTS));
+        */
+
         iv_run = (ImageView) findViewById(R.id.iv_run);
-
         iv_run.setOnClickListener(start_run);
-
-
     }
 
 
@@ -35,9 +44,10 @@ public class SportSelectActivity extends Activity {
         @Override
         public void onClick(View v) {
             iv_run.setImageResource(R.mipmap.main_run_y);
-            Intent intent = new Intent();
-            intent.setClass(SportSelectActivity.this, MainMenuActivity.class);
-            startActivity(intent);
+
+            //Intent intent = new Intent();
+            //intent.setClass(SportSelectActivity.this, MainMenuActivity.class);
+            //startActivity(intent);
         }
     };
 

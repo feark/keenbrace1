@@ -15,9 +15,9 @@ public class SexPicker extends OptionPicker {
      */
     public SexPicker(Activity activity) {
         super(activity, new String[]{
-                "男",
-                "女",
-                "保密"
+                "male",
+                "female",
+                ""
         });
     }
 

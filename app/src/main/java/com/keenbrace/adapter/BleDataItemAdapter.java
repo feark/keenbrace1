@@ -1,5 +1,7 @@
 package com.keenbrace.adapter;
 
+//这个文件是与历史结果列表相关的 ken
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,7 @@ import android.widget.TextView;
 
 import com.keenbrace.R;
 import com.keenbrace.core.utils.DensityUtils;
-import com.keenbrace.greendao.KeenBrace;
+import com.keenbrace.greendao.RunResult;
 import com.keenbrace.util.DateUitl;
 
 
@@ -22,11 +24,11 @@ import java.util.List;
 /**
  * Created by zrq on 15/12/24.
  */
-public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
+public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
 
     private Context ctx;
-    private List<KeenBrace> boxList;
-    private List<KeenBrace> copyBoxList;
+    private List<RunResult> boxList;
+    private List<RunResult> copyBoxList;
     private boolean notiyfyByFilter=false;
     private OnKeenBraceListener listener;
     private OnKeenBraceDataListener boxDataListener;
@@ -39,11 +41,11 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
         this.boxDataListener = listener;
     }
 
-    public BleDataItemAdapter(Context context, int resource, List<KeenBrace> objects) {
+    public BleDataItemAdapter(Context context, int resource, List<RunResult> objects) {
         super(context, resource, objects);
         ctx = context;
         this.boxList = objects;
-        copyBoxList = new ArrayList<KeenBrace>();
+        copyBoxList = new ArrayList<RunResult>();
         copyBoxList.addAll(objects);
     }
 
@@ -54,9 +56,8 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
         if (convertView == null) {
             convertView = LayoutInflater.from(ctx).inflate(R.layout.item_keenbrace, null);
             holder = new ViewHolder();
-            holder.ll_edit = (LinearLayout) convertView.findViewById(R.id.ll_edit);
             holder.item_left = (LinearLayout) convertView.findViewById(R.id.item_left);
-            holder.item_right = (LinearLayout) convertView.findViewById(R.id.ll_delete);
+            holder.item_right = (RelativeLayout) convertView.findViewById(R.id.item_right);
             holder.tv_waring = (TextView) convertView.findViewById(R.id.tv_waring);
             holder.tv_bp = (TextView) convertView.findViewById(R.id.tv_bp);
             holder.tv_jl = (TextView) convertView.findViewById(R.id.tv_jl);
@@ -83,9 +84,8 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
     }
 
     class ViewHolder {
-        LinearLayout ll_edit;
-        LinearLayout item_right;
         LinearLayout item_left;
+        RelativeLayout item_right;
         TextView tv_collection_time;
         TextView tv_format;
         TextView tv_bp;
@@ -94,13 +94,13 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
 
 
 
-        KeenBrace itemData;
+        RunResult itemData;
 
-        public KeenBrace getItemData() {
+        public RunResult getItemData() {
             return itemData;
         }
 
-        public void setItemData(KeenBrace itemData) {
+        public void setItemData(RunResult itemData) {
             this.itemData = itemData;
         }
     }
@@ -115,27 +115,18 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
      }
 
 
-    public void setData(final ViewHolder keenBrace, final int position){
-        final KeenBrace item = keenBrace.getItemData();
-        keenBrace.tv_waring.setText(item.getSumwarings()==null?"0":item.getSumwarings()+"");
-        keenBrace.tv_bp.setText(item.getCadence()==null?"0":item.getCadence()+"");
-        keenBrace.tv_jl.setText(item.getMileage()==null?"0":item.getMileage()+"");
-        keenBrace.tv_collection_time.setText(DateUitl.getDateTimeFromLong2String(item.getStartTime()));
+    public void setData(final ViewHolder RunResult, final int position){
+        final RunResult item = RunResult.getItemData();
+        RunResult.tv_bp.setText(item.getCadence()==null?"0":item.getCadence()+"");
+        RunResult.tv_jl.setText(item.getMileage()==null?"0":item.getMileage()+"");
+        RunResult.tv_collection_time.setText(DateUitl.getDateTimeFromLong2String(item.getStartTime()));
 
-        keenBrace.tv_format.setText(DateUitl.getDateFormat4(item.getTimelength()));
-        keenBrace.item_right.setOnClickListener(new View.OnClickListener() {
+        RunResult.tv_format.setText(DateUitl.getDateFormat4(item.getDuration()));
+        RunResult.item_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onKeenBraceDelete(keenBrace.getItemData());
-                }
-            }
-        });
-        keenBrace.ll_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onKeenBraceFunc(keenBrace.getItemData());
+                    listener.onKeenBraceDelete(RunResult.getItemData());
                 }
             }
         });
@@ -143,8 +134,8 @@ public class BleDataItemAdapter extends ArrayAdapter<KeenBrace> {
 
 
     public interface OnKeenBraceListener{
-        void onKeenBraceFunc(KeenBrace boxItem);
-        void onKeenBraceDelete(KeenBrace boxItem);
+        void onKeenBraceFunc(RunResult boxItem);
+        void onKeenBraceDelete(RunResult boxItem);
     }
 
 

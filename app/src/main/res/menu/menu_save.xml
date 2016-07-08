@@ -7,7 +7,7 @@
 
         android:id="@+id/item_save"
         android:orderInCategory="100"
-        android:title="确定"
+        android:title="CONFIRM"
 
         app:showAsAction="always"
         >

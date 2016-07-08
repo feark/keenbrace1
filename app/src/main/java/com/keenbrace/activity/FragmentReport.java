@@ -1,5 +1,7 @@
 package com.keenbrace.activity;
 
+//这是原来的实时波形页
+
 import java.util.ArrayList;
 
 import android.graphics.Color;
@@ -25,11 +27,12 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+
 import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.widget.MyValueFormatter;
 
-public class FragmentReport extends BaseFragment {
+public class FragmentReport extends Fragment {
     TextView tv_whistle, iv_message;
     ImageView iv_t, iv_model;
     LineChart lineChart;
@@ -42,10 +45,7 @@ public class FragmentReport extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frame_report, null);
-        tv_whistle = (TextView) view.findViewById(R.id.tv_whistle);
-        iv_message = (TextView) view.findViewById(R.id.iv_message);
-        iv_t = (ImageView) view.findViewById(R.id.iv_t);
-        iv_model = (ImageView) view.findViewById(R.id.iv_model);
+
         osChart = (BarChart) view.findViewById(R.id.osChart);
         xgylChart = (BarChart) view.findViewById(R.id.xgylChart);
         jzdChart = (BarChart) view.findViewById(R.id.jzdChart);

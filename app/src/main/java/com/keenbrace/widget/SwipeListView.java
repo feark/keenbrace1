@@ -41,17 +41,17 @@ public class SwipeListView extends ListView {
 
     public SwipeListView(Context context) {
         super(context);
-        mRightViewWidth = DensityUtils.dip2px(context, 160);
+        mRightViewWidth = DensityUtils.dip2px(context, 80);
     }
 
     public SwipeListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mRightViewWidth = DensityUtils.dip2px(context, 160);
+        mRightViewWidth = DensityUtils.dip2px(context, 80);
     }
 
     public SwipeListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mRightViewWidth = DensityUtils.dip2px(context, 160);
+        mRightViewWidth = DensityUtils.dip2px(context, 80);
     }
 
     /**

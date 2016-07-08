@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/match_match"
-    android:background="@color/bg_color_grep"
+    android:background="@color/bgparent"
     >
 <include android:id="@+id/toolbar" layout="@layout/toolbar"></include>
 <ScrollView
@@ -10,13 +10,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_below="@+id/toolbar"
-    android:layout_height="match_parent"
-    android:fillViewport="false">
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:id="@+id/scrollView">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-     >
+        android:visibility="visible">
 
         <TextView
             style="@style/match_wrap"
@@ -24,7 +25,7 @@
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginBottom="@dimen/space_10"
-            android:textColor="@color/text_color_grep"
+            android:textColor="#ffffff"
             android:text="@string/tx_userinfo"
             />
 
@@ -42,7 +43,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/name"
                 />
@@ -62,7 +63,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:id="@+id/tv_name"
                 android:text="test"
                 />
@@ -82,7 +83,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/tx_sex"
                 />
@@ -102,9 +103,9 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
-                android:text="boy"
+                android:text="male"
                 android:id="@+id/tv_sex" />
         </RelativeLayout>
         <RelativeLayout
@@ -122,7 +123,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/birthday"
                 />
@@ -143,7 +144,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
                 android:text="2010-10-01"
                 />
@@ -163,7 +164,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/height"
                 />
@@ -184,7 +185,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
                 android:text="cm"
                 />
@@ -196,7 +197,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="80dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
                 android:text="0"
                 />
@@ -216,7 +217,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/tx_weight"
                 />
@@ -237,7 +238,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
                 android:text="kg"
                 />
@@ -249,7 +250,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="80dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
 
                 android:text="0"
                 />
@@ -260,8 +261,8 @@
             android:layout_marginTop="@dimen/space_10"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_marginBottom="@dimen/space_10"
-            android:textColor="@color/text_color_grep"
-            android:text="联系方式"
+            android:textColor="#ffffff"
+            android:text="CONTACT"
             />
         <RelativeLayout
             android:id="@+id/rl_mail"
@@ -278,7 +279,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/email"
                 />
@@ -298,7 +299,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:id="@+id/tv_email"
                 android:text="test@test.com"
                 />
@@ -310,7 +311,8 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:layout_marginBottom="1dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -319,7 +321,7 @@
                 android:textSize="@dimen/text_size_17"
 
                 android:layout_marginLeft="@dimen/space_10"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:layout_alignParentLeft="true"
                 android:text="@string/mobile"
                 />
@@ -339,7 +341,7 @@
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_17"
                 android:layout_marginRight="45dp"
-                android:textColor="@color/text_color_grep"
+                android:textColor="#7F7F7F"
                 android:id="@+id/tv_mobile"
                 android:text="138001380000"
                 />
@@ -348,6 +350,16 @@
     </LinearLayout>
 </ScrollView>
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/scrollView">
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

@@ -20,6 +20,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
@@ -29,12 +31,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -50,32 +50,44 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.keenbrace.R;
 import com.keenbrace.adapter.LeDeviceListAdapter;
 import com.keenbrace.base.BaseActivity;
-import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.KeenbraceDBHelper;
+import com.keenbrace.bean.RunResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.greendao.KeenBrace;
+import com.keenbrace.greendao.RunResult;
+import com.keenbrace.greendao.RunResultDao;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
-import com.keenbrace.storage.BleData;
-import com.keenbrace.greendao.RunWaring;
 import com.keenbrace.util.ByteHelp;
+import com.keenbrace.util.Image;
 import com.keenbrace.util.StringUtil;
 import com.keenbrace.util.Util;
-
-import rx.subscriptions.CompositeSubscription;
+import com.keenbrace.widget.GifView;
 
 public class MainMenuActivity extends BaseActivity implements
         OnClickListener, OnLongClickListener,TextToSpeech.OnInitListener {
-    public CompositeSubscription _subscriptions = new CompositeSubscription();
     FragmentRun fragmentHistory;
     FragmentMapGoogle fragmentMapGoogle;
     FragmentMap fragmentMap;
     FragmentReport fragmentReport;
     RelativeLayout rl_map, rl_performance,rl_report;
     private Fragment mLastFragment;
-    Button btn_start, btn_stop, btn_end, btn_continue;
+
+    //------------------------------------------------------
+    //运动参数相关
+    Boolean isAnyMove = false;
+
+    int[] indiCaseCount = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //------------------------------------------------------
+
+    //根据不同种类的运动显示不同的动画或图片 ken
+    int sport_type = 0;
+    Bundle data2Fragment = new Bundle();
+
+    Button btn_start, btn_pause, btn_end, btn_continue;
     LinearLayout ly_tab;
     ImageView iv_map, iv_performance, iv_report, iv_trainer;
+    ImageView switch2map;
+    ImageView switch2runner;
+
     int nowIndex = 0;
     ProgressDialog progressDialog;
     LeDeviceListAdapter leDeviceListAdapter;
@@ -83,7 +95,7 @@ public class MainMenuActivity extends BaseActivity implements
     private TransferUtility transferUtility;
     int wrCount = 0;
 
-    int lc_old;
+    int distance_old;
     byte[] data;
     private Timer updateTimer;
     private UpdateUiTimerTask updateUiTimerTask;
@@ -106,7 +118,6 @@ public class MainMenuActivity extends BaseActivity implements
     }
     @Override
     public void initView() {
-        this.setActionBarTitle("Running");
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -116,20 +127,30 @@ public class MainMenuActivity extends BaseActivity implements
             }
         });
 
-
+        //初始化后10秒检查有没有运动
+        delay_times = 20;
+        handler.sendEmptyMessageDelayed(1, 1000);
 
         ly_tab = (LinearLayout) findViewById(R.id.ly_tab);
         rl_map = (RelativeLayout) findViewById(R.id.rl_map);
+
+        switch2map = (ImageView) findViewById(R.id.switch2map);
+        switch2map.setOnClickListener(this);
+
+        switch2runner = (ImageView)findViewById(R.id.switch2runner);
+        switch2runner.setOnClickListener(this);
+
         btn_start = (Button) findViewById(R.id.btn_start);
-        btn_stop = (Button) findViewById(R.id.btn_stop);
+        btn_pause = (Button) findViewById(R.id.btn_pause);
         rl_report = (RelativeLayout) findViewById(R.id.rl_report);
         rl_performance = (RelativeLayout) findViewById(R.id.rl_performance);
 
         rl_map.setOnClickListener(this);
         rl_report.setOnClickListener(this);
         rl_performance.setOnClickListener(this);
+
         btn_start.setOnClickListener(this);
-        btn_stop.setOnClickListener(this);
+        btn_pause.setOnClickListener(this);
         btn_end = (Button) findViewById(R.id.btn_end);
         btn_end.setOnClickListener(this);
 
@@ -137,7 +158,7 @@ public class MainMenuActivity extends BaseActivity implements
         btn_continue.setOnClickListener(this);
 
         updateViewIcon();
-
+        //将当前界面分为4个Fragment
         fragmentReport = new FragmentReport();
         changeFragment(this, fragmentReport, null, null);
 
@@ -148,8 +169,44 @@ public class MainMenuActivity extends BaseActivity implements
             fragmentMapGoogle = new FragmentMapGoogle();
             changeFragment(this, fragmentMapGoogle, null, null);
         }
+
         fragmentHistory = new FragmentRun();
+        //得到运动类型 再传到fragment
+        sport_type = this.getIntent().getIntExtra("sport_type",0);
+        data2Fragment.putInt("sport_type", sport_type);
+
+        //导航条标题
+        if(sport_type == UtilConstants.sport_running)
+        {
+            this.setActionBarTitle(getString(R.string.tx_running));
+        }
+        else
+        {
+            if(sport_type == UtilConstants.sport_squat)
+                this.setActionBarTitle(getString(R.string.tx_squat));
+
+            if(sport_type == UtilConstants.sport_dumbbell)
+                this.setActionBarTitle(getString(R.string.tx_dumbbell));
+
+            if(sport_type == UtilConstants.sport_plank)
+                this.setActionBarTitle(getString(R.string.tx_plank));
+
+            if(sport_type == UtilConstants.sport_pullup)
+                this.setActionBarTitle(getString(R.string.tx_pullup));
+        }
+
+        fragmentHistory.setArguments(data2Fragment);
         changeFragment(this, fragmentHistory, null, null);
+
+        if(sport_type != UtilConstants.sport_running)
+        {
+            //不是跑步的话两个按钮就变成上一种 或 下一种运动
+            switch2map.setImageResource(R.mipmap.next_training);
+            switch2map.setVisibility(View.VISIBLE);
+
+            switch2runner.setImageResource(R.mipmap.prev_training);
+            switch2runner.setVisibility(View.VISIBLE);
+        }
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         progressDialog = new ProgressDialog(this);
@@ -179,7 +236,7 @@ public class MainMenuActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-        handler.sendEmptyMessageDelayed(8, 5000);
+
     }
 
     public void updateBG() {
@@ -199,104 +256,84 @@ public class MainMenuActivity extends BaseActivity implements
     FileOutputStream fos = null;
     long bak;
     boolean isStartRun;
-    KeenBrace keenBrace;
-
+    RunResult runResult;
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        ly_tab.setVisibility(View.VISIBLE);
-        handler.sendEmptyMessageDelayed(8, 1000);
+
         switch (v.getId()) {
-            case R.id.rl_report:
-                updateBG();
-                iv_report.setImageResource(R.mipmap.menu_report_sel);
 
-                if (fragmentReport == null)
-                    fragmentReport = new FragmentReport();
-                changeFragment(this, fragmentReport, null, null);
-                break;
-            case R.id.iv_trainer:
-                updateBG();
-                iv_trainer.setBackgroundResource(R.mipmap.trainer_selected);
-                if (keenBrace != null) {
-                    intent.putExtra("id", keenBrace.getId());
-                    intent.setClass(this, MessageActivity.class);
-                    startActivity(intent);
+            case R.id.switch2map:
+                if(sport_type == UtilConstants.sport_running) {
+                    if (isStartRun) {
+                        btn_pause.setVisibility(View.VISIBLE);
+                    } else {
+                        btn_start.setVisibility(View.VISIBLE);
+
+                    }
+
+                    //隐藏地图按钮
+                    switch2map.setVisibility(View.GONE);
+                    switch2runner.setVisibility(View.VISIBLE);
+
+
+                    btn_end.setVisibility(View.GONE);
+                    btn_continue.setVisibility(View.GONE);
+                    updateBG();
+                    iv_map.setImageResource(R.mipmap.menu_map_sel);
+                    if (UtilConstants.MapType == UtilConstants.MAP_GAODE) {
+                        if (fragmentMap == null)
+                            fragmentMap = new FragmentMap();
+                        changeFragment(this, fragmentMap, null, null);
+                    } else {
+                        if (fragmentMapGoogle == null)
+                            fragmentMapGoogle = new FragmentMapGoogle();
+                        changeFragment(this, fragmentMapGoogle, null, null);
+                    }
+                }
+                else {
+                    //不是跑步时作为下一种运动的按钮
+
                 }
                 break;
 
-            case R.id.rl_map:
+            case R.id.switch2runner:
                 if (isStartRun) {
-                    btn_stop.setVisibility(View.VISIBLE);
+                    btn_pause.setVisibility(View.VISIBLE);
                 } else {
                     btn_start.setVisibility(View.VISIBLE);
 
                 }
-                iv_trainer.setVisibility(View.GONE);
-                btn_end.setVisibility(View.GONE);
-                btn_continue.setVisibility(View.GONE);
-                updateBG();
-                iv_map.setImageResource(R.mipmap.menu_map_sel);
-                if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-                    if (fragmentMap == null)
-                        fragmentMap = new FragmentMap();
-                    changeFragment(this, fragmentMap, null, null);
-                }else
-                {
-                    if (fragmentMapGoogle == null)
-                        fragmentMapGoogle = new FragmentMapGoogle();
-                    changeFragment(this, fragmentMapGoogle, null, null);
+
+                if(sport_type == UtilConstants.sport_running) {
+                    switch2map.setVisibility(View.VISIBLE);
+                    switch2runner.setVisibility(View.GONE);
+
+                    btn_end.setVisibility(View.GONE);
+                    btn_continue.setVisibility(View.GONE);
+                    updateBG();
+
+                    if (fragmentHistory == null)
+                        fragmentHistory = new FragmentRun();
+                    changeFragment(this, fragmentHistory, null, null);
                 }
-                // ly_tab.setVisibility(View.GONE);
-                break;
-            // case R.id.rl_animate:
-            // updateBG();
-            // iv_animate.setImageResource(R.mipmap.animate_y);
-            // if (fragmentModel == null)
-            // fragmentModel = new FragmentModel();
-            // changeFragment(this, fragmentModel, null, null);
-            // fragmentModel.update(UtilConstants.WaringMap.get("" + nowIndex));
-            // break;
-            // case R.id.rl_message:
-            //
-            // iv_messagecount.setVisibility(View.GONE);
-            // updateBG();
-            // iv_message.setImageResource(R.mipmap.bottom_message_y);
-            // if (fragmentMessage == null)
-            // fragmentMessage = new FragmentMessage();
-            // changeFragment(this, fragmentMessage, null, null);
-            //
-            // break;
-            case R.id.rl_performance:
-
-                if (isStartRun) {
-                    btn_stop.setVisibility(View.VISIBLE);
-                } else {
-                    btn_start.setVisibility(View.VISIBLE);
-
+                else{
+                    
                 }
-                btn_end.setVisibility(View.GONE);
-                btn_continue.setVisibility(View.GONE);
-                updateBG();
-                iv_trainer.setVisibility(View.VISIBLE);
-
-                iv_report.setVisibility(View.VISIBLE);
-                iv_performance.setImageResource(R.mipmap.menu_performance_sel);
-                if (fragmentHistory == null)
-                    fragmentHistory = new FragmentRun();
-                changeFragment(this, fragmentHistory, null, null);
                 break;
+
             case R.id.btn_start:
+
                 btn_start.setVisibility(View.GONE);
-                btn_stop.setVisibility(View.VISIBLE);
+                btn_pause.setVisibility(View.VISIBLE);
                 handler.post(runnable);
                 Date d = new Date();
-                if (BluetoothConstant.mConnected) {
 
+                if (BluetoothConstant.mConnected) {
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null) {
-                        BluetoothConstant.mBluetoothLeService.startRun(1, d);
+                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)sport_type, d);
                         handler.sendEmptyMessageDelayed(199, 1000);
                         handler.sendEmptyMessage(5);
                         updateTimer = new Timer();
@@ -305,12 +342,6 @@ public class MainMenuActivity extends BaseActivity implements
                                 ACQ_TASK_TIMER_PERIOD);
                         bakjldTimes = System.currentTimeMillis();
                     }
-                    // startMarker = aMap.addMarker(new MarkerOptions().icon(
-                    // BitmapDescriptorFactory
-                    // .fromResource(R.mipmap.start_map)).anchor(
-                    // (float) 0.5, (float) 1));
-                    // startMarker.setPosition(new LatLng(latitude, longitude));
-                    // mins = 0;
 
                 } else {
                     Toast.makeText(
@@ -327,39 +358,43 @@ public class MainMenuActivity extends BaseActivity implements
                         fos = new FileOutputStream(file);
                     else
                         fos = new FileOutputStream(file, true);
+
                 } catch (FileNotFoundException e) {
                 }
+
                 isStartRun = true;
-                keenBrace = new KeenBrace();
-                keenBrace.setType(1);
-                keenBrace.setUserID(Constant.user.getId());
-                keenBrace.setStartTime(d.getTime());
-                keenBrace.setTimelength(new Long(0L));
-                keenBrace.setState(0);
+                runResult = new RunResult();
+
+                runResult.setStartTime(d.getTime());
+                runResult.setDuration(new Long(0L));
                 if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-                    keenBrace.setLatitude(fragmentMap.getLatitude());
-                    keenBrace.setLongitude(fragmentMap.getLongitude());
-                    keenBrace.setEndlatitude(fragmentMap.getLatitude());
-                    keenBrace.setEndlongitude(fragmentMap.getLongitude());
+                    runResult.setStartlatitude(fragmentMap.getLatitude());
+                    runResult.setStartlongitude(fragmentMap.getLongitude());
+                    runResult.setEndlatitude(fragmentMap.getLatitude());
+                    runResult.setEndlongitude(fragmentMap.getLongitude());
                 }else {
-                    keenBrace.setLatitude(fragmentMapGoogle.getLatitude());
-                    keenBrace.setLongitude(fragmentMapGoogle.getLongitude());
-                    keenBrace.setEndlatitude(fragmentMapGoogle.getLatitude());
-                    keenBrace.setEndlongitude(fragmentMapGoogle.getLongitude());
+                    runResult.setStartlatitude(fragmentMapGoogle.getLatitude());
+                    runResult.setStartlongitude(fragmentMapGoogle.getLongitude());
+                    runResult.setEndlatitude(fragmentMapGoogle.getLatitude());
+                    runResult.setEndlongitude(fragmentMapGoogle.getLongitude());
                 }
 
-                keenBrace.setId(KeenbraceDBHelper.getInstance(this).insertKeenBrace(keenBrace));
+                runResult.setId(RunResultDBHelper.getInstance(this).insertKeenBrace(runResult));
                 if (fragmentHistory != null)
-                    fragmentHistory.updateBleId(keenBrace.getId());
+                    fragmentHistory.updateBleId(runResult.getId());
+                /*
                 RunWaring rw = new RunWaring();
                 rw.setIndex(0+"");
                 rw.setCreateTime(System.currentTimeMillis());
-
+                */
                 break;
-            case R.id.btn_stop:
+
+            case R.id.btn_pause:
+                tts.speak("pausing workout",
+                        TextToSpeech.QUEUE_FLUSH, null);
                 btn_end.setVisibility(View.VISIBLE);
                 btn_continue.setVisibility(View.VISIBLE);
-                btn_stop.setVisibility(View.GONE);
+                btn_pause.setVisibility(View.GONE);
                 break;
 
             case R.id.btn_bluetooth:
@@ -369,9 +404,13 @@ public class MainMenuActivity extends BaseActivity implements
                 showTips();
                 break;
             case R.id.btn_end:
+                tts.speak("workout complete",
+                        TextToSpeech.QUEUE_FLUSH, null);
                 endRun();
                 break;
             case R.id.btn_continue:
+                tts.speak("resuming workout",
+                        TextToSpeech.QUEUE_FLUSH, null);
                 continueRun();
                 break;
         }
@@ -391,10 +430,134 @@ public class MainMenuActivity extends BaseActivity implements
     int blue = 0, yellow = 0, red = 0;
     long mins = 0;
     int[] steprates = new int[]{0, 0, 0, 0, 0};
-    int alagn=255;
+
+    int delay_times;
+
+    int anino;  //动画的编号
+
+    int countdown_times;
+    String countdown_str;
+    //int test_reps = 1;
+
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case 1:
+                    //延时的方法 ken
+                    if (delay_times > 0) {
+                        //每秒检查一次有没有在运动
+                        delay_times--;
+                        handler.sendEmptyMessageDelayed(1, 1000);
+
+                        /*  testing
+                        String s;
+                        s = "" + test_reps;
+                        tts.speak(s,
+                                TextToSpeech.QUEUE_FLUSH, null);
+                        test_reps++;
+
+                        if (mLastFragment == fragmentHistory) {
+                            fragmentHistory.updateParaBox(test_reps, 10, 30, 30);
+                        }
+                        */
+                    }
+                    else
+                    {
+                        //检查是否有运动 没运动就语音提示一下
+                        if(!isAnyMove) {
+                            tts.speak((String) getText(R.string.tx_running_welcome),
+                                    TextToSpeech.QUEUE_FLUSH, null);
+                        }
+                    }
+                    break;
+
+                //检测到有动作 播放动画
+                case 2:
+                    if (mLastFragment == fragmentHistory) {
+
+                        fragmentHistory.updateAnimation(anino);
+                    }
+                    break;
+
+                case 3:
+                    //倒计时语音
+                    if (countdown_times > 0) {
+                        countdown_times--;
+
+                        fragmentHistory.DuringCountDown(0, countdown_times);
+
+                        if(countdown_times <= 10)
+                        {
+                            countdown_str = "" + countdown_times;
+
+                            tts.speak(countdown_str,
+                                    TextToSpeech.QUEUE_FLUSH, null);
+                        }
+
+                        handler.sendEmptyMessageDelayed(3, 1000);
+                    }
+                    else
+                    {
+                        fragmentHistory.CountDownEnd();
+                    }
+                    break;
+
+                case 5:
+                    //用这种形式实现循环
+                    if (isStartRun) {
+                        int lc_gap = distance - distance_old;
+                        int speed = lc_gap / 5;
+                        fragmentMap.updateSpeed(speed * 3600);
+                        fragmentHistory.updateSpeed(speed * 3600);
+                        distance_old = distance;
+                        handler.sendEmptyMessageDelayed(5, 5000);
+                        com.umeng.socialize.utils.Log.e("speed-------------------"
+                                + speed);
+                    }
+                    break;
+                case 6:
+
+                    //fragmentReport.addLineEntry(power_valid);
+                    //fragmentReport.addBarEntry(osc, (int) ya, steprate);
+                    //
+                    if (updateStep != step_true) {
+
+                        if (mLastFragment == fragmentHistory)
+                            fragmentHistory.updateView(wrCount, steprate, stride,
+                                    bkstep, mins, distance);
+                        if (mLastFragment == fragmentMap)
+                            fragmentMap.updateView(wrCount, steprate, stride,
+                                    bkstep, mins, distance);
+                    } else {
+
+                        if (mLastFragment == fragmentHistory)
+                            fragmentHistory.updateView(wrCount, steprate, stride,
+                                    step_true, mins, distance);
+                        if (mLastFragment == fragmentMap)
+                            fragmentMap.updateView(wrCount, steprate, stride,
+                                    step_true, mins, distance);
+                    }
+                    break;
+
+                case 7:
+                    if (mLastFragment == fragmentHistory) {
+                        fragmentHistory.updateParaBox(reps, 0, 0, 0);
+                    }
+                    break;
+                case 8:
+                    //这里是将TAB隐藏
+                    /*
+                    ly_tab.setBackgroundColor(Color.argb(alagn,61,196,233));
+                    if(alagn>0) {
+                        handler.sendEmptyMessageDelayed(8, 1000);
+                        alagn=alagn-20;
+                    }else
+                    {
+                        ly_tab.setVisibility(View.GONE);
+                        alagn=255;
+                    }
+                    */
+                    break;
 
                 case 19:
                     mins += 1000;
@@ -406,10 +569,13 @@ public class MainMenuActivity extends BaseActivity implements
                     } else if (steprate > 190) {
                         red += 1;
                     }
-                    if (mLastFragment == fragmentHistory)
-                        fragmentHistory.updateTime(mins / 1000, blue, yellow, red);
+
+                    //if (mLastFragment == fragmentHistory)
+                    //fragmentHistory.updateTime(mins / 1000, blue, yellow, red);
+
                     if (mLastFragment == fragmentMap)
                         fragmentMap.updateTime(mins);
+
                     if (mLastFragment == fragmentMapGoogle)
                         fragmentMapGoogle.updateTime(mins);
 
@@ -452,9 +618,67 @@ public class MainMenuActivity extends BaseActivity implements
 
                     old_steprate = steprate;
                     if (steprate < 140 && steprate > 100) {
-                        if (rw8 != null) {
-                            if (step_history[3] != step_history[0])
-                                rw8 = getWarning(8, rw8);
+                        //if (rw8 != null) {
+                        //步频太低
+                        if (step_history[3] != step_history[0])
+                        {
+                            straight_spine++;
+
+                            if(straight_spine < 5) {
+                                anino = 1;
+                                //语音
+                                indiCaseCount[anino]++;
+
+                                if(indiCaseCount[anino] > 10) {
+                                    updateVoice(R.string.tx_increase_cadence);
+                                    //动画和提示框信息
+                                    handler.sendEmptyMessage(2);
+
+                                    indiCaseCount[anino] = 0;
+                                }
+                            }
+                            else
+                            {
+                                //动画和提示框信息
+                                anino = 0;
+
+                                indiCaseCount[anino]++;
+
+                                if(indiCaseCount[anino] > 10) {
+                                    //语音
+                                    updateVoice(R.string.tx_straight_spine);
+
+                                    handler.sendEmptyMessage(2);
+                                    straight_spine = 0;
+
+                                    indiCaseCount[anino] = 0;
+                                }
+                            }
+                        }
+                        //}
+                    }
+                    else if(steprate == 0)
+                    {
+                        anino = 12;
+
+                        indiCaseCount[anino]++;
+
+                        if(indiCaseCount[anino] > 3) {
+                            handler.sendEmptyMessage(2);
+
+                            indiCaseCount[anino] = 0;
+                        }
+                    }
+                    else
+                    {
+                        anino = 10;
+
+                        indiCaseCount[anino]++;
+
+                        if(indiCaseCount[anino] > 3) {
+                            handler.sendEmptyMessage(2);
+
+                            indiCaseCount[anino] = 0;
                         }
                     }
 
@@ -480,53 +704,18 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 199:
+                    int ss = 0;
+                    if(sport_type == UtilConstants.sport_running)
+                        ss = 0;
+
+                    if(sport_type == UtilConstants.sport_squat)
+                        ss = 3;
+
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null)
-                        BluetoothConstant.mBluetoothLeService.startRun(1,
+                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)ss,
                                 new Date());
                     break;
-                case 5:
-                    if (isStartRun) {
-                        int lc_gap = lc - lc_old;
-                        int speed = lc_gap / 5;
-                        fragmentMap.updateSpeed(speed * 3600);
-                        fragmentHistory.updateSpeed(speed * 3600);
-                        lc_old = lc;
-                        handler.sendEmptyMessageDelayed(5, 5000);
-                        com.umeng.socialize.utils.Log.e("speed-------------------"
-                                + speed);
-                    }
-                    break;
-                case 6:
-
-                    fragmentReport.addLineEntry(power_valid);
-                    fragmentReport.addBarEntry(osc, (int) ya, steprate);
-                    //
-                    if (updateStep != step_true) {
-
-                        if (mLastFragment == fragmentHistory)
-                            fragmentHistory.updateView(wrCount, steprate, stride,
-                                    bkstep, mins, lc);
-                        if (mLastFragment == fragmentMap)
-                            fragmentMap.updateView(wrCount, steprate, stride,
-                                    bkstep, mins, lc);
-                    } else {
-
-                        if (mLastFragment == fragmentHistory)
-                            fragmentHistory.updateView(wrCount, steprate, stride,
-                                    step_true, mins, lc);
-                        if (mLastFragment == fragmentMap)
-                            fragmentMap.updateView(wrCount, steprate, stride,
-                                    step_true, mins, lc);
-                    }
-                    break;
-                case 7:
-                    fragmentReport.addJldBarEntry(jldTimes);
-                    break;
-                case 8:
-                    ly_tab.setVisibility(View.GONE);
-                    break;
-
             }
         }
     };
@@ -607,19 +796,20 @@ public class MainMenuActivity extends BaseActivity implements
                         Toast.LENGTH_SHORT).show();
                 if (isStartRun) {
                     Date d = new Date();
-                    BluetoothConstant.mBluetoothLeService.startRun(1, d);
+                    BluetoothConstant.mBluetoothLeService.startRun(1,(byte)sport_type, d);
                 }
                 handler.sendEmptyMessage(2);
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                //在这个位置接收蓝牙数据 ken
                 data = intent
                         .getByteArrayExtra(BluetoothLeService.EXTRA_DATA_BYTE);
 
-                if (shi == 0 && isAdd) {
+                if (tgt == 0 && isAdd) {
                     isAdd = false;
                     jldTimes = (int) (System.currentTimeMillis() - bakjldTimes);
                     handler.sendEmptyMessage(7);
                 }
-                if (!isAdd & shi == 100) {
+                if (!isAdd & tgt == 100) {
                     isAdd = true;
                     bakjldTimes = System.currentTimeMillis();
                 }
@@ -633,7 +823,8 @@ public class MainMenuActivity extends BaseActivity implements
         public void run() {
             synchronized (m_CritObj) {
                 if (data != null && data.length > 0)
-                    updateView();
+                    //在这个updateView的函数里处理data ken
+                    CheckPacket();
             }
 
         }
@@ -664,7 +855,7 @@ public class MainMenuActivity extends BaseActivity implements
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BluetoothLeService.BLEAPI_GATT_FOUNDDEVICE);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(FragmentMessage.SHOW_MODEL);
+        //intentFilter.addAction(FragmentMessage.SHOW_MODEL);
         return intentFilter;
     }
 
@@ -694,12 +885,12 @@ public class MainMenuActivity extends BaseActivity implements
     int bpi = 0;
     int bsi = 0;
     int progress = 0;
-    RunWaring rw1, rw2, rw3, rw4, rw5, rw6, rw7, rw8, rw9, rw10, rw11;
-    int step, stride, lc, index, steprate, osc, ya, shi;
+
+    int step = 0, stride = 0, distance = 0, index= 0, steprate = 0, osc = 0, pressure = 0, tgt = 0;
     int[] bs = new int[5];
-    List<RunWaring> rws = new ArrayList<RunWaring>();
+    //List<RunWaring> rws = new ArrayList<RunWaring>();
     int count;
-    int jzdfbOne, jzdfbTwo;
+    //int jzdfbOne, jzdfbTwo;
     int second; //
     int[] step_history = new int[4]; //
     int[] power_record = new int[200];
@@ -709,46 +900,57 @@ public class MainMenuActivity extends BaseActivity implements
 
     boolean iangle_flag = false;
 
-    int step_true;
+    int step_true = 0;
     int old_step = 0;
     int updateStep = 0;
-    int bkstep;
+    int bkstep = 0;
     float PI = 3.1415926f;
 
-    int old_steprate;
+    int old_steprate = 0;
+
+    int warn_lock = 0;
+
+    //----------------------- inherit alarms
+    int big_stride_count = 0;
+    int bend_kneeNelbow = 0;
+    int straight_spine = 0;
 
     void updateView() {
-        step = ByteHelp.ByteArrayToShort(new byte[]{data[9], data[10]});// ����
+
+        step = ByteHelp.ByteArrayToShort(new byte[]{data[9], data[10]});    //步数
 
         int z = ByteHelp.ByteArrayToShort(new byte[]{data[1], data[2]});
         int h = ByteHelp.ByteArrayToShort(new byte[]{data[3], data[4]});
-        ya = (int) Math.sqrt(z * z + h * h);
+        pressure = (int) Math.sqrt(z * z + h * h);
 
-        int xuzhuan = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});// ��ת��ֵ
-        int fanzhuan = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});// ��ת��ֵ
+        int xuzhuan = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});    //旋转
+        int fanzhuan = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});   //翻转
 
-        int iangle = ByteHelp.byteArrayToInt(new byte[]{data[11], data[12]});// ϥ�Ǽн�
-        // lj
+        int iangle = ByteHelp.byteArrayToInt(new byte[]{data[11], data[12]});   //夹角
 
-        osc = ByteHelp.byteArrayToInt(new byte[]{data[13], data[14]}); // ��ֱ��ظ߶�
-        // lj
+        osc = data[13];
 
-        int power = data[17] & 0xFF;//
-        stride = data[16] & 0xFF;// /
+        int stability = data[14];
 
-        int jzdfb = data[18] & 0xFF;//
+        int tgt = data[15];
+
+        stride = data[16] & 0xFF;
+
+        int power = data[17] & 0xFF;
+
+        int strike = data[18] & 0xFF;
 
 
         float Height = 175;
         if (UtilConstants.user != null
                 && !"".equals(UtilConstants.user.getHeight()))
             Height = UtilConstants.user.getHeight();
-        float legLen = 0.0f; // �ȳ�
+        float legLen = 0.0f;
 
         if (UtilConstants.user != null
-                && "0".equals(UtilConstants.user.getSex())) {
+                && "0".equals(UtilConstants.user.getGender())) {
             legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 5) / 3.74);
-        } else { // ���е�
+        } else {
             legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 3) / 3.74);
         }
 
@@ -780,45 +982,154 @@ public class MainMenuActivity extends BaseActivity implements
         }
 
 
-        if (stride > 110 && steprate > 100) {
+        if (stride > 140 && steprate > 120) {
             if (step_history[3] != step_history[0]) {
-                rw3 = getWarning(3, rw3);
+                warn_lock = 1;
+                //步幅太大
+                big_stride_count++;
+                if(big_stride_count < 5) {
+                    anino = 2;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] > 10) {
+                        //语音
+                        updateVoice(R.string.tx_decrease_stride_l);
+                        //动画和提示框信息
+                        handler.sendEmptyMessage(2);
+
+                        indiCaseCount[anino] = 0;
+                    }
+                }
+                else
+                {
+                    anino = 8;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] > 10) {
+                        //语音
+                        updateVoice(R.string.tx_land_underneath);
+                        //动画和提示框信息
+
+                        handler.sendEmptyMessage(2);
+
+                        big_stride_count = 0;
+                        indiCaseCount[anino] = 0;
+                    }
+                }
+            }
+            else
+            {
+                warn_lock = 0;
             }
         }
 
 
         if (step_history[3] != step_history[0]) {
+            /*
+            if(stability < 6)
+            {
+                anino = 2;
 
-            if (shi == 100) {
+                indiCaseCount[anino]++;
+
+                if(indiCaseCount[anino] > 10) {
+                    //语音
+                    updateVoice(R.string.tx_enhance_stability);
+                    //动画和提示框信息
+
+                    handler.sendEmptyMessage(2);
+
+                    indiCaseCount[anino] = 0;
+                }
+            }
+            */
+
+            if (tgt == 100) {
                 count++;
 
+                if (count >= 4 && steprate > 130) {
+                    anino = 6;
 
-                if (count >= 5 && steprate > 100)
-                    rw11 = getWarning(11, rw11);
+                    indiCaseCount[anino]++;
 
+                    if(indiCaseCount[anino] > 10) {
+                        //触地时间过长
+                        updateVoice(R.string.tx_lift_faster);
 
-                if (iangle > 130 && steprate > 100) {
-                    rw7 = getWarning(7, rw7);
-
-                    iangle_flag = true;
+                        handler.sendEmptyMessage(2);
+                        indiCaseCount[anino] = 0;
+                    }
                 }
 
 
-                if (ya > UtilConstants.Weight * 9.8f * 15) {
-                    if (steprate > 100)
-                        rw1 = getWarning(1, rw1);
+                if (iangle > 130 && steprate < 180) {
+                    anino = 7;
+
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] > 20) {
+                        updateVoice(R.string.tx_flex_knee);
+
+                        handler.sendEmptyMessage(2);
+                        //脚伸太直
+                        iangle_flag = true;
+
+                        indiCaseCount[anino] = 0;
+                    }
                 }
 
 
+                if (pressure > UtilConstants.Weight * 9.8f * 13) {
+                    //膝盖压力太大
+                    if (steprate > 130)
+                    {
+                        bend_kneeNelbow++;
+
+                        if( bend_kneeNelbow < 5) {
+                            anino = 3;
+                            indiCaseCount[anino]++;
+
+                            if(indiCaseCount[anino] > 10) {
+                                //语音
+                                updateVoice(R.string.tx_land_softer);
+                                //动画和提示框信息
+
+                                handler.sendEmptyMessage(2);
+
+                                indiCaseCount[anino] = 0;
+                            }
+                        }
+                        else
+                        {
+                            anino = 9;
+                            indiCaseCount[anino]++;
+
+                            if(indiCaseCount[anino] > 10) {
+                                //语音
+                                updateVoice(R.string.tx_bend_knee_n_elbow);
+                                //动画和提示框信息
+
+                                handler.sendEmptyMessage(2);
+
+                                bend_kneeNelbow = 0;
+
+                                indiCaseCount[anino] = 0;
+                            }
+                        }
+                    }
+                }
+
+                //这两个还没实现
+                //内旋
                 if (xuzhuan > 80 && fanzhuan < -50) {
-                    if (steprate > 100)
-                        rw4 = getWarning(4, rw4);
+                    //if (steprate > 100)
+                        //rw4 = getWarning(4, rw4);
                 }
 
-
+                //内旋
                 if (xuzhuan < -80 && fanzhuan > 50) {
-                    if (steprate > 100)
-                        rw5 = getWarning(5, rw5);
+                    //if (steprate > 100)
+                        //rw5 = getWarning(5, rw5);
                 }
 
             } else {
@@ -837,17 +1148,46 @@ public class MainMenuActivity extends BaseActivity implements
 
                 if (true == power_flag) {
                     if (power_aver < 60) {
-                        if (steprate > 100)
-                            rw6 = getWarning(6, rw6);
+                        //股四头肌疲劳
+                        if (steprate > 130)
+                        {
+                            anino = 11;
+                            indiCaseCount[anino]++;
+
+                            if(indiCaseCount[anino] > 10) {
+                                //语音
+                                updateVoice(R.string.tx_take_rest);
+                                //动画和提示框信息
+
+                                handler.sendEmptyMessage(2);
+                                indiCaseCount[anino] = 0;
+                            }
+                        }
+                            //rw6 = getWarning(6, rw6);
                     }
                 }
             }
         }
 
+        if(warn_lock == 0) {
+            if (osc > 25) {
+                //垂直摆动太大
+                if (steprate > 130)
+                {
+                    anino = 11;
 
-        if (osc > 15) {
-            if (steprate > 100)
-                rw10 = getWarning(10, rw10);
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] > 10) {
+                        //语音
+                        updateVoice(R.string.tx_lower_gravity);
+                        //动画和提示框信息
+
+                        handler.sendEmptyMessage(2);
+                        indiCaseCount[anino] = 0;
+                    }
+                }
+            }
         }
         // int jrll = FftUtil.getJrll(power);
 
@@ -863,10 +1203,10 @@ public class MainMenuActivity extends BaseActivity implements
             fragmentMapGoogle.getDistance();
 
         if (distance >= 5000) {
-            lc += distance;
+            distance += distance;
         } else {
             if (updateStep != step_true) {
-                lc += stride_dis;
+                distance += stride_dis;
             }
         }
 
@@ -875,21 +1215,101 @@ public class MainMenuActivity extends BaseActivity implements
         handler.sendEmptyMessage(6);
     }
 
-    // void updateMessageIco(int type) {
-    // switch (type) {
-    // case 0:
-    // iv_message.setBackgroundResource(R.mipmap.bottom_message_g);
-    // break;
-    // case 1:
-    // iv_message.setBackgroundResource(R.mipmap.bottom_message_y);
-    // break;
-    // case 2:
-    // iv_message.setBackgroundResource(R.mipmap.bottom_message_r);
-    // case 3:
-    // iv_message.setBackgroundResource(R.mipmap.bottom_message_r);
-    // }
-    // }
+    //data接收到蓝牙数据包 在这里发出语音 ken
+    void updateVoice(int no)
+    {
+        tts.speak((String)getText(no),
+                TextToSpeech.QUEUE_FLUSH, null);
+    }
 
+    int old_reps = 0;
+    int reps = 0;
+
+    void CheckPacket() {
+        switch (data[0])
+        {
+            //实时数据包
+            case (byte)0xa5:
+                //临时 testing
+                if(data[1] == 0xa5)
+                {
+                    if(data[2] == 0xa5)
+                    {
+                        reps = ByteHelp.byteArrayToInt(new byte[]{data[3], data[4]});
+
+                        if(reps == 0)
+                        {
+                            isAnyMove = false;
+                        }
+                        else
+                        {
+                            //将每一个计数读出来
+                            if(reps != old_reps)
+                            {
+                                handler.sendEmptyMessage(7);
+                                String s;
+                                s = "" + reps;
+                                tts.speak(s,
+                                        TextToSpeech.QUEUE_FLUSH, null);
+                                old_reps = reps;
+                            }
+                        }
+                        return;
+                    }
+                }
+
+                updateView();
+                break;
+
+            //运动参数及提示
+            /*
+            case (byte)0xab:
+                //动作次数
+                int reps = ByteHelp.byteArrayToInt(new byte[]{data[2], data[3]});
+                if(reps == 0)
+                {
+                    isAnyMove = false;
+                }
+                else
+                {
+                    //将每一个计数读出来
+                    if(reps != old_reps)
+                    {
+                        String s;
+                        s = "" + reps;
+                        tts.speak(s,
+                                TextToSpeech.QUEUE_FLUSH, null);
+                        old_reps = reps;
+                    }
+                }
+
+                int duration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
+
+                int bias = (int)data[6];
+                int stability = (int)data[7];
+                int muscle = (int)data[8];
+
+                anino = (int)data[9];
+
+                //更新参数框
+                if (mLastFragment == fragmentHistory) {
+                    fragmentHistory.updateParaBox(reps, muscle, duration, stability);
+                }
+
+                //提示信息不为空
+                if(anino!=0)
+                {
+                    handler.sendEmptyMessage(2);
+                }
+
+                //语音报数
+                //updateVoice(anino);
+                break;
+                */
+        }
+    }
+
+    /*
     private RunWaring getWarning(int index, RunWaring brw) {
 
         nowIndex = index;
@@ -913,18 +1333,12 @@ public class MainMenuActivity extends BaseActivity implements
 
                         rw.setCreateTime(System.currentTimeMillis());
                 rw.setLc(lc);
-                rw.setRunId(keenBrace.getId());
+                rw.setRunId(keenBrace_sports.getId());
+                //ken
                 KeenbraceDBHelper.getInstance(this).insertRunWaring(rw);
                 wrCount++;
                 // iv_messagecount.setVisibility(View.VISIBLE);
-                int type = UtilConstants.WaringMap.get(index + "").getGrade();
-                tts.speak(UtilConstants.WaringMap.get("" + index).getFunction(),
-                        TextToSpeech.QUEUE_FLUSH, null);
-                Intent intent = new Intent();
-                intent.putExtra("modelIndex", index);
-                intent.putExtra("isClose", 1);
-                intent.setClass(MainMenuActivity.this, ModelAcitvity.class);
-                startActivity(intent);
+
                 return rw;
             } else {
                 return brw;
@@ -943,25 +1357,18 @@ public class MainMenuActivity extends BaseActivity implements
             rw.setCreateTime(System.currentTimeMillis());
             rw.setLc(lc);
             wrCount++;
-            rw.setRunId(keenBrace.getId());
+            rw.setRunId(keenBrace_sports.getId());
             KeenbraceDBHelper.getInstance(this).insertRunWaring(rw);
-            tts.speak(UtilConstants.WaringMap.get("" + index).getFunction(),
-                    TextToSpeech.QUEUE_FLUSH, null);
-            Intent intent = new Intent();
-            intent.putExtra("modelIndex", index);
-            intent.putExtra("isClose", 1);
 
-            intent.setClass(MainMenuActivity.this, ModelAcitvity.class);
-            startActivity(intent);
             return rw;
         }
-        //
 
     }
+    */
 
     public void continueRun() {
         btn_end.setVisibility(View.GONE);
-        btn_stop.setVisibility(View.VISIBLE);
+        btn_pause.setVisibility(View.VISIBLE);
         btn_continue.setVisibility(View.GONE);
     }
 
@@ -972,56 +1379,54 @@ public class MainMenuActivity extends BaseActivity implements
 
         if (BluetoothConstant.mBluetoothLeService != null
                 && BluetoothConstant.mwriteCharacteristic != null)
-            BluetoothConstant.mBluetoothLeService.startRun(0, new Date());
+            BluetoothConstant.mBluetoothLeService.startRun(0, (byte)sport_type, new Date());
         if (updateTimer != null) {
             updateTimer.cancel();
             updateTimer = null;
         }
         isStartRun = false;
+
+        //无法创建文件 ken
         try {
             fos.close();
             fos = null;
         } catch (IOException e) {
         }
-        keenBrace.setTimelength(mins);
-        keenBrace.setSumscore(80);
-        // ble.setCadence((int) bpChart.getAverage());
-        // ble.setStride((int) bfChart.getAverage());
-        keenBrace.setMileage(lc);
-        keenBrace.setFileName(file.getAbsolutePath());
-        keenBrace.setEndTime(bak);
-        if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-            keenBrace.setLatLngs(fragmentMap.getMap());
 
-            keenBrace.setEndlatitude(fragmentMap.getLatitude());
-            keenBrace.setEndlongitude(fragmentMap.getLongitude());
+        runResult.setDuration(mins);
+        runResult.setMileage(distance);
+        //runResult.setFileName(file.getAbsolutePath());    //ken
+        runResult.setEndTime(bak);
+        if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
+            runResult.setLatLngs(fragmentMap.getMap());
+
+            runResult.setEndlatitude(fragmentMap.getLatitude());
+            runResult.setEndlongitude(fragmentMap.getLongitude());
         }else
         {
-            keenBrace.setLatLngs(fragmentMapGoogle.getMaps());
+            runResult.setLatLngs(fragmentMapGoogle.getMaps());
 
-            keenBrace.setEndlatitude(fragmentMapGoogle.getLatitude());
-            keenBrace.setEndlongitude(fragmentMapGoogle.getLongitude());
+            runResult.setEndlatitude(fragmentMapGoogle.getLatitude());
+            runResult.setEndlongitude(fragmentMapGoogle.getLongitude());
         }
-        keenBrace.setSumwarings(wrCount);
-        KeenbraceDBHelper.getInstance(this).updateKeenBrace(keenBrace);
-        // if (fragmentReport == null)
-        // fragmentReport = new FragmentReport();
-        // changeFragment(this, fragmentReport, null, null);
+        //总共发生过的警报数
+        //runResult.setSumwarings(wrCount);
+        RunResultDBHelper.getInstance(this).updateRunResult(runResult);
+
 
         btn_end.setVisibility(View.GONE);
-        btn_stop.setVisibility(View.GONE);
+        btn_pause.setVisibility(View.GONE);
         btn_continue.setVisibility(View.GONE);
         btn_start.setVisibility(View.VISIBLE);
 
+        /*
         TransferObserver observer = transferUtility.upload(
                 UtilConstants.BUCKET_NAME, file.getName(), file);
-
-
-
-
+                */
 
         Intent intent = new Intent();
-        intent.putExtra("bleData", keenBrace);
+        intent.putExtra("bleData", runResult);
+        intent.putExtra("sport_type", sport_type);
         intent.setClass(this, ViewRecordActivity.class);
         startActivity(intent);
     }
@@ -1062,7 +1467,7 @@ public class MainMenuActivity extends BaseActivity implements
                 }
             }
         });
-        Button cancle = (Button) window.findViewById(R.id.cancle);
+        Button cancle = (Button) window.findViewById(R.id.cancel);
         cancle.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -1089,33 +1494,33 @@ public class MainMenuActivity extends BaseActivity implements
                                 try {
                                     isStartRun = false;
                                     handler.removeCallbacks(runnable);
-                                    btn_stop.setVisibility(View.GONE);
+                                    btn_pause.setVisibility(View.GONE);
                                     btn_start.setVisibility(View.VISIBLE);
                                     if (BluetoothConstant.mBluetoothLeService != null
                                             && BluetoothConstant.mwriteCharacteristic != null)
                                         BluetoothConstant.mBluetoothLeService
-                                                .startRun(0, new Date());
+                                                .startRun(0, (byte)sport_type, new Date());
                                     isStartRun = false;
                                     try {
                                         fos.close();
                                         fos = null;
                                     } catch (IOException e) {
                                     }
-                                    keenBrace.setTimelength(mins);
-                                    keenBrace.setSumscore(80);
+                                    runResult.setDuration(mins);
+                                    //keenBrace_sports.setSumscore(80);
                                     // ble.setCadence((int)
                                     // bpChart.getAverage());
                                     // ble.setStride((int)
                                     // bfChart.getAverage());
-                                    keenBrace.setMileage(lc);
-                                    keenBrace.setFileName(file.getAbsolutePath());
-                                    keenBrace.setEndTime(bak);
+                                    runResult.setMileage(distance);
+                                    //runResult.setFileName(file.getAbsolutePath());
+                                    runResult.setEndTime(bak);
                                     if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
-                                        keenBrace.setLatLngs(fragmentMap.getMap());
+                                        runResult.setLatLngs(fragmentMap.getMap());
                                     else
-                                        keenBrace.setLatLngs(fragmentMapGoogle.getMaps());
-                                    keenBrace.setSumwarings(wrCount);
-                                    KeenbraceDBHelper.getInstance(MainMenuActivity.this).updateKeenBrace(keenBrace);
+                                        runResult.setLatLngs(fragmentMapGoogle.getMaps());
+                                    //runResult.setSumwarings(wrCount);
+                                    RunResultDBHelper.getInstance(MainMenuActivity.this).updateRunResult(runResult);
                                 } catch (Exception e) {
 
                                 }
@@ -1161,43 +1566,23 @@ public class MainMenuActivity extends BaseActivity implements
             }
         }
 
-    }
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        int action = event.getAction();
-        switch (action) {
-            // 刚按下
-            case MotionEvent.ACTION_DOWN:
-                if (View.GONE == ly_tab.getVisibility()) {
-
-                    ly_tab.setVisibility(View.VISIBLE);
-
-                    ly_tab.startAnimation(
-                            AnimationUtils.loadAnimation(this, R.anim.pop_enter_anim));
-                    handler.sendEmptyMessageDelayed(1, 5000);
-                } else {
-
-                    ly_tab.setVisibility(View.GONE);
-
-                    ly_tab.startAnimation(
-                            AnimationUtils.loadAnimation(this, R.anim.pop_exit_anim));
-                }
-                break;
-            // 移动
-            case MotionEvent.ACTION_MOVE:
-                return true;
-            // 离开
-            case MotionEvent.ACTION_UP:
-
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
-
-                break;
+        //已经开始运动后就不说这句
+        if(isStartRun == false) {
+            tts.speak("beginning workout",
+                    TextToSpeech.QUEUE_FLUSH, null);
         }
 
+        btn_start.performClick();
 
-        return false;
+        //得到运动类型 再传到fragment
+        sport_type = this.getIntent().getIntExtra("sport_type", 0);
+        data2Fragment.putInt("sport_type", sport_type);
+
+        //testing
+        /*
+        countdown_times = 40;
+        fragmentHistory.CountDownBegin();
+        handler.sendEmptyMessage(3);
+        */
     }
-
 }

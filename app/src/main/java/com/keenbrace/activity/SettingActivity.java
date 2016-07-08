@@ -8,13 +8,13 @@ import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.core.utils.PreferenceHelper;
-import com.keenbrace.storage.BleData;
+import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.util.SharePreferUtil;
 import com.keenbrace.widget.RoundImageView;
 
@@ -25,9 +25,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
     TextView tv_userName, tv_language, tv_kv, tv_version,tv_map;
 
     RoundImageView ps_photo;
-
-
-    List<BleData> datas;
 
     public void init() {
 
@@ -56,16 +53,13 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
             case R.id.rl_language:
                 break;
             case R.id.rl_fiexd:
+                //发送校准信息 ken
+
                 break;
             case R.id.tv_version:
                 break;
             case R.id.rl_map:
                 openMap();
-                break;
-            case R.id.rl_quit:
-                PreferenceHelper.write(this,  UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, false);
-                readyGo(LoginActivity.class);
-                finish();
                 break;
         }
 
@@ -125,7 +119,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
         tv_kv = (TextView)findViewById(R.id.tv_kv);
         tv_version = (TextView)findViewById(R.id.tv_version);
         tv_map= (TextView) findViewById(R.id.tv_map);
-        findViewById(R.id.rl_quit).setOnClickListener(this);
 
     }
     @Override

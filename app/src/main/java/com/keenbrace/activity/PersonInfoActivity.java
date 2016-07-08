@@ -5,15 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.amazonaws.com.google.gson.Gson;
-import com.keenbrace.AppConfig;
-import com.keenbrace.AppContext;
 import com.keenbrace.R;
-import com.keenbrace.api.KeenbraceRetrofit;
 import com.keenbrace.base.BaseActivity;
-import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.KeenbraceDBHelper;
-import com.keenbrace.bean.response.LoginResponse;
+import com.keenbrace.bean.RunResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.greendao.User;
@@ -38,11 +32,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class PersonInfoActivity extends BaseActivity implements OnClickListener {
     private File mPhotoFile;
@@ -79,12 +68,12 @@ public class PersonInfoActivity extends BaseActivity implements OnClickListener 
         rl_save.setOnClickListener(this);
         iv_head.setOnClickListener(open_camera);
 
-        user = KeenbraceDBHelper.getInstance(this).queryUserByLoginName("test");
+        user = RunResultDBHelper.getInstance(this).queryUserByLoginName("test");
         if (user != null) {
             mPhotoPath = user.getPicturePath();
             setPsphoto();
             et_age.setText(user.getBirthday().toString());
-            et_sex.setText(user.getSex());
+            et_sex.setText(user.getGender());
             et_name.setText(user.getNickname());
             et_height.setText(user.getHeight());
             et_weight.setText(user.getWeight());
@@ -274,62 +263,23 @@ public class PersonInfoActivity extends BaseActivity implements OnClickListener 
                     user = new User();
                 }
 
-                user.setBirthday("1987-01-01");
+                user.setBirthday(new Date());
                 user.setPicturePath(mPhotoPath);
                 user.setWeight(StringUtils.partToInt(et_weight.getText().toString()));
                 user.setHeight(StringUtils.partToInt(et_height.getText().toString()));
                 user.setNickname(et_name.getText().toString());
-                user.setSex(et_sex.getText().toString().equals("男") ? 1 : 0);
-                Gson gson=new Gson();
-                Observable<LoginResponse> observable = new KeenbraceRetrofit()
-                        .createBaseApi()
-                        .login("3","",
-                                "",
-                                gson.toJson(user));
+                user.setGender(et_sex.getText().toString().equals("male") ? 1 : 0);
+               RunResultDBHelper.getInstance(this).insertUser(user);
+                Toast.makeText(this, "save success!",
+                        Toast.LENGTH_SHORT).show();
 
-                _subscriptions.add(observable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<LoginResponse>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                hideWaitDialog();
-                                Toast.makeText(PersonInfoActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onNext(LoginResponse loginResponse) {
-                                if (loginResponse.getResultCode().equals("0")) {
-
-
-                                    User user = loginResponse.getUser();
-                                    KeenbraceDBHelper.getInstance(PersonInfoActivity.this).upateUser(user);
-                                    Constant.user = user;
-
-                                    Toast.makeText(PersonInfoActivity.this, "save success!",
-                                            Toast.LENGTH_SHORT).show();
-                                    finish();
-                                } else {
-                                    hideWaitDialog();
-                                    String msg = loginResponse.getMsg();
-                                    if (com.keenbrace.core.utils.StringUtils.isEmpty(msg)) {
-                                        msg = "更新失败";
-                                    }
-                                    Toast.makeText(PersonInfoActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }));
-
-
-
+                finish();
                 break;
             case R.id.btn_cancel:
                 finish();
                 break;
             case R.id.btn_calibration:
+                //发送校准信息
                 if (!check())
                     return;
                 byte[] data = new byte[4];

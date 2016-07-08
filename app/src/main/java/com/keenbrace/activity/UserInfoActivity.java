@@ -1,5 +1,7 @@
 package com.keenbrace.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,15 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.amazonaws.com.google.gson.Gson;
-import com.keenbrace.AppConfig;
-import com.keenbrace.AppContext;
 import com.keenbrace.R;
-import com.keenbrace.api.KeenbraceRetrofit;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.KeenbraceDBHelper;
-import com.keenbrace.bean.response.LoginResponse;
+import com.keenbrace.bean.RunResultDBHelper;
 import com.keenbrace.core.datepicker.picker.DatePicker;
 import com.keenbrace.core.datepicker.picker.NumberPicker;
 import com.keenbrace.core.datepicker.picker.OptionPicker;
@@ -27,15 +24,8 @@ import com.keenbrace.greendao.User;
 import com.keenbrace.util.DateUitl;
 import com.keenbrace.util.StringUtils;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import butterknife.Bind;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 public class UserInfoActivity extends BaseActivity {
@@ -60,15 +50,17 @@ public class UserInfoActivity extends BaseActivity {
     TextView tvWeight;
 
 
+    int sex;
+    int sexwich;
+
     @OnClick(R.id.rl_sex)
     void pickGender() {
-
         SexPicker picker = new SexPicker(this);
         picker.onlyMaleAndFemale();
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
-                if (option.equalsIgnoreCase("男")) {
+                if (option.equalsIgnoreCase("male")) {
                     gender = 0;
                 } else {
                     gender = 1;
@@ -77,6 +69,34 @@ public class UserInfoActivity extends BaseActivity {
             }
         });
         picker.show();
+
+        /*
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                this);
+        builder.setTitle("Gender");
+        final String[] sexs = new String[]{
+                "male",
+                "female"};
+        builder.setSingleChoiceItems(sexs, 0,
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        sexwich = which;
+                        sex = which;
+                    }
+                });
+
+        builder.setNegativeButton(getResources().getString(R.string.cancle),
+                null);
+        builder.setPositiveButton(getResources().getString(R.string.sure),
+                new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        //et_sex.setText(sexs[sexwich]);
+                    }
+                });
+        builder.show();
+        */
     }
 
     @OnClick(R.id.rl_birthday)
@@ -144,54 +164,15 @@ public class UserInfoActivity extends BaseActivity {
 
     void saveUser()
     {
-        showWaitDialog();
         users.setWeight(StringUtils.partToInt(tvWeight.getText().toString()));
         users.setHeight(StringUtils.partToInt(tvHeight.getText().toString()));
-        users.setSex(gender);
-        users.setBirthday(tvBirthday.getText().toString());
+        users.setGender(gender);
+        users.setBirthday(com.keenbrace.core.utils.DateUtils.convertServerDate2(tvBirthday.getText() + " 00:00:00"));
         users.setNickname(tvName.getText().toString());
         users.setEmail(tvEmail.getText().toString());
         users.setMobile(tvMobile.getText().toString());
-        Gson gson= new Gson();
-        Observable<LoginResponse> observable = new KeenbraceRetrofit()
-                .createBaseApi()
-                .login("3","",
-                        "",
-                        gson.toJson(users));
-        _subscriptions.add(observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        hideWaitDialog();
-                        Toast.makeText(UserInfoActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-                        KeenbraceDBHelper.getInstance(UserInfoActivity.this).upateUser(users);
-                        finish();
-                    }
-
-                    @Override
-                    public void onNext(LoginResponse loginResponse) {
-                        if (loginResponse.getResultCode().equals("0")) {
-                            Toast.makeText(UserInfoActivity.this, "更新用户信息成功", Toast.LENGTH_SHORT).show();
-                            KeenbraceDBHelper.getInstance(UserInfoActivity.this).upateUser(users);
-                            finish();
-
-                        } else {
-                            hideWaitDialog();
-                            String msg = loginResponse.getMsg();
-                            if (com.keenbrace.core.utils.StringUtils.isEmpty(msg)) {
-                                msg = "更新用户信息失败";
-                            }
-                            Toast.makeText(UserInfoActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }));
-
-
+        RunResultDBHelper.getInstance(this).upateUser(users);
+        finish();
     }
 
 
@@ -246,28 +227,22 @@ public class UserInfoActivity extends BaseActivity {
             tvHeight.setText(users.getHeight()+"");
             tvWeight.setText(users.getWeight()+"");
             tvName.setText(users.getNickname());
-            if(Constant.user.getSex()==0)
-            tvGender.setText("男");
+            if(Constant.user.getGender()==0)
+            tvGender.setText("male");
             else
-                tvGender.setText("女");
+                tvGender.setText("female");
             if(users.getBirthday()!=null)
             {
 
-                     Date d=new Date();
-                try {
-                    d.setTime(DateUitl.getDateTolong(users.getBirthday()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                year=d.getYear();
-                    month=d.getMonth();
-                    day=d.getDate();
-                tvBirthday.setText(users.getBirthday());
+
+                    year=users.getBirthday().getYear();
+                    month=users.getBirthday().getMonth();
+                    day=users.getBirthday().getDate();
 
             }
-
-            tvEmail.setText(users.getEmail());
-            tvMobile.setText(users.getMobile());
+            tvBirthday.setText(DateUitl.getDatetoString(Constant.user.getBirthday().getTime()));
+            tvEmail.setText(Constant.user.getEmail());
+            tvMobile.setText(Constant.user.getMobile());
 
         }
     }

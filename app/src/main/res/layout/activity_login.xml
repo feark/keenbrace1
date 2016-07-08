@@ -7,16 +7,47 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <include android:id="@+id/toolbar" layout="@layout/toolbar"></include>
+    <RelativeLayout
+        android:id="@+id/rl_left"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="#34C6F0">
+
+        <ImageButton
+            android:id="@+id/ivTitleBtnLeft"
+            android:layout_width="15dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/back_white"
+            android:gravity="center"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/ivTitleName1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:paddingLeft="20.0dip"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="20dp"
         android:background="@mipmap/top"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_above="@+id/btn_visitor"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="86dp">
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -32,7 +63,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:background="#FFFFFF"
             android:ems="10"
-            android:hint="请输入用户名"
+            android:hint="username"
             android:selectAllOnFocus="true"
             android:textColor="@color/selector_text"></EditText>
     </LinearLayout>
@@ -41,10 +72,11 @@
         android:id="@+id/ll_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_name"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@mipmap/below"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_above="@+id/ll_name"
+        android:layout_alignParentLeft="true">
 
         <ImageView
             android:id="@+id/textView1"
@@ -60,38 +92,12 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:background="#FFFFFF"
             android:ems="10"
-            android:hint="请输入密码"
+            android:hint="password"
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
             android:textColor="@color/selector_text"></EditText>
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_login_corners_bg"
-        android:text="登录"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:layout_below="@+id/ll_pwd" />
-
-    <Button
-        android:id="@+id/btn_test"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_login_corners_bg"
-        android:text="下次注册"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        android:layout_below="@+id/btn_login" />
 
     <TextView
         android:id="@+id/btn_forget"
@@ -102,7 +108,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="14dp"
         android:background="@null"
-        android:text="忘记密码?"
+        android:text="forget password?"
         android:textColor="#434343"
         android:textSize="18dp" />
 
@@ -115,8 +121,26 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="17dp"
         android:background="@null"
-        android:text="注册"
+        android:text="sign up"
         android:textColor="#434343"
         android:textSize="18dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/btn_login"
+        android:src="@mipmap/login"
+        android:layout_below="@+id/rl_left"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="198dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/btn_visitor"
+        android:src="@mipmap/visitor"
+        android:layout_below="@+id/btn_login"
+        android:layout_alignStart="@+id/btn_login"
+        android:layout_marginTop="35dp" />
 
 </RelativeLayout>

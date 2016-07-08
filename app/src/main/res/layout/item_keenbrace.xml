@@ -20,7 +20,6 @@
             android:orientation="horizontal"
             android:layout_marginLeft="@dimen/space_5"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_5"
             >
             <CheckBox
                 android:id="@+id/cb_status"
@@ -37,8 +36,7 @@
                  style="@style/wrap_wrap"
                  android:textSize="@dimen/text_size_18"
                  android:textColor="@color/black"
-                 android:padding="@dimen/space_3"
-                 android:text="RunTime "
+                 android:text="运动日期："
                   />
             <TextView
                 android:id="@+id/tv_collection_time"
@@ -53,7 +51,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/space_5"
             android:layout_marginLeft="@dimen/space_7"
             android:layout_marginRight="@dimen/space_7"
             android:background="@color/gray_a1" />
@@ -61,17 +58,17 @@
 
         <RelativeLayout
             style="@style/match_wrap"
-            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginLeft="@dimen/space_20"
             android:layout_marginRight="@dimen/space_20"
             android:layout_marginTop="@dimen/space_10"
-            android:layout_marginBottom="@dimen/space_5"
+            android:layout_marginBottom="@dimen/space_10"
             >
             <TextView
                 android:id="@+id/tv_format_pre"
                 style="@style/wrap_wrap"
                 android:padding="@dimen/space_3"
                 android:textSize="@dimen/text_size_16"
-                android:textColor="@color/black"
+                android:textColor="#7b7b7b"
                 android:text="@string/time_template"
                 />
             <TextView
@@ -80,7 +77,7 @@
                 android:padding="@dimen/space_3"
                 android:layout_toRightOf="@id/tv_format_pre"
                 android:layout_alignBottom="@id/tv_format_pre"
-                android:textSize="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_20"
                 android:textColor="#f19049"
                 android:text="23:52:11"
                 />
@@ -90,7 +87,7 @@
                 android:padding="@dimen/space_3"
                 android:layout_below="@id/tv_format_pre"
                 android:textSize="@dimen/text_size_16"
-                android:textColor="@color/black"
+                android:textColor="#7b7b7b"
                 android:text="@string/bp_template"
                 />
             <TextView
@@ -109,7 +106,7 @@
                 android:padding="@dimen/space_3"
                 android:layout_below="@id/tv_event_pre"
                 android:textSize="@dimen/text_size_16"
-                android:textColor="@color/black"
+                android:textColor="#7b7b7b"
                 android:text="@string/jl_template"
                 />
 
@@ -120,8 +117,8 @@
                 android:layout_toRightOf="@id/tv_status_pre"
                 android:layout_alignBottom="@id/tv_status_pre"
                 android:textSize="@dimen/text_size_18"
-                android:textColor="@color/black"
-                android:text="0"
+                android:textColor="@color/red"
+                android:text="已上传"
                 />
             <TextView
                 android:id="@+id/tv_waring_pre"
@@ -129,7 +126,7 @@
                 android:padding="@dimen/space_3"
                 android:layout_below="@id/tv_status_pre"
                 android:textSize="@dimen/text_size_16"
-                android:textColor="@color/black"
+                android:textColor="#7b7b7b"
                 android:text="Warings"
                 />
 
@@ -137,11 +134,11 @@
                 android:id="@+id/tv_waring"
                 style="@style/wrap_wrap"
                 android:padding="@dimen/space_3"
-                android:layout_toRightOf="@id/tv_waring_pre"
-                android:layout_alignBottom="@id/tv_waring_pre"
+                android:layout_toRightOf="@id/tv_status_pre"
+                android:layout_alignBottom="@id/tv_status_pre"
                 android:textSize="@dimen/text_size_18"
-                android:textColor="@color/black"
-                android:text="0"
+                android:textColor="@color/red"
+                android:text="已上传"
                 />
             <ImageView
                 android:id="@+id/img_upload"
@@ -156,52 +153,25 @@
 
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_edit"
+    <RelativeLayout
+        android:id="@+id/item_right"
         android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:background="#fe9305"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/space_7"
+        android:layout_marginBottom="@dimen/space_7"
+        android:clickable="true"
+        android:background="@color/red"
         >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="null"
-            android:src="@mipmap/icon_upload"
-            android:layout_margin="@dimen/space_5"
-            />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/tvDelete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:textSize="@dimen/text_size_16"
             android:gravity="center"
             android:textColor="@color/white"
-            android:text="上传" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_delete"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/red_corners_bg"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:gravity="center"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="null"
-            android:src="@mipmap/icon_more_delete"
-            android:layout_margin="@dimen/space_5"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_16"
-            android:gravity="center"
-            android:textColor="@color/white"
+            android:background="@null"
             android:text="删除" />
-    </LinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 
+import java.io.File;
 
 
 public class KeenbraceApplication extends Application{
@@ -34,6 +36,13 @@ public class KeenbraceApplication extends Application{
 		super.onCreate();
 		ctx = getApplicationContext();
 		res = ctx.getResources();
+
+		//创建好文件路径
+		File f = new File(Environment.getExternalStorageDirectory()
+				+ File.separator + "keenbrace");
+		if (!f.exists()) {
+			f.mkdir();
+		}
 	}
 	
 	public static synchronized KeenbraceApplication context(){

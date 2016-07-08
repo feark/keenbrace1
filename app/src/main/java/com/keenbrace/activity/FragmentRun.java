@@ -5,18 +5,25 @@ import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.util.DateUitl;
 import com.keenbrace.widget.CircularProgressBar;
+import com.keenbrace.widget.GifView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class FragmentRun extends BaseFragment implements OnClickListener {
+import org.w3c.dom.Text;
+
+public class FragmentRun extends Fragment implements OnClickListener {
 
     TextView tv_factors, tv_sumtimes, tv_steprate, tv_stride, tv_step, tv_speed, tv_distance, tv_calories;
     CircularProgressBar pd_circle1, pd_circle2, pd_circle3;
@@ -24,12 +31,142 @@ public class FragmentRun extends BaseFragment implements OnClickListener {
     private long id = -1;
     float weight = 65;
 
+    ImageView indicate_box;
+
+    //因运动不同而会有不同功能的按钮
+    TextView indicate_message;
+
+    RelativeLayout rl_countdown;
+    TextView restTime;
+    int count_minutes, count_seconds;
+
+    //不同的运动种类显示不同动画
+    GifView gif_anima;
+    int sport_type = 0;
+
+    int delay_times;
+    int wait_times;
+
+    //------------------------------------------------------
+    //运动参数相关
+    Boolean isAnyMove = false;
+    TextView reps_number;
+    //------------------------------------------------------
+
+    RelativeLayout rl_cadence, rl_stride, rl_step, rl_sporttitle;
+    TextView sport_title;
+    TextView train_target;
+    TextView tv_speed_t, tv_distance_t, tv_calories_t;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frame_run, null);
-        pd_circle1 = (CircularProgressBar) view.findViewById(R.id.pd_circle_red);
-        pd_circle2 = (CircularProgressBar) view.findViewById(R.id.pd_circle_yellow);
+        View view = inflater.inflate(R.layout.frame_history, null);
+
+        rl_cadence = (RelativeLayout) view.findViewById(R.id.rl_cadence);
+        rl_stride = (RelativeLayout) view.findViewById(R.id.rl_stride);
+        rl_step = (RelativeLayout) view.findViewById(R.id.rl_step);
+        rl_sporttitle = (RelativeLayout) view.findViewById(R.id.rl_sporttitle);
+        sport_title = (TextView) view.findViewById(R.id.sporttitle);
+        train_target = (TextView) view.findViewById(R.id.train_target);
+        tv_speed_t = (TextView)view.findViewById(R.id.tv_speed_t);
+        tv_distance_t = (TextView) view.findViewById(R.id.tv_distance_t);
+        tv_calories_t = (TextView) view.findViewById(R.id.tv_calories_t);
+
+        //倒计时秒表
+        rl_countdown = (RelativeLayout) view.findViewById(R.id.rl_countdown);
+        restTime = (TextView) view.findViewById(R.id.restTime);
+
+        indicate_message = (TextView) view.findViewById(R.id.indicate_message);
+        indicate_box = (ImageView) view.findViewById(R.id.indicate_box);
+        indicate_box.setOnClickListener(this);
+
+        reps_number = (TextView) view.findViewById(R.id.reps_number);
+
+        //关于如何显示gif ken
+        gif_anima = (GifView) view.findViewById(R.id.gif_animation);
+        sport_type = getArguments().getInt("sport_type");
+
+        //等待10秒 如果用户还没动作 就说点话提示他开始运动 ken
+        wait_times = 10;
+        handler.sendEmptyMessageDelayed(2, 1000);
+
+        indicate_message.setText(R.string.tx_indicate_tap);
+
+        //不同运动显示不同的GIF和提示框信息
+        switch(sport_type) {
+            case UtilConstants.sport_running:
+                gif_anima.setMovieResource(R.raw.stand_boy);
+
+                rl_cadence.setVisibility(View.VISIBLE);
+                rl_stride.setVisibility(View.VISIBLE);
+                rl_step.setVisibility(View.VISIBLE);
+                rl_sporttitle.setVisibility(View.GONE);
+                break;
+
+            case UtilConstants.sport_dumbbell:
+                //beginning animation
+                gif_anima.setMovieResource(R.raw.dumbbellcount);
+                gif_anima.setPaused(true);
+
+                rl_cadence.setVisibility(View.GONE);
+                rl_stride.setVisibility(View.GONE);
+                rl_step.setVisibility(View.GONE);
+                rl_sporttitle.setVisibility(View.VISIBLE);
+
+                sport_title.setText("Dumb bell");
+                train_target.setText("Biceps");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+                break;
+
+            case UtilConstants.sport_squat:
+                gif_anima.setMovieResource(R.raw.squat);
+                gif_anima.setPaused(true);
+
+                sport_title.setText("Squat");
+                train_target.setText("Quadriceps");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+                break;
+
+            case UtilConstants.sport_plank:
+                gif_anima.setMovieResource(R.raw.stand_boy);
+                //gif_anima.setMovieResource(R.raw.plank);
+                //gif_anima.setPaused(true);
+
+                sport_title.setText("Plank");
+                train_target.setText("Core");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+                break;
+
+            case UtilConstants.sport_pullup:
+                sport_title.setText("Pull up");
+                train_target.setText("Lats");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+
+                gif_anima.setMovieResource(R.raw.pull_up);
+                gif_anima.setPaused(true);
+
+                break;
+
+            default:
+                break;
+        }
+
+
+        //pd_circle1 = (CircularProgressBar) view.findViewById(R.id.pd_circle_red);
+        //pd_circle2 = (CircularProgressBar) view.findViewById(R.id.pd_circle_yellow);
         pd_circle3 = (CircularProgressBar) view.findViewById(R.id.pd_circle_blue);
         tv_factors = (TextView) view.findViewById(R.id.tv_factors);
         tv_sumtimes = (TextView) view.findViewById(R.id.tv_sumtimes);
@@ -40,10 +177,10 @@ public class FragmentRun extends BaseFragment implements OnClickListener {
         tv_distance = (TextView) view.findViewById(R.id.tv_distance);
         tv_calories = (TextView) view.findViewById(R.id.tv_calories);
         rl_time = (RelativeLayout) view.findViewById(R.id.rl_time);
-        pd_circle1.setCircleWidth(30);
-        pd_circle1.setPrimaryColor(Color.rgb(252, 128, 48));
-        pd_circle2.setCircleWidth(30);
-        pd_circle2.setPrimaryColor(Color.rgb(252, 248, 0));
+        //pd_circle1.setCircleWidth(30);
+        //pd_circle1.setPrimaryColor(Color.rgb(252, 128, 48));
+        //pd_circle2.setCircleWidth(30);
+        //pd_circle2.setPrimaryColor(Color.rgb(252, 248, 0));
         pd_circle3.setCircleWidth(30);
         rl_time.setOnClickListener(this);
         return view;
@@ -51,11 +188,12 @@ public class FragmentRun extends BaseFragment implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.rl_time && id != -1) {
-            Intent intent = new Intent();
-            intent.putExtra("id", id);
-            intent.setClass(FragmentRun.this.getActivity(), MessageActivity.class);
-            startActivity(intent);
+        switch (v.getId())
+        {
+            //点击indicate box去查看演示动作
+            case R.id.indicate_box:
+                updateAnimation(0);
+                break;
         }
 
     }
@@ -103,20 +241,205 @@ public class FragmentRun extends BaseFragment implements OnClickListener {
 
         tv_distance.setText("" + DateUitl.formatToM(distance) + ss);
         tv_calories.setText("" + DateUitl.formatToM(calories / 1000.0f) + kk);
+    }
 
+    //刷新参数框
+    //tv_speed to muscle used
+    //tv_distance to duration
+    //tv_calories to stability
+    public void updateParaBox(int reps, int muscle, int duration, int stability)
+    {
+        reps_number.setText(""+reps);
+        tv_speed.setText(""+muscle+" %");
+        tv_distance.setText(""+duration+" sec");
+        tv_calories.setText(""+stability+" %");
+    }
+
+    //gif动画放在这个位置update ken
+    //有动作才会进到这个函数 也同时更新indicate_message ken
+    public void updateAnimation(int anino){
+        isAnyMove = true;
+
+        switch(sport_type) {
+            case UtilConstants.sport_running:
+                if(anino == 0)
+                {
+                    wait_times = 70;
+                    handler.sendEmptyMessageDelayed(2, 100);
+
+                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
+                    //indicate_message.setText(R.string.tx_increase_cadence);
+                }
+
+                if(anino == 1)
+                {
+                    gif_anima.setMovieResource(R.raw.male_big_boy);
+                    indicate_message.setText(R.string.tx_increase_cadence);
+                }
+
+                if(anino == 2)
+                {
+                    gif_anima.setMovieResource(R.raw.big_stride_boy);
+                    indicate_message.setText(R.string.tx_decrease_stride);
+                }
+
+                if(anino == 3)
+                {
+                    gif_anima.setMovieResource(R.raw.jiaozhang);
+                    indicate_message.setText(R.string.tx_land_softer);
+                }
+
+                if(anino == 4)
+                {
+                    gif_anima.setMovieResource(R.raw.zzwlgd_big_boy);
+                    indicate_message.setText(R.string.tx_lower_gravity);
+                }
+
+                if(anino == 5)
+                {
+                    gif_anima.setMovieResource(R.raw.zzwlgd_smaill_boy);
+                    indicate_message.setText(R.string.tx_enhance_stability);
+                }
+
+                if(anino == 6)
+                {
+                    gif_anima.setMovieResource(R.raw.jiaozhi);
+                    indicate_message.setText(R.string.tx_lift_faster);
+                }
+
+                if(anino == 7)
+                {
+                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
+                    indicate_message.setText(R.string.tx_flex_knee);
+                }
+
+                if(anino == 8)
+                {
+                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
+                    indicate_message.setText(R.string.tx_land_underneath);
+                }
+
+                if(anino == 9)
+                {
+                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
+                    indicate_message.setText(R.string.tx_bend_knee_n_elbow);
+                }
+
+                if(anino == 10)
+                {
+                    gif_anima.setMovieResource(R.raw.normalrun);
+                    indicate_message.setText(R.string.tx_bend_knee_n_elbow);
+                }
+
+                if(anino == 11)
+                {
+                    gif_anima.setMovieResource(R.raw.jrpl_boy);
+                    indicate_message.setText(R.string.tx_take_rest);
+                }
+
+                if(anino == 12)
+                {
+                    gif_anima.setMovieResource(R.raw.stand_boy);
+                }
+                break;
+
+            case UtilConstants.sport_dumbbell:
+                delay_times = 28;
+                handler.sendEmptyMessageDelayed(1, 100);
+                break;
+
+            case UtilConstants.sport_squat:
+                delay_times = 25;
+                handler.sendEmptyMessageDelayed(1, 100);
+                break;
+
+            case UtilConstants.sport_plank:
+                gif_anima.setMovieResource(R.raw.plank);
+                break;
+
+            case UtilConstants.sport_pullup:
+                delay_times = 36;
+                handler.sendEmptyMessageDelayed(1, 100);
+                break;
+
+            default:
+                break;
+        }
     }
 
     public void updateTime(long mins, int blue, int yellow, int red) {
-        tv_sumtimes.setText(DateUitl.getDateFormat4(mins) + " mins");
+        //tv_sumtimes.setText(DateUitl.getDateFormat4(mins * 1000) + " mins");
         pd_circle3.setMax((int) mins);
         pd_circle3.setProgress(blue);
 
-        pd_circle2.setMax((int) mins);
-        pd_circle2.setProgress(yellow);
+        //pd_circle2.setMax((int) mins);
+        //pd_circle2.setProgress(yellow);
 
-        pd_circle1.setMax((int) mins);
-        pd_circle1.setProgress(red);
+        //pd_circle1.setMax((int) mins);
+        //pd_circle1.setProgress(red);
     }
 
+    //开始倒计时
+    public void CountDownBegin()
+    {
+        updateTime(60, count_seconds, 0, 0);
+
+        //隐藏动画 显示倒计时元素
+        rl_countdown.setVisibility(View.VISIBLE);
+        pd_circle3.setVisibility(View.VISIBLE);
+
+        gif_anima.setVisibility(View.GONE);
+    }
+
+    //倒计时中刷新界面
+    public void DuringCountDown(int minutes, int seconds)
+    {
+        restTime.setText(String.format("%02d:%02d", minutes, seconds));
+        updateTime(60, seconds, 0, 0);
+    }
+
+    //倒计时结束
+    public void CountDownEnd()
+    {
+        //隐藏动画 显示倒计时元素
+        rl_countdown.setVisibility(View.GONE);
+        pd_circle3.setVisibility(View.GONE);
+
+        gif_anima.setVisibility(View.VISIBLE);
+    }
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    //延时的方法 ken
+                    if (delay_times > 0) {
+                        delay_times--;
+                        gif_anima.setPaused(false);
+                        handler.sendEmptyMessageDelayed(1, 100);
+                    }
+                    else
+                    {
+                        gif_anima.setPaused(true);
+                    }
+                    break;
+
+                case 2:
+                    if (wait_times > 0) {
+                        wait_times--;
+                        handler.sendEmptyMessageDelayed(2, 100);
+                    }
+                    else
+                    {
+                        if(sport_type == UtilConstants.sport_running)
+                        {
+                            gif_anima.setMovieResource(R.raw.stand_boy);
+                        }
+                    }
+                    break;
+
+            }
+        }
+    };
 
 }
