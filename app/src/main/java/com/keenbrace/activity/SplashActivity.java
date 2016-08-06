@@ -9,9 +9,10 @@ import com.keenbrace.AppContext;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.RunResultDBHelper;
+import com.keenbrace.bean.UserDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.utils.PreferenceHelper;
+import com.keenbrace.greendao.HistoryRecord;
 import com.keenbrace.greendao.User;
 
 import butterknife.Bind;
@@ -41,12 +42,21 @@ public class SplashActivity extends BaseActivity {
 
                 }
                 if(PreferenceHelper.readBoolean(AppContext.getInstance(),
-                        UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, false)){
-                  String account=  PreferenceHelper.readString(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, "");
-                    User user= RunResultDBHelper.getInstance(SplashActivity.this).queryUserByLoginName(account);
+                        UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, false)){ //已经登录过
+                    //在这里查询是否已经登录过 并按登录名 查找出数据库中的user数据 ken
+                    String account=  PreferenceHelper.readString(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, "");
+
+                    User user= UserDBHelper.getInstance(SplashActivity.this).queryUserByLoginName(account);
+                    //在这个位置把数据库新建的user赋给全局变量
                     Constant.user=user;
+
+                    //已经登录账号的历史记录
+                    HistoryRecord historyRecord = UserDBHelper.getInstance(SplashActivity.this).queryHistoryByLoginName(account);
+                    Constant.historyRecord = historyRecord;
+
                     readyGoThenKill(MainActivity.class);
                 }else{
+                    //未登录过 去登录
                     readyGoThenKill(LoginActivity.class);
                 }
             }

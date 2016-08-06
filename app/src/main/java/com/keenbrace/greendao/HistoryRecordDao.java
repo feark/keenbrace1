@@ -24,37 +24,45 @@ public class HistoryRecordDao extends AbstractDao<HistoryRecord, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Triceps = new Property(1, Long.class, "triceps", false, "TRICEPS");
-        public final static Property Biceps = new Property(2, Long.class, "biceps", false, "BICEPS");
-        public final static Property Shoulder = new Property(3, Long.class, "shoulder", false, "SHOULDER");
-        public final static Property Forearm = new Property(4, Long.class, "forearm", false, "FOREARM");
-        public final static Property Chest = new Property(5, Long.class, "chest", false, "CHEST");
-        public final static Property Back = new Property(6, Long.class, "back", false, "BACK");
-        public final static Property Abs = new Property(7, Long.class, "abs", false, "ABS");
-        public final static Property Glutes = new Property(8, Long.class, "glutes", false, "GLUTES");
-        public final static Property Upperleg = new Property(9, Long.class, "upperleg", false, "UPPERLEG");
-        public final static Property Lowerleg = new Property(10, Long.class, "lowerleg", false, "LOWERLEG");
-        public final static Property Cardio = new Property(11, Long.class, "cardio", false, "CARDIO");
-        public final static Property TricepsReps = new Property(12, Long.class, "tricepsReps", false, "TRICEPS_REPS");
-        public final static Property BicepsReps = new Property(13, Long.class, "bicepsReps", false, "BICEPS_REPS");
-        public final static Property ShoulderReps = new Property(14, Long.class, "shoulderReps", false, "SHOULDER_REPS");
-        public final static Property ForearmReps = new Property(15, Long.class, "forearmReps", false, "FOREARM_REPS");
-        public final static Property ChestReps = new Property(16, Long.class, "chestReps", false, "CHEST_REPS");
-        public final static Property BackReps = new Property(17, Long.class, "backReps", false, "BACK_REPS");
-        public final static Property AbsReps = new Property(18, Long.class, "absReps", false, "ABS_REPS");
-        public final static Property GlutesReps = new Property(19, Long.class, "glutesReps", false, "GLUTES_REPS");
-        public final static Property UpperlegReps = new Property(20, Long.class, "upperlegReps", false, "UPPERLEG_REPS");
-        public final static Property LowerlegReps = new Property(21, Long.class, "lowerlegReps", false, "LOWERLEG_REPS");
-        public final static Property TotalWorkout = new Property(22, Long.class, "totalWorkout", false, "TOTAL_WORKOUT");
-        public final static Property TotalDistance = new Property(23, Long.class, "totalDistance", false, "TOTAL_DISTANCE");
-        public final static Property AverSpeed = new Property(24, Integer.class, "averSpeed", false, "AVER_SPEED");
-        public final static Property TotalCalorie = new Property(25, Long.class, "totalCalorie", false, "TOTAL_CALORIE");
-        public final static Property TotalTime = new Property(26, Long.class, "totalTime", false, "TOTAL_TIME");
-        public final static Property RM = new Property(27, Integer.class, "RM", false, "RM");
-        public final static Property LongestDistance = new Property(28, Integer.class, "longestDistance", false, "LONGEST_DISTANCE");
-        public final static Property LongestTime = new Property(29, Long.class, "longestTime", false, "LONGEST_TIME");
-        public final static Property FastestSpeed = new Property(30, Integer.class, "fastestSpeed", false, "FASTEST_SPEED");
-        public final static Property MostCalorie = new Property(31, Long.class, "mostCalorie", false, "MOST_CALORIE");
+        public final static Property LoginName = new Property(1, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property Triceps = new Property(2, Long.class, "triceps", false, "TRICEPS");
+        public final static Property Biceps = new Property(3, Long.class, "biceps", false, "BICEPS");
+        public final static Property Shoulder = new Property(4, Long.class, "shoulder", false, "SHOULDER");
+        public final static Property Forearm = new Property(5, Long.class, "forearm", false, "FOREARM");
+        public final static Property Chest = new Property(6, Long.class, "chest", false, "CHEST");
+        public final static Property Back = new Property(7, Long.class, "back", false, "BACK");
+        public final static Property Abs = new Property(8, Long.class, "abs", false, "ABS");
+        public final static Property Glutes = new Property(9, Long.class, "glutes", false, "GLUTES");
+        public final static Property Upperleg = new Property(10, Long.class, "upperleg", false, "UPPERLEG");
+        public final static Property Lowerleg = new Property(11, Long.class, "lowerleg", false, "LOWERLEG");
+        public final static Property Cardio = new Property(12, Long.class, "cardio", false, "CARDIO");
+        public final static Property TricepsReps = new Property(13, Long.class, "tricepsReps", false, "TRICEPS_REPS");
+        public final static Property BicepsReps = new Property(14, Long.class, "bicepsReps", false, "BICEPS_REPS");
+        public final static Property ShoulderReps = new Property(15, Long.class, "shoulderReps", false, "SHOULDER_REPS");
+        public final static Property ForearmReps = new Property(16, Long.class, "forearmReps", false, "FOREARM_REPS");
+        public final static Property ChestReps = new Property(17, Long.class, "chestReps", false, "CHEST_REPS");
+        public final static Property BackReps = new Property(18, Long.class, "backReps", false, "BACK_REPS");
+        public final static Property AbsReps = new Property(19, Long.class, "absReps", false, "ABS_REPS");
+        public final static Property GlutesReps = new Property(20, Long.class, "glutesReps", false, "GLUTES_REPS");
+        public final static Property UpperlegReps = new Property(21, Long.class, "upperlegReps", false, "UPPERLEG_REPS");
+        public final static Property LowerlegReps = new Property(22, Long.class, "lowerlegReps", false, "LOWERLEG_REPS");
+        public final static Property TotalWorkout = new Property(23, Long.class, "totalWorkout", false, "TOTAL_WORKOUT");
+        public final static Property TotalDistance = new Property(24, Long.class, "totalDistance", false, "TOTAL_DISTANCE");
+        public final static Property AverSpeed = new Property(25, Integer.class, "averSpeed", false, "AVER_SPEED");
+        public final static Property TotalCalorie = new Property(26, Long.class, "totalCalorie", false, "TOTAL_CALORIE");
+        public final static Property TotalTime = new Property(27, Long.class, "totalTime", false, "TOTAL_TIME");
+        public final static Property RM = new Property(28, Integer.class, "RM", false, "RM");
+        public final static Property LongestDistance = new Property(29, Integer.class, "longestDistance", false, "LONGEST_DISTANCE");
+        public final static Property LongestTime = new Property(30, Long.class, "longestTime", false, "LONGEST_TIME");
+        public final static Property FastestSpeed = new Property(31, Integer.class, "fastestSpeed", false, "FASTEST_SPEED");
+        public final static Property MostCalorie = new Property(32, Long.class, "mostCalorie", false, "MOST_CALORIE");
+        public final static Property MondayTrain = new Property(33, Boolean.class, "mondayTrain", false, "MONDAY_TRAIN");
+        public final static Property TuesdayTrain = new Property(34, Boolean.class, "tuesdayTrain", false, "TUESDAY_TRAIN");
+        public final static Property WednesdayTrain = new Property(35, Boolean.class, "wednesdayTrain", false, "WEDNESDAY_TRAIN");
+        public final static Property ThursdayTrain = new Property(36, Boolean.class, "thursdayTrain", false, "THURSDAY_TRAIN");
+        public final static Property FridayTrain = new Property(37, Boolean.class, "fridayTrain", false, "FRIDAY_TRAIN");
+        public final static Property SaturdayTrain = new Property(38, Boolean.class, "saturdayTrain", false, "SATURDAY_TRAIN");
+        public final static Property SundayTrain = new Property(39, Boolean.class, "sundayTrain", false, "SUNDAY_TRAIN");
     };
 
 
@@ -71,37 +79,45 @@ public class HistoryRecordDao extends AbstractDao<HistoryRecord, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"HISTORY_RECORD\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"TRICEPS\" INTEGER," + // 1: triceps
-                "\"BICEPS\" INTEGER," + // 2: biceps
-                "\"SHOULDER\" INTEGER," + // 3: shoulder
-                "\"FOREARM\" INTEGER," + // 4: forearm
-                "\"CHEST\" INTEGER," + // 5: chest
-                "\"BACK\" INTEGER," + // 6: back
-                "\"ABS\" INTEGER," + // 7: abs
-                "\"GLUTES\" INTEGER," + // 8: glutes
-                "\"UPPERLEG\" INTEGER," + // 9: upperleg
-                "\"LOWERLEG\" INTEGER," + // 10: lowerleg
-                "\"CARDIO\" INTEGER," + // 11: cardio
-                "\"TRICEPS_REPS\" INTEGER," + // 12: tricepsReps
-                "\"BICEPS_REPS\" INTEGER," + // 13: bicepsReps
-                "\"SHOULDER_REPS\" INTEGER," + // 14: shoulderReps
-                "\"FOREARM_REPS\" INTEGER," + // 15: forearmReps
-                "\"CHEST_REPS\" INTEGER," + // 16: chestReps
-                "\"BACK_REPS\" INTEGER," + // 17: backReps
-                "\"ABS_REPS\" INTEGER," + // 18: absReps
-                "\"GLUTES_REPS\" INTEGER," + // 19: glutesReps
-                "\"UPPERLEG_REPS\" INTEGER," + // 20: upperlegReps
-                "\"LOWERLEG_REPS\" INTEGER," + // 21: lowerlegReps
-                "\"TOTAL_WORKOUT\" INTEGER," + // 22: totalWorkout
-                "\"TOTAL_DISTANCE\" INTEGER," + // 23: totalDistance
-                "\"AVER_SPEED\" INTEGER," + // 24: averSpeed
-                "\"TOTAL_CALORIE\" INTEGER," + // 25: totalCalorie
-                "\"TOTAL_TIME\" INTEGER," + // 26: totalTime
-                "\"RM\" INTEGER," + // 27: RM
-                "\"LONGEST_DISTANCE\" INTEGER," + // 28: longestDistance
-                "\"LONGEST_TIME\" INTEGER," + // 29: longestTime
-                "\"FASTEST_SPEED\" INTEGER," + // 30: fastestSpeed
-                "\"MOST_CALORIE\" INTEGER);"); // 31: mostCalorie
+                "\"LOGIN_NAME\" TEXT UNIQUE ," + // 1: loginName
+                "\"TRICEPS\" INTEGER," + // 2: triceps
+                "\"BICEPS\" INTEGER," + // 3: biceps
+                "\"SHOULDER\" INTEGER," + // 4: shoulder
+                "\"FOREARM\" INTEGER," + // 5: forearm
+                "\"CHEST\" INTEGER," + // 6: chest
+                "\"BACK\" INTEGER," + // 7: back
+                "\"ABS\" INTEGER," + // 8: abs
+                "\"GLUTES\" INTEGER," + // 9: glutes
+                "\"UPPERLEG\" INTEGER," + // 10: upperleg
+                "\"LOWERLEG\" INTEGER," + // 11: lowerleg
+                "\"CARDIO\" INTEGER," + // 12: cardio
+                "\"TRICEPS_REPS\" INTEGER," + // 13: tricepsReps
+                "\"BICEPS_REPS\" INTEGER," + // 14: bicepsReps
+                "\"SHOULDER_REPS\" INTEGER," + // 15: shoulderReps
+                "\"FOREARM_REPS\" INTEGER," + // 16: forearmReps
+                "\"CHEST_REPS\" INTEGER," + // 17: chestReps
+                "\"BACK_REPS\" INTEGER," + // 18: backReps
+                "\"ABS_REPS\" INTEGER," + // 19: absReps
+                "\"GLUTES_REPS\" INTEGER," + // 20: glutesReps
+                "\"UPPERLEG_REPS\" INTEGER," + // 21: upperlegReps
+                "\"LOWERLEG_REPS\" INTEGER," + // 22: lowerlegReps
+                "\"TOTAL_WORKOUT\" INTEGER," + // 23: totalWorkout
+                "\"TOTAL_DISTANCE\" INTEGER," + // 24: totalDistance
+                "\"AVER_SPEED\" INTEGER," + // 25: averSpeed
+                "\"TOTAL_CALORIE\" INTEGER," + // 26: totalCalorie
+                "\"TOTAL_TIME\" INTEGER," + // 27: totalTime
+                "\"RM\" INTEGER," + // 28: RM
+                "\"LONGEST_DISTANCE\" INTEGER," + // 29: longestDistance
+                "\"LONGEST_TIME\" INTEGER," + // 30: longestTime
+                "\"FASTEST_SPEED\" INTEGER," + // 31: fastestSpeed
+                "\"MOST_CALORIE\" INTEGER," + // 32: mostCalorie
+                "\"MONDAY_TRAIN\" INTEGER," + // 33: mondayTrain
+                "\"TUESDAY_TRAIN\" INTEGER," + // 34: tuesdayTrain
+                "\"WEDNESDAY_TRAIN\" INTEGER," + // 35: wednesdayTrain
+                "\"THURSDAY_TRAIN\" INTEGER," + // 36: thursdayTrain
+                "\"FRIDAY_TRAIN\" INTEGER," + // 37: fridayTrain
+                "\"SATURDAY_TRAIN\" INTEGER," + // 38: saturdayTrain
+                "\"SUNDAY_TRAIN\" INTEGER);"); // 39: sundayTrain
     }
 
     /** Drops the underlying database table. */
@@ -120,159 +136,199 @@ public class HistoryRecordDao extends AbstractDao<HistoryRecord, Long> {
             stmt.bindLong(1, id);
         }
  
+        String loginName = entity.getLoginName();
+        if (loginName != null) {
+            stmt.bindString(2, loginName);
+        }
+ 
         Long triceps = entity.getTriceps();
         if (triceps != null) {
-            stmt.bindLong(2, triceps);
+            stmt.bindLong(3, triceps);
         }
  
         Long biceps = entity.getBiceps();
         if (biceps != null) {
-            stmt.bindLong(3, biceps);
+            stmt.bindLong(4, biceps);
         }
  
         Long shoulder = entity.getShoulder();
         if (shoulder != null) {
-            stmt.bindLong(4, shoulder);
+            stmt.bindLong(5, shoulder);
         }
  
         Long forearm = entity.getForearm();
         if (forearm != null) {
-            stmt.bindLong(5, forearm);
+            stmt.bindLong(6, forearm);
         }
  
         Long chest = entity.getChest();
         if (chest != null) {
-            stmt.bindLong(6, chest);
+            stmt.bindLong(7, chest);
         }
  
         Long back = entity.getBack();
         if (back != null) {
-            stmt.bindLong(7, back);
+            stmt.bindLong(8, back);
         }
  
         Long abs = entity.getAbs();
         if (abs != null) {
-            stmt.bindLong(8, abs);
+            stmt.bindLong(9, abs);
         }
  
         Long glutes = entity.getGlutes();
         if (glutes != null) {
-            stmt.bindLong(9, glutes);
+            stmt.bindLong(10, glutes);
         }
  
         Long upperleg = entity.getUpperleg();
         if (upperleg != null) {
-            stmt.bindLong(10, upperleg);
+            stmt.bindLong(11, upperleg);
         }
  
         Long lowerleg = entity.getLowerleg();
         if (lowerleg != null) {
-            stmt.bindLong(11, lowerleg);
+            stmt.bindLong(12, lowerleg);
         }
  
         Long cardio = entity.getCardio();
         if (cardio != null) {
-            stmt.bindLong(12, cardio);
+            stmt.bindLong(13, cardio);
         }
  
         Long tricepsReps = entity.getTricepsReps();
         if (tricepsReps != null) {
-            stmt.bindLong(13, tricepsReps);
+            stmt.bindLong(14, tricepsReps);
         }
  
         Long bicepsReps = entity.getBicepsReps();
         if (bicepsReps != null) {
-            stmt.bindLong(14, bicepsReps);
+            stmt.bindLong(15, bicepsReps);
         }
  
         Long shoulderReps = entity.getShoulderReps();
         if (shoulderReps != null) {
-            stmt.bindLong(15, shoulderReps);
+            stmt.bindLong(16, shoulderReps);
         }
  
         Long forearmReps = entity.getForearmReps();
         if (forearmReps != null) {
-            stmt.bindLong(16, forearmReps);
+            stmt.bindLong(17, forearmReps);
         }
  
         Long chestReps = entity.getChestReps();
         if (chestReps != null) {
-            stmt.bindLong(17, chestReps);
+            stmt.bindLong(18, chestReps);
         }
  
         Long backReps = entity.getBackReps();
         if (backReps != null) {
-            stmt.bindLong(18, backReps);
+            stmt.bindLong(19, backReps);
         }
  
         Long absReps = entity.getAbsReps();
         if (absReps != null) {
-            stmt.bindLong(19, absReps);
+            stmt.bindLong(20, absReps);
         }
  
         Long glutesReps = entity.getGlutesReps();
         if (glutesReps != null) {
-            stmt.bindLong(20, glutesReps);
+            stmt.bindLong(21, glutesReps);
         }
  
         Long upperlegReps = entity.getUpperlegReps();
         if (upperlegReps != null) {
-            stmt.bindLong(21, upperlegReps);
+            stmt.bindLong(22, upperlegReps);
         }
  
         Long lowerlegReps = entity.getLowerlegReps();
         if (lowerlegReps != null) {
-            stmt.bindLong(22, lowerlegReps);
+            stmt.bindLong(23, lowerlegReps);
         }
  
         Long totalWorkout = entity.getTotalWorkout();
         if (totalWorkout != null) {
-            stmt.bindLong(23, totalWorkout);
+            stmt.bindLong(24, totalWorkout);
         }
  
         Long totalDistance = entity.getTotalDistance();
         if (totalDistance != null) {
-            stmt.bindLong(24, totalDistance);
+            stmt.bindLong(25, totalDistance);
         }
  
         Integer averSpeed = entity.getAverSpeed();
         if (averSpeed != null) {
-            stmt.bindLong(25, averSpeed);
+            stmt.bindLong(26, averSpeed);
         }
  
         Long totalCalorie = entity.getTotalCalorie();
         if (totalCalorie != null) {
-            stmt.bindLong(26, totalCalorie);
+            stmt.bindLong(27, totalCalorie);
         }
  
         Long totalTime = entity.getTotalTime();
         if (totalTime != null) {
-            stmt.bindLong(27, totalTime);
+            stmt.bindLong(28, totalTime);
         }
  
         Integer RM = entity.getRM();
         if (RM != null) {
-            stmt.bindLong(28, RM);
+            stmt.bindLong(29, RM);
         }
  
         Integer longestDistance = entity.getLongestDistance();
         if (longestDistance != null) {
-            stmt.bindLong(29, longestDistance);
+            stmt.bindLong(30, longestDistance);
         }
  
         Long longestTime = entity.getLongestTime();
         if (longestTime != null) {
-            stmt.bindLong(30, longestTime);
+            stmt.bindLong(31, longestTime);
         }
  
         Integer fastestSpeed = entity.getFastestSpeed();
         if (fastestSpeed != null) {
-            stmt.bindLong(31, fastestSpeed);
+            stmt.bindLong(32, fastestSpeed);
         }
  
         Long mostCalorie = entity.getMostCalorie();
         if (mostCalorie != null) {
-            stmt.bindLong(32, mostCalorie);
+            stmt.bindLong(33, mostCalorie);
+        }
+ 
+        Boolean mondayTrain = entity.getMondayTrain();
+        if (mondayTrain != null) {
+            stmt.bindLong(34, mondayTrain ? 1L: 0L);
+        }
+ 
+        Boolean tuesdayTrain = entity.getTuesdayTrain();
+        if (tuesdayTrain != null) {
+            stmt.bindLong(35, tuesdayTrain ? 1L: 0L);
+        }
+ 
+        Boolean wednesdayTrain = entity.getWednesdayTrain();
+        if (wednesdayTrain != null) {
+            stmt.bindLong(36, wednesdayTrain ? 1L: 0L);
+        }
+ 
+        Boolean thursdayTrain = entity.getThursdayTrain();
+        if (thursdayTrain != null) {
+            stmt.bindLong(37, thursdayTrain ? 1L: 0L);
+        }
+ 
+        Boolean fridayTrain = entity.getFridayTrain();
+        if (fridayTrain != null) {
+            stmt.bindLong(38, fridayTrain ? 1L: 0L);
+        }
+ 
+        Boolean saturdayTrain = entity.getSaturdayTrain();
+        if (saturdayTrain != null) {
+            stmt.bindLong(39, saturdayTrain ? 1L: 0L);
+        }
+ 
+        Boolean sundayTrain = entity.getSundayTrain();
+        if (sundayTrain != null) {
+            stmt.bindLong(40, sundayTrain ? 1L: 0L);
         }
     }
 
@@ -287,37 +343,45 @@ public class HistoryRecordDao extends AbstractDao<HistoryRecord, Long> {
     public HistoryRecord readEntity(Cursor cursor, int offset) {
         HistoryRecord entity = new HistoryRecord( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // triceps
-            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // biceps
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // shoulder
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // forearm
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // chest
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // back
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // abs
-            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // glutes
-            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // upperleg
-            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // lowerleg
-            cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11), // cardio
-            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // tricepsReps
-            cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13), // bicepsReps
-            cursor.isNull(offset + 14) ? null : cursor.getLong(offset + 14), // shoulderReps
-            cursor.isNull(offset + 15) ? null : cursor.getLong(offset + 15), // forearmReps
-            cursor.isNull(offset + 16) ? null : cursor.getLong(offset + 16), // chestReps
-            cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17), // backReps
-            cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // absReps
-            cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19), // glutesReps
-            cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20), // upperlegReps
-            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // lowerlegReps
-            cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22), // totalWorkout
-            cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23), // totalDistance
-            cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24), // averSpeed
-            cursor.isNull(offset + 25) ? null : cursor.getLong(offset + 25), // totalCalorie
-            cursor.isNull(offset + 26) ? null : cursor.getLong(offset + 26), // totalTime
-            cursor.isNull(offset + 27) ? null : cursor.getInt(offset + 27), // RM
-            cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28), // longestDistance
-            cursor.isNull(offset + 29) ? null : cursor.getLong(offset + 29), // longestTime
-            cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30), // fastestSpeed
-            cursor.isNull(offset + 31) ? null : cursor.getLong(offset + 31) // mostCalorie
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // loginName
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // triceps
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // biceps
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // shoulder
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // forearm
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // chest
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // back
+            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // abs
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // glutes
+            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // upperleg
+            cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11), // lowerleg
+            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // cardio
+            cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13), // tricepsReps
+            cursor.isNull(offset + 14) ? null : cursor.getLong(offset + 14), // bicepsReps
+            cursor.isNull(offset + 15) ? null : cursor.getLong(offset + 15), // shoulderReps
+            cursor.isNull(offset + 16) ? null : cursor.getLong(offset + 16), // forearmReps
+            cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17), // chestReps
+            cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // backReps
+            cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19), // absReps
+            cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20), // glutesReps
+            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // upperlegReps
+            cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22), // lowerlegReps
+            cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23), // totalWorkout
+            cursor.isNull(offset + 24) ? null : cursor.getLong(offset + 24), // totalDistance
+            cursor.isNull(offset + 25) ? null : cursor.getInt(offset + 25), // averSpeed
+            cursor.isNull(offset + 26) ? null : cursor.getLong(offset + 26), // totalCalorie
+            cursor.isNull(offset + 27) ? null : cursor.getLong(offset + 27), // totalTime
+            cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28), // RM
+            cursor.isNull(offset + 29) ? null : cursor.getInt(offset + 29), // longestDistance
+            cursor.isNull(offset + 30) ? null : cursor.getLong(offset + 30), // longestTime
+            cursor.isNull(offset + 31) ? null : cursor.getInt(offset + 31), // fastestSpeed
+            cursor.isNull(offset + 32) ? null : cursor.getLong(offset + 32), // mostCalorie
+            cursor.isNull(offset + 33) ? null : cursor.getShort(offset + 33) != 0, // mondayTrain
+            cursor.isNull(offset + 34) ? null : cursor.getShort(offset + 34) != 0, // tuesdayTrain
+            cursor.isNull(offset + 35) ? null : cursor.getShort(offset + 35) != 0, // wednesdayTrain
+            cursor.isNull(offset + 36) ? null : cursor.getShort(offset + 36) != 0, // thursdayTrain
+            cursor.isNull(offset + 37) ? null : cursor.getShort(offset + 37) != 0, // fridayTrain
+            cursor.isNull(offset + 38) ? null : cursor.getShort(offset + 38) != 0, // saturdayTrain
+            cursor.isNull(offset + 39) ? null : cursor.getShort(offset + 39) != 0 // sundayTrain
         );
         return entity;
     }
@@ -326,37 +390,45 @@ public class HistoryRecordDao extends AbstractDao<HistoryRecord, Long> {
     @Override
     public void readEntity(Cursor cursor, HistoryRecord entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setTriceps(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setBiceps(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
-        entity.setShoulder(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setForearm(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setChest(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
-        entity.setBack(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
-        entity.setAbs(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
-        entity.setGlutes(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
-        entity.setUpperleg(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
-        entity.setLowerleg(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
-        entity.setCardio(cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11));
-        entity.setTricepsReps(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
-        entity.setBicepsReps(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
-        entity.setShoulderReps(cursor.isNull(offset + 14) ? null : cursor.getLong(offset + 14));
-        entity.setForearmReps(cursor.isNull(offset + 15) ? null : cursor.getLong(offset + 15));
-        entity.setChestReps(cursor.isNull(offset + 16) ? null : cursor.getLong(offset + 16));
-        entity.setBackReps(cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17));
-        entity.setAbsReps(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
-        entity.setGlutesReps(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
-        entity.setUpperlegReps(cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20));
-        entity.setLowerlegReps(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
-        entity.setTotalWorkout(cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22));
-        entity.setTotalDistance(cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23));
-        entity.setAverSpeed(cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24));
-        entity.setTotalCalorie(cursor.isNull(offset + 25) ? null : cursor.getLong(offset + 25));
-        entity.setTotalTime(cursor.isNull(offset + 26) ? null : cursor.getLong(offset + 26));
-        entity.setRM(cursor.isNull(offset + 27) ? null : cursor.getInt(offset + 27));
-        entity.setLongestDistance(cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28));
-        entity.setLongestTime(cursor.isNull(offset + 29) ? null : cursor.getLong(offset + 29));
-        entity.setFastestSpeed(cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30));
-        entity.setMostCalorie(cursor.isNull(offset + 31) ? null : cursor.getLong(offset + 31));
+        entity.setLoginName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setTriceps(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setBiceps(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setShoulder(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setForearm(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setChest(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setBack(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setAbs(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
+        entity.setGlutes(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setUpperleg(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
+        entity.setLowerleg(cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11));
+        entity.setCardio(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
+        entity.setTricepsReps(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
+        entity.setBicepsReps(cursor.isNull(offset + 14) ? null : cursor.getLong(offset + 14));
+        entity.setShoulderReps(cursor.isNull(offset + 15) ? null : cursor.getLong(offset + 15));
+        entity.setForearmReps(cursor.isNull(offset + 16) ? null : cursor.getLong(offset + 16));
+        entity.setChestReps(cursor.isNull(offset + 17) ? null : cursor.getLong(offset + 17));
+        entity.setBackReps(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
+        entity.setAbsReps(cursor.isNull(offset + 19) ? null : cursor.getLong(offset + 19));
+        entity.setGlutesReps(cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20));
+        entity.setUpperlegReps(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
+        entity.setLowerlegReps(cursor.isNull(offset + 22) ? null : cursor.getLong(offset + 22));
+        entity.setTotalWorkout(cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23));
+        entity.setTotalDistance(cursor.isNull(offset + 24) ? null : cursor.getLong(offset + 24));
+        entity.setAverSpeed(cursor.isNull(offset + 25) ? null : cursor.getInt(offset + 25));
+        entity.setTotalCalorie(cursor.isNull(offset + 26) ? null : cursor.getLong(offset + 26));
+        entity.setTotalTime(cursor.isNull(offset + 27) ? null : cursor.getLong(offset + 27));
+        entity.setRM(cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28));
+        entity.setLongestDistance(cursor.isNull(offset + 29) ? null : cursor.getInt(offset + 29));
+        entity.setLongestTime(cursor.isNull(offset + 30) ? null : cursor.getLong(offset + 30));
+        entity.setFastestSpeed(cursor.isNull(offset + 31) ? null : cursor.getInt(offset + 31));
+        entity.setMostCalorie(cursor.isNull(offset + 32) ? null : cursor.getLong(offset + 32));
+        entity.setMondayTrain(cursor.isNull(offset + 33) ? null : cursor.getShort(offset + 33) != 0);
+        entity.setTuesdayTrain(cursor.isNull(offset + 34) ? null : cursor.getShort(offset + 34) != 0);
+        entity.setWednesdayTrain(cursor.isNull(offset + 35) ? null : cursor.getShort(offset + 35) != 0);
+        entity.setThursdayTrain(cursor.isNull(offset + 36) ? null : cursor.getShort(offset + 36) != 0);
+        entity.setFridayTrain(cursor.isNull(offset + 37) ? null : cursor.getShort(offset + 37) != 0);
+        entity.setSaturdayTrain(cursor.isNull(offset + 38) ? null : cursor.getShort(offset + 38) != 0);
+        entity.setSundayTrain(cursor.isNull(offset + 39) ? null : cursor.getShort(offset + 39) != 0);
      }
     
     /** @inheritdoc */

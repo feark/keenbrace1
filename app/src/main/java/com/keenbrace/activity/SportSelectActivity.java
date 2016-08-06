@@ -81,7 +81,7 @@ public class SportSelectActivity extends Activity {
                                         .killProcess(android.os.Process.myPid());
                             }
                         })
-                .setNegativeButton(getText(R.string.cancle),
+                .setNegativeButton(getText(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int which) {

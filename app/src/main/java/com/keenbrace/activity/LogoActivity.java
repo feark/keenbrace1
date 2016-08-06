@@ -37,9 +37,8 @@ public class LogoActivity extends Activity implements OnClickListener {
             public void run() {
 
                 Intent intent = new Intent();
-                //ken 直接到主界面
-                //intent.setClass(LogoActivity.this, SportSelectActivity.class);
-                intent.setClass(LogoActivity.this, MainMenuActivity.class);
+                intent.setClass(LogoActivity.this, SportSelectActivity.class);
+                //intent.setClass(LogoActivity.this, MainMenuActivity.class);
                 startActivity(intent);
             }
         };
@@ -87,9 +86,9 @@ public class LogoActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         //转到新的Activity
         Intent intent = new Intent();
-        //intent.setClass(LogoActivity.this, SportSelectActivity.class);
+        intent.setClass(LogoActivity.this, SportSelectActivity.class);
         //直接跳到运动Activity
-        intent.setClass(LogoActivity.this, MainMenuActivity.class);
+        //intent.setClass(LogoActivity.this, MainMenuActivity.class);
         startActivity(intent);
 
     }

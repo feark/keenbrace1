@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
     <RelativeLayout
         android:id="@+id/rl_local"
@@ -19,12 +20,18 @@
             android:src="@mipmap/local_pic" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/Upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/tx_local" />
+            android:text="Upload" />
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bgparent"
+        android:id="@+id/textView13" />
 
     <Space
         android:layout_width="wrap_content"
@@ -43,14 +50,14 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="51dp"
-            android:src="@mipmap/camera" />
+            android:src="@mipmap/capture" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/tx_online" />
+            android:text="Camera" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -21,7 +21,7 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/textView1"
+        android:layout_toLeftOf="@+id/Upload"
         android:src="@mipmap/top_running"
         android:visibility="gone" />
 

@@ -7,6 +7,7 @@ package com.keenbrace.greendao;
 public class ShortPlan {
 
     private Long id;
+    private String loginName;
     private Integer singleTrainID;
     private Integer warmUpTime;
     private Integer distance;
@@ -29,8 +30,9 @@ public class ShortPlan {
         this.id = id;
     }
 
-    public ShortPlan(Long id, Integer singleTrainID, Integer warmUpTime, Integer distance, Integer section, byte[] content, byte[] duration, Integer cadence, Integer speed, Integer totalTime, byte[] type, byte[] set, byte[] reps, Integer restBtwType, byte[] restBtwSet) {
+    public ShortPlan(Long id, String loginName, Integer singleTrainID, Integer warmUpTime, Integer distance, Integer section, byte[] content, byte[] duration, Integer cadence, Integer speed, Integer totalTime, byte[] type, byte[] set, byte[] reps, Integer restBtwType, byte[] restBtwSet) {
         this.id = id;
+        this.loginName = loginName;
         this.singleTrainID = singleTrainID;
         this.warmUpTime = warmUpTime;
         this.distance = distance;
@@ -53,6 +55,14 @@ public class ShortPlan {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public Integer getSingleTrainID() {

@@ -13,10 +13,10 @@
     <com.amap.api.maps2d.MapView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:layout_width="fill_parent"
-        android:layout_height="250dp"
+        android:layout_height="230dp"
+        android:visibility="visible"
         android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:visibility="gone">
+        android:layout_alignParentStart="true">
 
     </com.amap.api.maps2d.MapView>
 
@@ -26,109 +26,429 @@
         android:id="@+id/scrollView2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp"
-        android:layout_alignParentBottom="true">
+        android:layout_marginTop="53dp">
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/scrollView2"
+        android:layout_alignParentStart="true"
+        android:id="@+id/rl_commresult"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:id="@+id/imageView3"
+            android:src="@mipmap/award_logo"
+            android:layout_marginTop="63dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/relativeLayout4">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true">
+            <RelativeLayout
+                android:layout_width="160dp"
+                android:layout_height="145dp"
+                android:id="@+id/relativeLayout3"
+                android:layout_below="@+id/bar_repsnset"
+                android:layout_alignParentStart="true">
 
-                <RelativeLayout
+                <com.keenbrace.widget.CircularProgressBar
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/circle_workoutMinute"
+                    android:layout_alignTop="@+id/circle_workoutSecond" />
+
+                <com.keenbrace.widget.CircularProgressBar
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:id="@+id/circle_workoutSecond"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="00:00"
+                    android:id="@+id/tx_duration"
+                    android:textColor="#FFDD15"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:layout_below="@+id/tx_duration_title"
+                    android:layout_alignStart="@+id/tx_duration_title"
+                    android:layout_alignEnd="@+id/tx_duration_title" />
 
-                    <com.keenbrace.widget.CircularProgressBar
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:id="@+id/circle_workoutMinute"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="10dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Workout\nDuration"
+                    android:id="@+id/tx_duration_title"
+                    android:layout_marginLeft="22dp"
+                    android:textColor="@color/bgparent"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="35dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="00:00"
-                        android:id="@+id/tx_duration"
-                        android:layout_alignEnd="@+id/tx_duration_title"
-                        android:layout_marginEnd="46dp"
-                        android:textColor="#FFDD15"
-                        android:textStyle="bold"
-                        android:layout_below="@+id/tx_duration_title" />
+            </RelativeLayout>
 
-                    <com.keenbrace.widget.CircularProgressBar
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        android:id="@+id/circle_workoutSecond"
-                        android:layout_alignTop="@+id/circle_workoutMinute"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp" />
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="wrap_content"
+                android:layout_height="180dp"
+                android:id="@+id/pie_resttime"
+                android:layout_below="@+id/bar_repsnset"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/relativeLayout3"
+                android:layout_alignParentBottom="false"
+                android:layout_marginTop="-20dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Workout Duration"
-                        android:id="@+id/tx_duration_title"
-                        android:layout_alignStart="@+id/circle_workoutSecond"
-                        android:layout_marginLeft="22dp"
-                        android:layout_centerInParent="true"
-                        android:textColor="@color/bgparent"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/pie_resttime"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-            </LinearLayout>
+            <com.github.mikephil.charting.charts.BarChart
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:id="@+id/bar_repsnset"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="136dp"
+                android:layout_marginBottom="20dp" />
 
         </RelativeLayout>
-    </ScrollView>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:id="@+id/bar_repsnset"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="180dp"
-        android:layout_alignParentEnd="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/relativeLayout4"
+            android:layout_alignParentStart="true">
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/horbar_record"
-        android:layout_marginBottom="75dp"
-        android:fillViewport="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:visibility="gone"
-        android:layout_alignParentEnd="true" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#D1D2D4"
+                android:id="@+id/Resultline" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Target:"
+                android:id="@+id/tx_target"
+                android:layout_below="@+id/Resultline"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0"
+                android:id="@+id/tv_target"
+                android:layout_marginStart="10dp"
+                android:layout_alignBaseline="@+id/tx_target"
+                android:layout_alignBottom="@+id/tx_target"
+                android:layout_toEndOf="@+id/tx_target"
+                android:textColor="@color/bgparent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Set:"
+                android:id="@+id/tx_set"
+                android:layout_marginStart="79dp"
+                android:layout_alignTop="@+id/tv_target"
+                android:layout_toEndOf="@+id/tv_target" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0"
+                android:id="@+id/tv_set"
+                android:layout_alignTop="@+id/tx_set"
+                android:layout_toEndOf="@+id/tx_set"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/bgparent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Reps:"
+                android:id="@+id/tx_reps"
+                android:layout_alignBottom="@+id/tv_set"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="62dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0"
+                android:id="@+id/tv_reps"
+                android:layout_alignBaseline="@+id/tx_reps"
+                android:layout_alignBottom="@+id/tx_reps"
+                android:layout_alignStart="@+id/tx_reps"
+                android:layout_marginStart="42dp"
+                android:textColor="@color/bgparent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Duration:"
+                android:id="@+id/text_duration"
+                android:layout_below="@+id/tx_target"
+                android:layout_alignStart="@+id/tx_target"
+                android:layout_marginTop="23dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="00:00"
+                android:id="@+id/tv_duration"
+                android:textColor="@color/bgparent"
+                android:layout_alignTop="@+id/text_duration"
+                android:layout_alignStart="@+id/tv_target"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Rest time:"
+                android:id="@+id/tx_resttime"
+                android:layout_alignTop="@+id/tv_duration"
+                android:layout_alignStart="@+id/tx_set" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="00:00"
+                android:id="@+id/tv_resttime"
+                android:textColor="@color/bgparent"
+                android:layout_alignTop="@+id/tx_resttime"
+                android:layout_toEndOf="@+id/tx_resttime"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#D1D2D4"
+                android:id="@+id/Resultline2"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:id="@+id/imageView3"
-        android:src="@mipmap/award_logo"
-        android:layout_marginTop="133dp"
-        android:layout_alignTop="@+id/bar_repsnset"
-        android:layout_centerHorizontal="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_home"
+        android:src="@mipmap/home"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_below="@+id/map"
+        android:id="@+id/rl_runresult">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:id="@+id/lc_speed"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#D1D2D4"
+            android:id="@+id/textView14"
+            android:layout_alignBottom="@+id/lc_speed"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Duration:"
+            android:id="@+id/tx_runduration"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/textView14"
+            android:layout_alignStart="@+id/lc_speed"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="00:00"
+            android:id="@+id/tv_runduration"
+            android:textColor="@color/bgparent"
+            android:layout_alignTop="@+id/tx_runduration"
+            android:layout_toEndOf="@+id/tx_runcadence"
+            android:layout_marginStart="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Distance:"
+            android:id="@+id/tx_rundistance"
+            android:layout_alignTop="@+id/tv_runduration"
+            android:layout_toEndOf="@+id/tv_runduration"
+            android:layout_marginStart="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0 km"
+            android:id="@+id/tv_rundistance"
+            android:textColor="@color/bgparent"
+            android:layout_alignTop="@+id/tx_rundistance"
+            android:layout_toEndOf="@+id/tx_rundistance"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Step:"
+            android:id="@+id/tx_runstep"
+            android:layout_alignTop="@+id/tx_runcalorie"
+            android:layout_alignStart="@+id/tx_runcadence" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/tv_runstep"
+            android:textColor="@color/bgparent"
+            android:layout_alignTop="@+id/tx_runstep"
+            android:layout_alignStart="@+id/tv_runcadence" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Cadence:"
+            android:id="@+id/tx_runcadence"
+            android:layout_below="@+id/tx_runduration"
+            android:layout_alignStart="@+id/tx_runduration"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0 /min"
+            android:id="@+id/tv_runcadence"
+            android:layout_alignTop="@+id/tx_runcadence"
+            android:layout_alignStart="@+id/tv_runduration"
+            android:textColor="@color/bgparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="EMG dec:"
+            android:id="@+id/tx_emg"
+            android:layout_alignBaseline="@+id/tv_runcadence"
+            android:layout_alignBottom="@+id/tv_runcadence"
+            android:layout_alignStart="@+id/tx_rundistance" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0%"
+            android:id="@+id/tv_emg"
+            android:textColor="@color/bgparent"
+            android:layout_alignBaseline="@+id/tx_emg"
+            android:layout_alignBottom="@+id/tx_emg"
+            android:layout_alignStart="@+id/tv_rundistance" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Calories:"
+            android:id="@+id/tx_runcalorie"
+            android:layout_alignTop="@+id/tv_runcalorie"
+            android:layout_alignStart="@+id/tx_emg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/tv_runcalorie"
+            android:textColor="@color/bgparent"
+            android:layout_below="@+id/tv_emg"
+            android:layout_alignStart="@+id/tv_emg"
+            android:layout_marginTop="12dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/rl_runresult">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_comment"
+            android:src="@mipmap/comment"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_share"
+            android:src="@mipmap/share"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_load"
+            android:src="@mipmap/loads"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="30dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#D1D2D4"
+            android:id="@+id/textView15"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

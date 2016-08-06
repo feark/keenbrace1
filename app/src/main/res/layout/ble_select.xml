@@ -14,11 +14,11 @@
         android:layout_centerVertical="true">
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/Upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Choose Your KeenBrace_Sports"
+            android:text="TAP TO CONNECT"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
@@ -47,11 +47,11 @@
         android:divider="@null"></ListView>
 
     <Button
-        android:id="@+id/cancel"
+        android:id="@+id/close"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:text="Cancel"
+        android:text="Close"
         android:background="@null"
         android:textColor="#FFFFFF"
         android:textSize="20dp" />

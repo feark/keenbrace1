@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.keenbrace.R;
 import com.keenbrace.core.utils.DensityUtils;
-import com.keenbrace.greendao.RunResult;
+import com.keenbrace.greendao.CommonResult;
 import com.keenbrace.util.DateUitl;
 
 
@@ -24,11 +24,11 @@ import java.util.List;
 /**
  * Created by zrq on 15/12/24.
  */
-public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
+public class BleDataItemAdapter extends ArrayAdapter<CommonResult> {
 
     private Context ctx;
-    private List<RunResult> boxList;
-    private List<RunResult> copyBoxList;
+    private List<CommonResult> boxList;
+    private List<CommonResult> copyBoxList;
     private boolean notiyfyByFilter=false;
     private OnKeenBraceListener listener;
     private OnKeenBraceDataListener boxDataListener;
@@ -41,11 +41,11 @@ public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
         this.boxDataListener = listener;
     }
 
-    public BleDataItemAdapter(Context context, int resource, List<RunResult> objects) {
+    public BleDataItemAdapter(Context context, int resource, List<CommonResult> objects) {
         super(context, resource, objects);
         ctx = context;
         this.boxList = objects;
-        copyBoxList = new ArrayList<RunResult>();
+        copyBoxList = new ArrayList<CommonResult>();
         copyBoxList.addAll(objects);
     }
 
@@ -54,7 +54,7 @@ public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(ctx).inflate(R.layout.item_keenbrace, null);
+            convertView = LayoutInflater.from(ctx).inflate(R.layout.item_runrecord, null);
             holder = new ViewHolder();
             holder.item_left = (LinearLayout) convertView.findViewById(R.id.item_left);
             holder.item_right = (RelativeLayout) convertView.findViewById(R.id.item_right);
@@ -78,7 +78,7 @@ public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
 
 
         holder.setItemData(getItem(position));
-        setData(holder,position);
+        //setData(holder,position);
 
         return convertView;
     }
@@ -94,13 +94,13 @@ public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
 
 
 
-        RunResult itemData;
+        CommonResult itemData;
 
-        public RunResult getItemData() {
+        public CommonResult getItemData() {
             return itemData;
         }
 
-        public void setItemData(RunResult itemData) {
+        public void setItemData(CommonResult itemData) {
             this.itemData = itemData;
         }
     }
@@ -114,28 +114,28 @@ public class BleDataItemAdapter extends ArrayAdapter<RunResult> {
 
      }
 
-
+    /*
     public void setData(final ViewHolder RunResult, final int position){
-        final RunResult item = RunResult.getItemData();
-        RunResult.tv_bp.setText(item.getCadence()==null?"0":item.getCadence()+"");
-        RunResult.tv_jl.setText(item.getMileage()==null?"0":item.getMileage()+"");
-        RunResult.tv_collection_time.setText(DateUitl.getDateTimeFromLong2String(item.getStartTime()));
+        final CommonResult item = RunResult.getItemData();
+        CommonResult.tv_bp.setText(item.getCadence()==null?"0":item.getCadence()+"");
+        CommonResult.tv_jl.setText(item.getMileage()==null?"0":item.getMileage()+"");
+        CommonResult.tv_collection_time.setText(DateUitl.getDateTimeFromLong2String(item.getStartTime()));
 
-        RunResult.tv_format.setText(DateUitl.getDateFormat4(item.getDuration()));
-        RunResult.item_right.setOnClickListener(new View.OnClickListener() {
+        CommonResult.tv_format.setText(DateUitl.getDateFormat4(item.getDuration()));
+        CommonResult.item_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onKeenBraceDelete(RunResult.getItemData());
+                    listener.onKeenBraceDelete(CommonResult.getItemData());
                 }
             }
         });
     }
-
+    */
 
     public interface OnKeenBraceListener{
-        void onKeenBraceFunc(RunResult boxItem);
-        void onKeenBraceDelete(RunResult boxItem);
+        void onKeenBraceFunc(CommonResult boxItem);
+        void onKeenBraceDelete(CommonResult boxItem);
     }
 
 

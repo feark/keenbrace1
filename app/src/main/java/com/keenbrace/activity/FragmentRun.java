@@ -214,13 +214,13 @@ public class FragmentRun extends Fragment implements OnClickListener {
         String stride_str = "Great";
         if (stride < 70)
             stride_str = "Great";
-        else if (stride > 70 && stride < 90)
+        else if (stride > 90 && stride < 110)
             stride_str = "Good";
-        else if (stride >= 90 && stride < 110)
-            stride_str = "Average";
         else if (stride >= 110 && stride < 130)
+            stride_str = "Average";
+        else if (stride >= 130 && stride < 160)
             stride_str = "Bad";
-        else if (stride > 130)
+        else if (stride > 160)
             stride_str = "Risk";
         tv_stride.setText(stride_str);
         if (step != 0 && distance == 0) {
@@ -229,7 +229,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
         }
         tv_step.setText("" + step);
         String ss = "m";
-        String kk = "cal";
+        String kk = "kcal";
         if (distance > 100000) {
             distance = distance / 100000.0f;
             ss = "km";
@@ -249,16 +249,23 @@ public class FragmentRun extends Fragment implements OnClickListener {
     //tv_calories to stability
     public void updateParaBox(int reps, int muscle, int duration, int stability)
     {
+        float minisec;
+        minisec = duration/1000;
         reps_number.setText(""+reps);
         tv_speed.setText(""+muscle+" %");
-        tv_distance.setText(""+duration+" sec");
+        tv_distance.setText(""+minisec+" sec");
         tv_calories.setText(""+stability+" %");
     }
 
     //gif动画放在这个位置update ken
     //有动作才会进到这个函数 也同时更新indicate_message ken
+    //添加一个已经在播放的变量 没播放不播下一次
+    static boolean isPlaying = false;
     public void updateAnimation(int anino){
         isAnyMove = true;
+
+        //让图片从最开始播放
+        gif_anima.setMovieTime(0);
 
         switch(sport_type) {
             case UtilConstants.sport_running:
@@ -267,7 +274,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
                     wait_times = 70;
                     handler.sendEmptyMessageDelayed(2, 100);
 
-                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
+                    gif_anima.setMovieResource(R.raw.normalrun_boy);
                     //indicate_message.setText(R.string.tx_increase_cadence);
                 }
 
@@ -327,7 +334,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
 
                 if(anino == 10)
                 {
-                    gif_anima.setMovieResource(R.raw.normalrun);
+                    gif_anima.setMovieResource(R.raw.normalrun_boy);
                     indicate_message.setText(R.string.tx_bend_knee_n_elbow);
                 }
 
@@ -344,13 +351,19 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 break;
 
             case UtilConstants.sport_dumbbell:
-                delay_times = 28;
-                handler.sendEmptyMessageDelayed(1, 100);
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 26;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
                 break;
 
             case UtilConstants.sport_squat:
-                delay_times = 25;
-                handler.sendEmptyMessageDelayed(1, 100);
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 25;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
                 break;
 
             case UtilConstants.sport_plank:
@@ -358,8 +371,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 break;
 
             case UtilConstants.sport_pullup:
-                delay_times = 36;
-                handler.sendEmptyMessageDelayed(1, 100);
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 36;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
                 break;
 
             default:
@@ -414,13 +430,21 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 case 1:
                     //延时的方法 ken
                     if (delay_times > 0) {
+                        if(sport_type == UtilConstants.sport_dumbbell) {
+                            gif_anima.setMovieResource(R.raw.dumbbellcount);
+                        }
                         delay_times--;
                         gif_anima.setPaused(false);
                         handler.sendEmptyMessageDelayed(1, 100);
                     }
                     else
                     {
+                        if(sport_type == UtilConstants.sport_dumbbell)
+                        {
+                            gif_anima.setMovieResource(R.raw.dumbbellstand);
+                        }
                         gif_anima.setPaused(true);
+                        isPlaying = false;
                     }
                     break;
 

@@ -240,12 +240,12 @@ public class FragmentMap extends Fragment implements OnClickListener,
 
 	StringBuffer sb = new StringBuffer();
 	double latitude = 0, longitude = 0;
-	float sumlc = 0.0f;
-	float lc = 0.0f;
+	float sumDistance = 0.0f;
+	float distance = 0.0f;
 
 	// 里程
 	public float getDistance() {
-		return lc * 100;
+		return distance * 100;
 	}
 
 	@Override
@@ -258,9 +258,9 @@ public class FragmentMap extends Fragment implements OnClickListener,
 			double y = aLocation.getLongitude();
 			if (x != latitude || longitude != y) {
 				if (latitude != 0 && longitude != 0) {
-					lc = AMapUtils.calculateLineDistance(new LatLng(latitude,
+					distance = AMapUtils.calculateLineDistance(new LatLng(latitude,
 							longitude), new LatLng(x, y));
-					sumlc += lc;
+					sumDistance += distance;
 					// txt_data5.setText(DateUitl.formatToM(sumlc / 1000.0f));
 					// txt_data4
 					// .setText(""

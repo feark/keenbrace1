@@ -38,8 +38,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import com.keenbrace.AppContext;
 import com.keenbrace.bean.Constant;
 import com.keenbrace.constants.UtilConstants;
+import com.keenbrace.core.utils.PreferenceHelper;
 import com.keenbrace.util.SharePreferUtil;
 
 /**
@@ -92,7 +94,7 @@ public class BluetoothLeService extends Service {
     public void scanLeDevice(final boolean enable) {
         if (enable) {
             if (mScanning == false) {
-                Log.e(TAG, "BEGIN scane devices scanLeDevice:=");
+                Log.e(TAG, "BEGIN scan devices scanLeDevice:=");
                 mScanning = true;
 
                 // Toast.makeText(BluetoothLeService.this,
@@ -124,8 +126,17 @@ public class BluetoothLeService extends Service {
                              byte[] scanRecord) {
 
             //Log.e(TAG, "get device name:=" + device.getName());
+            //在这里定义扫描的设备名 ken
+            //获取蓝牙设备名
+            String ble_name =  PreferenceHelper.readString(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.BLE_NAME, "");
 
-            if (null != device.getName() && !"".equals(device.getName()) && device.getName().contains("KeenBrace_Sports")) {
+            if(ble_name.isEmpty())
+            {
+                ble_name = "" + "KeenBrace";
+            }
+
+            if (null != device.getName() && !"".equals(device.getName()) && device.getName().contains(ble_name)) {
+                //Log.e(TAG, "get device name:================================" + device.getName());
                 final Intent intentAction = new Intent(
                         BluetoothLeService.BLEAPI_GATT_FOUNDDEVICE);
                 intentAction.putExtra("device", device);
@@ -425,6 +436,8 @@ public class BluetoothLeService extends Service {
         Log.d(TAG, "Trying to create a new connection.");
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
+
+        //MAC地址 ken
         BluetoothConstant.mDeviceAddress = address;
 
         return true;

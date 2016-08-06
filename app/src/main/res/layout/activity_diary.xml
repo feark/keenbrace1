@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:enabled="true"
+        android:gravity="top"
+        android:scrollbars="vertical"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@null"
+        android:id="@+id/editComment"
+        android:textColor="#4e4e4e"
+        android:hint="Add comment"
+        android:textColorHint="#b9b9b9"
+        android:layout_above="@+id/relativeLayout6"
+        android:layout_alignParentStart="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_toStartOf="@+id/tv_post" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout6"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="43dp"
+            android:id="@+id/iv_writenote"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:src="@mipmap/writenote"
+            android:layout_marginLeft="15dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_camera"
+            android:src="@mipmap/camera"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_ruler"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@mipmap/measure"
+            android:layout_marginRight="15dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Post"
+        android:id="@+id/tv_post"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/editComment"
+        android:layout_alignTop="@+id/editComment"
+        android:textSize="20dp"
+        android:textColor="@color/bgparent"
+        android:textStyle="bold"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <com.keenbrace.widget.SwipeListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lv_diaryitem"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/editComment" />
+
+</RelativeLayout>

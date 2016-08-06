@@ -24,14 +24,15 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Weekdays = new Property(1, Integer.class, "weekdays", false, "WEEKDAYS");
-        public final static Property Start_date = new Property(2, java.util.Date.class, "start_date", false, "START_DATE");
-        public final static Property End_date = new Property(3, java.util.Date.class, "end_date", false, "END_DATE");
-        public final static Property Types = new Property(4, byte[].class, "types", false, "TYPES");
-        public final static Property Times = new Property(5, Integer.class, "times", false, "TIMES");
-        public final static Property Interval = new Property(6, byte[].class, "interval", false, "INTERVAL");
-        public final static Property FinishStatus = new Property(7, byte[].class, "finishStatus", false, "FINISH_STATUS");
-        public final static Property TrainIDset = new Property(8, byte[].class, "trainIDset", false, "TRAIN_IDSET");
+        public final static Property LoginName = new Property(1, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property Weekdays = new Property(2, Integer.class, "weekdays", false, "WEEKDAYS");
+        public final static Property Start_date = new Property(3, java.util.Date.class, "start_date", false, "START_DATE");
+        public final static Property End_date = new Property(4, java.util.Date.class, "end_date", false, "END_DATE");
+        public final static Property Types = new Property(5, byte[].class, "types", false, "TYPES");
+        public final static Property Times = new Property(6, Integer.class, "times", false, "TIMES");
+        public final static Property Interval = new Property(7, byte[].class, "interval", false, "INTERVAL");
+        public final static Property FinishStatus = new Property(8, byte[].class, "finishStatus", false, "FINISH_STATUS");
+        public final static Property TrainIDset = new Property(9, byte[].class, "trainIDset", false, "TRAIN_IDSET");
     };
 
 
@@ -48,14 +49,15 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"LONG_PLAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"WEEKDAYS\" INTEGER," + // 1: weekdays
-                "\"START_DATE\" INTEGER," + // 2: start_date
-                "\"END_DATE\" INTEGER," + // 3: end_date
-                "\"TYPES\" BLOB," + // 4: types
-                "\"TIMES\" INTEGER," + // 5: times
-                "\"INTERVAL\" BLOB," + // 6: interval
-                "\"FINISH_STATUS\" BLOB," + // 7: finishStatus
-                "\"TRAIN_IDSET\" BLOB);"); // 8: trainIDset
+                "\"LOGIN_NAME\" TEXT UNIQUE ," + // 1: loginName
+                "\"WEEKDAYS\" INTEGER," + // 2: weekdays
+                "\"START_DATE\" INTEGER," + // 3: start_date
+                "\"END_DATE\" INTEGER," + // 4: end_date
+                "\"TYPES\" BLOB," + // 5: types
+                "\"TIMES\" INTEGER," + // 6: times
+                "\"INTERVAL\" BLOB," + // 7: interval
+                "\"FINISH_STATUS\" BLOB," + // 8: finishStatus
+                "\"TRAIN_IDSET\" BLOB);"); // 9: trainIDset
     }
 
     /** Drops the underlying database table. */
@@ -74,44 +76,49 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
             stmt.bindLong(1, id);
         }
  
+        String loginName = entity.getLoginName();
+        if (loginName != null) {
+            stmt.bindString(2, loginName);
+        }
+ 
         Integer weekdays = entity.getWeekdays();
         if (weekdays != null) {
-            stmt.bindLong(2, weekdays);
+            stmt.bindLong(3, weekdays);
         }
  
         java.util.Date start_date = entity.getStart_date();
         if (start_date != null) {
-            stmt.bindLong(3, start_date.getTime());
+            stmt.bindLong(4, start_date.getTime());
         }
  
         java.util.Date end_date = entity.getEnd_date();
         if (end_date != null) {
-            stmt.bindLong(4, end_date.getTime());
+            stmt.bindLong(5, end_date.getTime());
         }
  
         byte[] types = entity.getTypes();
         if (types != null) {
-            stmt.bindBlob(5, types);
+            stmt.bindBlob(6, types);
         }
  
         Integer times = entity.getTimes();
         if (times != null) {
-            stmt.bindLong(6, times);
+            stmt.bindLong(7, times);
         }
  
         byte[] interval = entity.getInterval();
         if (interval != null) {
-            stmt.bindBlob(7, interval);
+            stmt.bindBlob(8, interval);
         }
  
         byte[] finishStatus = entity.getFinishStatus();
         if (finishStatus != null) {
-            stmt.bindBlob(8, finishStatus);
+            stmt.bindBlob(9, finishStatus);
         }
  
         byte[] trainIDset = entity.getTrainIDset();
         if (trainIDset != null) {
-            stmt.bindBlob(9, trainIDset);
+            stmt.bindBlob(10, trainIDset);
         }
     }
 
@@ -126,14 +133,15 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     public LongPlan readEntity(Cursor cursor, int offset) {
         LongPlan entity = new LongPlan( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // weekdays
-            cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)), // start_date
-            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // end_date
-            cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4), // types
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // times
-            cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6), // interval
-            cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7), // finishStatus
-            cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8) // trainIDset
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // loginName
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // weekdays
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // start_date
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // end_date
+            cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5), // types
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // times
+            cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7), // interval
+            cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8), // finishStatus
+            cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9) // trainIDset
         );
         return entity;
     }
@@ -142,14 +150,15 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     @Override
     public void readEntity(Cursor cursor, LongPlan entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setWeekdays(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setStart_date(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
-        entity.setEnd_date(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setTypes(cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4));
-        entity.setTimes(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setInterval(cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6));
-        entity.setFinishStatus(cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7));
-        entity.setTrainIDset(cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8));
+        entity.setLoginName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setWeekdays(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setStart_date(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setEnd_date(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setTypes(cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5));
+        entity.setTimes(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setInterval(cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7));
+        entity.setFinishStatus(cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8));
+        entity.setTrainIDset(cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9));
      }
     
     /** @inheritdoc */

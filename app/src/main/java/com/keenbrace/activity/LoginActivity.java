@@ -17,11 +17,12 @@ import com.keenbrace.AppContext;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.RunResultDBHelper;
+import com.keenbrace.bean.UserDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.utils.DateUtils;
 import com.keenbrace.core.utils.PreferenceHelper;
 import com.keenbrace.core.utils.StringUtils;
+import com.keenbrace.greendao.HistoryRecord;
 import com.keenbrace.greendao.User;
 
 import butterknife.Bind;
@@ -62,8 +63,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     @OnClick (R.id.btn_visitor) void forgetPwd(){
+        //将登录状态和登录名写入配置文件 ken ++
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT,"test");
+
+
+
         User user=new User();
         user.setLoginName("test");
         user.setPassword("test");
@@ -72,9 +77,10 @@ public class LoginActivity extends BaseActivity {
         user.setGender(1);
         user.setBirthday(DateUtils.convertServerDate2("1987-01-01 00:00:00"));
         user.setNickname("test");
-        user.setId(RunResultDBHelper.getInstance(this).insertUser(user));
+        //在这里创建一条user数据 ken
+        user.setId(UserDBHelper.getInstance(this).insertUser(user));
 
-
+    //把user赋给全局
     Constant.user=user;
     readyGo(MainActivity.class);
     finish();
@@ -115,7 +121,7 @@ public class LoginActivity extends BaseActivity {
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_ACCOUNT, etAccount.getText().toString());
 
-       User user= RunResultDBHelper.getInstance(this).queryUserByLoginName( etAccount.getText().toString());
+       User user= UserDBHelper.getInstance(this).queryUserByLoginName( etAccount.getText().toString());
         if(user==null)
         {
             user=new User();
@@ -126,10 +132,21 @@ public class LoginActivity extends BaseActivity {
             user.setGender(1);
             user.setBirthday(DateUtils.convertServerDate2("1987-01-01 00:00:00"));
             user.setNickname("test");
-           user.setId(RunResultDBHelper.getInstance(this).insertUser(user));
+           user.setId(UserDBHelper.getInstance(this).insertUser(user));
 
         }
         Constant.user=user;
+
+        //在数据库中新建历史记录数据
+        HistoryRecord historyRecord = UserDBHelper.getInstance(this).queryHistoryByLoginName(etAccount.getText().toString());
+        if(historyRecord == null)
+        {
+            historyRecord = new HistoryRecord();
+            historyRecord.setLoginName(etAccount.getText().toString());
+            historyRecord.setId(UserDBHelper.getInstance(this).insertHistory(historyRecord));
+        }
+        Constant.historyRecord = historyRecord;
+
         readyGo(MainActivity.class);
         finish();
     }

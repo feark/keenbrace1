@@ -209,81 +209,23 @@
         android:textColor="@color/white"
         android:textSize="15.0dip"
         android:visibility="visible"
-        android:layout_above="@+id/iv_squat"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/horizontalScrollView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-10dp" />
 
     <ImageView
-        android:id="@+id/iv_squat"
-        android:layout_width="80.0dip"
-        android:layout_height="93.0dip"
-        android:src="@mipmap/main_squat_w"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        android:layout_alignTop="@+id/iv_dumbbell"
-        android:layout_toEndOf="@+id/iv_run"
-        android:layout_marginTop="44dp"
-        android:layout_marginLeft="72dp"
-        android:layout_alignLeft="@+id/iv_run" />
-
-    <ImageView
-        android:id="@+id/iv_run"
-        android:layout_width="80.0dip"
-        android:layout_height="93.0dip"
-        android:src="@mipmap/main_run_w"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        android:layout_below="@+id/tv_msg"
-        android:layout_toEndOf="@+id/ll_record" />
-
-    <ImageView
-        android:id="@+id/iv_dumbbell"
-        android:layout_width="80.0dip"
-        android:layout_height="93.0dip"
-        android:src="@mipmap/main_dumbbell_w"
-        android:visibility="visible"
-        android:layout_gravity="center"
-        android:layout_marginBottom="107dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/iv_squat"
-        android:layout_alignLeft="@+id/iv_squat"
-        android:layout_marginLeft="72dp" />
-
-    <ImageView
-        android:layout_width="80.0dip"
-        android:layout_height="93.0dip"
-        android:id="@+id/iv_plank"
-        android:src="@mipmap/main_plank_w"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="center"
-        android:layout_alignTop="@+id/iv_squat"
-        android:layout_toEndOf="@+id/iv_dumbbell"
-        android:layout_alignLeft="@+id/iv_dumbbell"
-        android:layout_marginLeft="72dp" />
-
-    <ImageView
-        android:layout_width="80.0dip"
-        android:layout_height="93.0dip"
-        android:id="@+id/iv_pullup"
-        android:src="@mipmap/main_pullup_w"
-        android:layout_alignParentEnd="false"
-        android:layout_alignTop="@+id/iv_run"
-        android:layout_alignLeft="@+id/iv_plank"
-        android:layout_marginLeft="70dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
         android:id="@+id/howtowear"
         android:src="@mipmap/wear_on_thigh"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/tv_msg"
-        android:layout_below="@+id/rl_more" />
+        android:layout_below="@+id/rl_more"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/ss_start"
         android:layout_width="180dp"
         android:layout_height="50dp"
-        android:background="@mipmap/start"
+        android:background="@mipmap/select"
         android:textColor="#ffffffff"
         android:textSize="20.0dip"
         android:layout_alignParentBottom="true"
@@ -295,13 +237,107 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/start_loading"
-        android:src="@mipmap/start_loading"
-        android:visibility="invisible"
+        android:src="@mipmap/select"
+        android:visibility="gone"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignStart="@+id/ss_start"
         android:layout_alignEnd="@+id/ss_start"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/iv_squat"
         android:layout_marginBottom="10dp" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView"
+        android:fillViewport="false"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/ss_start"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:id="@+id/iv_squat"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_squat_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:id="@+id/iv_run"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_run_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_dumbbell"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_dumbbell_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_plank"
+                android:src="@mipmap/main_plank_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_pullup"
+                android:src="@mipmap/main_pullup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/howtowear"
+        android:layout_above="@+id/tv_msg">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_outdoor"
+            android:src="@mipmap/outdoor_sports"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginLeft="10dp" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_apparatus"
+            android:src="@mipmap/facilities_sports"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_bodyweight"
+            android:src="@mipmap/non_apparatus_sports"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

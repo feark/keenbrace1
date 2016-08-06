@@ -78,14 +78,30 @@ public class LeDeviceListAdapter extends BaseAdapter {
             BluetoothDevice device = mLeDevices.get(i);
 
             String deviceName = "";
-            String mac = device.getAddress();
+            //String mac = device.getAddress();
             if (device != null)
                 deviceName = device.getName();
             if (deviceName != null && deviceName.length() > 0)
-                viewHolder.deviceName.setText(deviceName + "(" + mac + ")");
+                viewHolder.deviceName.setText(deviceName + "      rssi :  " + BluetoothConstant.devRssiValues.get(device.getAddress())/* + "(" + mac + ")"*/);
+            //else
+              //  viewHolder.deviceName.setText("" + mac);
+
+            //viewHolder.connState.setText(" RSSI:" + BluetoothConstant.devRssiValues.get(device.getAddress()));
+            if (BluetoothConstant.mConnected) {
+                if(deviceName.equals(BluetoothConstant.mdevice.getName()))
+                {
+                    viewHolder.connState.setText("connected");
+                }
+                else
+                {
+                    viewHolder.connState.setText("disconnected");
+                }
+            }
             else
-                viewHolder.deviceName.setText("" + mac);
-            viewHolder.connState.setText(" RSSI:" + BluetoothConstant.devRssiValues.get(device.getAddress()));
+            {
+                viewHolder.connState.setText("disconnected");
+            }
+
 
         } catch (Exception e) {
         }

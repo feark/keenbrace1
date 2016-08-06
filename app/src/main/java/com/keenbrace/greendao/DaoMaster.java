@@ -9,7 +9,6 @@ import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 import com.keenbrace.greendao.UserDao;
-import com.keenbrace.greendao.RunResultDao;
 import com.keenbrace.greendao.CommonResultDao;
 import com.keenbrace.greendao.SportsStructureDao;
 import com.keenbrace.greendao.ShortPlanDao;
@@ -26,7 +25,6 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         UserDao.createTable(db, ifNotExists);
-        RunResultDao.createTable(db, ifNotExists);
         CommonResultDao.createTable(db, ifNotExists);
         SportsStructureDao.createTable(db, ifNotExists);
         ShortPlanDao.createTable(db, ifNotExists);
@@ -37,7 +35,6 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         UserDao.dropTable(db, ifExists);
-        RunResultDao.dropTable(db, ifExists);
         CommonResultDao.dropTable(db, ifExists);
         SportsStructureDao.dropTable(db, ifExists);
         ShortPlanDao.dropTable(db, ifExists);
@@ -75,7 +72,6 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(UserDao.class);
-        registerDaoClass(RunResultDao.class);
         registerDaoClass(CommonResultDao.class);
         registerDaoClass(SportsStructureDao.class);
         registerDaoClass(ShortPlanDao.class);

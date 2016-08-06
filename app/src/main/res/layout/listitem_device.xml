@@ -12,17 +12,17 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
-        android:text="KeenBrace_Sports"
+        android:text="KeenBrace"
         android:textColor="#6DCAEC" />
 
     <TextView
         android:id="@+id/conn_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:text="not connect"
+        android:textColor="@android:color/darker_gray"
         android:layout_centerVertical="true"
-        android:layout_marginRight="80dp"
-        android:text="未连接"
-        android:textColor="@color/white" />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

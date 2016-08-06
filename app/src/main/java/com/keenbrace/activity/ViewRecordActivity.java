@@ -1,10 +1,15 @@
 package com.keenbrace.activity;
 
-//结果页
+//结束运动的结果页
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,24 +25,35 @@ import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.PolylineOptions;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.greendao.RunResult;
+import com.keenbrace.greendao.CommonResult;
+import com.keenbrace.util.DateUitl;
 import com.keenbrace.widget.CircularProgressBar;
 import com.keenbrace.widget.MyValueFormatter;
 import com.keenbrace.widget.SwipeListView;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -52,17 +68,22 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import butterknife.Bind;
 
-public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListener {
+public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListener, View.OnClickListener {
     private MapView mapView;
     private AMap aMap;
+    ImageView back_home;
 
-   // @Bind(R.id.lv_data)
-    //SwipeListView lvdata;
+    RelativeLayout rl_commresult;
+    RelativeLayout rl_runresult;
+
+    ImageView btn_share, btn_comment, btn_loads;
 
     int sport_type;
 
-    RunResult run_Result;
-    TextView tx_mileage, tx_warings, tx_times, tx_calories;
+    CommonResult commonResult;
+    TextView tv_runDuration, tv_runDistance, tv_runStep, tv_runCadence, tv_runEmg, tv_runCalories;
+
+    LineChart lc_speed;
 
     //横向柱状图用来做新纪录
     //HorizontalBarChart horChart_record;
@@ -95,14 +116,41 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     }
     @Override
     public void initView() {
+        //数值
+        tv_runDuration = (TextView) findViewById(R.id.tv_runduration);
+        tv_runDistance = (TextView) findViewById(R.id.tv_rundistance);
+        tv_runStep = (TextView) findViewById(R.id.tv_runstep);
+        tv_runCadence = (TextView) findViewById(R.id.tv_runcadence);
+        tv_runEmg = (TextView) findViewById(R.id.tv_emg);
+        tv_runCalories = (TextView) findViewById(R.id.tv_runcalorie);
+
+        rl_commresult = (RelativeLayout) findViewById(R.id.rl_commresult);
+        rl_runresult = (RelativeLayout) findViewById(R.id.rl_runresult);
+
+        btn_comment = (ImageView) findViewById(R.id.btn_comment);
+        btn_comment.setOnClickListener(this);
+        btn_loads = (ImageView) findViewById(R.id.btn_load);
+        btn_loads.setOnClickListener(this);
+        btn_share = (ImageView) findViewById(R.id.btn_share);
+        btn_share.setOnClickListener(this);
 
         mapView = (MapView) findViewById(R.id.map);
+
+        //标题
+        //tx_resulttitle = (TextView) findViewById(R.id.tx_resulttitle);
+
+        back_home = (ImageView) findViewById(R.id.back_home);
+        back_home.setOnClickListener(this);
 
         //横向的柱状图
         //horChart_record = (HorizontalBarChart) findViewById(R.id.horbar_record);
         //initBarChart(horChart_record, "New Record", Color.YELLOW);
         //horChart_record.getAxisLeft().setAxisMaxValue(30);
         //horChart_record.getAxisLeft().setAxisMinValue(0);
+
+        //速度的线条图
+        lc_speed = (LineChart) findViewById(R.id.lc_speed);
+        initLineChart();
 
         //时间的两个环形进度
         circle_workoutMinute = (CircularProgressBar) findViewById(R.id.circle_workoutMinute);
@@ -117,14 +165,14 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         circle_workoutMinute.setRotation(180);
         circle_workoutSecond.setRotation(180);
 
-        circle_workoutSecond.setPrimaryColor(Color.rgb(107, 181, 77));
+        circle_workoutSecond.setPrimaryColor(Color.rgb(28, 166, 220));
 
-        //circle_workoutSecond.setProgress(15);
-        //circle_workoutMinute.setProgress(35);
+        circle_workoutSecond.setProgress(15);
+        circle_workoutMinute.setProgress(35);
 
         //柱状图
         repsNset_barChart = (BarChart) findViewById(R.id.bar_repsnset);
-        initBarChart(repsNset_barChart, "REPS OF EACH SET", Color.rgb(107, 181, 77));
+        initBarChart(repsNset_barChart, "Reps of each set", Color.rgb(28, 166, 220));
 
         repsNset_barChart.getAxisLeft().setAxisMaxValue(30);
         repsNset_barChart.getAxisLeft().setAxisMinValue(0);
@@ -137,14 +185,20 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         mPieChart = (PieChart) findViewById(R.id.pie_resttime);
         initPieChart();
 
-        //测试柱状图
+        //测试柱状图 leave
         addRepsBarEntry(10);
         addRepsBarEntry(20);
         addRepsBarEntry(15);
 
+        //测试线图
+        addLineEntry(10);
+        addLineEntry(20);
+        addLineEntry(15);
+        addLineEntry(10);
+
 
         //得到数据
-        run_Result = (RunResult) this.getIntent().getSerializableExtra("bleData");
+        commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
 
         //得到运动种类
         sport_type = this.getIntent().getIntExtra("sport_type", 0);
@@ -156,25 +210,60 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             this.setActionBarTitle(getString(R.string.tx_running));
             mapView.setVisibility(View.VISIBLE);
 
-            //horChart_record.setVisibility(View.GONE);
+            rl_commresult.setVisibility(View.GONE);
+            rl_runresult.setVisibility(View.VISIBLE);
+
+            btn_loads.setImageResource(R.mipmap.insight);
+
+            //将值显示出来
+            tv_runCadence.setText(""+ commonResult.getCadence() + "/min");
+            float calories = UtilConstants.Weight * commonResult.getMileage() * 1.306f;
+            tv_runCalories.setText("" + DateUitl.formatToM(calories / 1000.0f) + "kcal");
+
+            float distance = commonResult.getMileage();
+            String ss = "m";
+            if (distance > 100000) {
+                distance = distance / 100000.0f;
+                ss = "km";
+            } else
+                distance = distance / 100.0f;
+            tv_runDistance.setText("" + DateUitl.formatToM(distance) + ss);
+
+            tv_runStep.setText("" + commonResult.getStep());
+
+            tv_runDuration.setText("" + commonResult.getDuration()/3600 + "min");
+
+            //还有emg没显示 leave
+
         }
         else
         {
             mapView.setVisibility(View.GONE);
+            rl_runresult.setVisibility(View.GONE);
 
-            //horChart_record.setVisibility(View.VISIBLE);
+            btn_loads.setImageResource(R.mipmap.loads);
 
-            if(sport_type == UtilConstants.sport_squat)
+            rl_commresult.setVisibility(View.VISIBLE);
+
+            if(sport_type == UtilConstants.sport_squat) {
                 this.setActionBarTitle(getString(R.string.tx_squat));
 
-            if(sport_type == UtilConstants.sport_dumbbell)
+            }
+
+            if(sport_type == UtilConstants.sport_dumbbell) {
                 this.setActionBarTitle(getString(R.string.tx_dumbbell));
 
-            if(sport_type == UtilConstants.sport_plank)
+            }
+
+            if(sport_type == UtilConstants.sport_plank) {
                 this.setActionBarTitle(getString(R.string.tx_plank));
 
-            if(sport_type == UtilConstants.sport_pullup)
+            }
+
+            if(sport_type == UtilConstants.sport_pullup) {
                 this.setActionBarTitle(getString(R.string.tx_pullup));
+
+            }
         }
 
     }
@@ -199,15 +288,72 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     }
 
     @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+
+        switch (v.getId()) {
+            case R.id.back_home:
+                finish();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setClass(this, MainActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.btn_share:
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss",Locale.US);
+                String fname = "/sdcard/keenbrace/"+ sdf.format(new Date()) + ".png";
+
+                View view = v.getRootView();
+                view.setDrawingCacheEnabled(true);
+
+                view.buildDrawingCache();
+
+                Bitmap bitmap = view.getDrawingCache();
+
+                if(bitmap != null)
+                {
+                    //System.out.println("bitmap got!");
+                    //生成PNG文件
+                    try {
+                        FileOutputStream out = new FileOutputStream(fname);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    }catch (Exception e){
+
+                    }
+
+                    //String imagePath = Environment.getExternalStorageDirectory() + File.separator + "test.jpg";
+                    //由文件得到uri
+                    Uri imageUri = Uri.fromFile(new File(fname));
+                    Log.d("share", "uri:" + imageUri);  //输出：file:///storage/emulated/0/test.jpg
+
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                    shareIntent.setType("image/*");
+                    startActivity(Intent.createChooser(shareIntent, "Share to"));
+                }
+                break;
+
+                case R.id.btn_comment:
+                    intent.setClass(this, DiaryActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.btn_load:
+                    intent.setClass(this, InsightActivity.class);
+                    startActivity(intent);
+                    break;
+        }
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_record, menu);
         return true;
     }
 
-    /**
-     *
-            */
     private void init() {
 
 
@@ -249,11 +395,11 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     @Override
     public void onMapLoaded() {
         LatLngBounds bounds = new LatLngBounds.Builder()
-                .include(new LatLng(run_Result.getStartlatitude(), run_Result.getStartlongitude())).build();
+                .include(new LatLng(commonResult.getStartlatitude(), commonResult.getStartlongitude())).build();
         aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-        String latlngs = run_Result.getLatLngs();
-        double bakx = run_Result.getStartlatitude();
-        double baky = run_Result.getStartlongitude();
+        String latlngs = commonResult.getLatLngs();
+        double bakx = commonResult.getStartlatitude();
+        double baky = commonResult.getStartlongitude();
         Marker startMarker = aMap.addMarker(new MarkerOptions().icon(
                 BitmapDescriptorFactory
                         .fromResource(R.mipmap.start_map)).anchor(
@@ -266,7 +412,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
                         .fromResource(R.mipmap.end_map)).anchor(
                 (float) 0.5, (float) 1));
 
-        endtMarker.setPosition(new LatLng(run_Result.getEndlatitude(), run_Result.getEndlatitude()));
+        endtMarker.setPosition(new LatLng(commonResult.getEndlatitude(), commonResult.getEndlatitude()));
 
         if (latlngs != null && !"".equals(latlngs)) {
             String[] lng_str = latlngs.split(";");
@@ -308,13 +454,14 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
 
         Legend mLegend = mChart.getLegend(); // 设置比例图标示
 
-        mLegend.setTextColor(Color.rgb(107, 181, 77));// 颜色
+        mLegend.setTextColor(Color.GRAY);//(Color.rgb(107, 181, 77));// 颜色
         mLegend.setTextSize(12f);
 
         YAxis leftAxis = mChart.getAxisLeft();
         //leftAxis.setTextColor(Color.rgb(107, 181, 77));
         leftAxis.setLabelCount(5, false);
         leftAxis.setTextSize(12f);
+        leftAxis.setTextColor(Color.GRAY);
         leftAxis.setValueFormatter(new MyValueFormatter());
         leftAxis.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
@@ -344,9 +491,6 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
 
     int barValue = -1;
 
-    void addRecordBarEntry(int set) {
-        //addBarEntry(set, horChart_record);
-    }
 
     void addRepsBarEntry(int set){addBarEntry(set, repsNset_barChart);}
 
@@ -372,14 +516,14 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     public void initPieChart()
     {
         mPieChart.setUsePercentValues(true);
-        mPieChart.setDescription("测试饼图");
+        mPieChart.setDescription("");
 
         // 设置偏移量
         mPieChart.setExtraOffsets(5, 10, 5, 5);
         // 设置滑动减速摩擦系数
         mPieChart.setDragDecelerationFrictionCoef(0.95f);
 
-        mPieChart.setCenterText("测试饼图，中间文字");
+        //mPieChart.setCenterText("");
 
         /*
             设置饼图中心是否是空心的
@@ -418,8 +562,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         TreeMap<String, Float> data = new TreeMap<>();
         data.put("data1", 0.5f);
         data.put("data2", 0.3f);
-        data.put("data3", 0.1f);
-        data.put("data4", 0.1f);
+        data.put("data3", 0.2f);
         setData(data);
 
         // 设置动画
@@ -448,36 +591,107 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             yVals1.add(new Entry(value, i++));
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Election Results");
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
         // 设置饼图区块之间的距离
         dataSet.setSliceSpace(2f);
         dataSet.setSelectionShift(5f);
 
         // 添加颜色
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
+        //for (int c : ColorTemplate.VORDIPLOM_COLORS)
+          //  colors.add(c);
+        //for (int c : ColorTemplate.JOYFUL_COLORS)
+            //colors.add(c);
+        //for (int c : ColorTemplate.COLORFUL_COLORS)
+            //colors.add(c);
+        //for (int c : ColorTemplate.LIBERTY_COLORS)
+            //colors.add(c);
+        //for (int c : ColorTemplate.PASTEL_COLORS)
+            //colors.add(c);
         colors.add(ColorTemplate.getHoloBlue());
+        colors.add(Color.rgb(107, 181, 77));
         dataSet.setColors(colors);
         // dataSet.setSelectionShift(0f);
 
         PieData data1 = new PieData(xVals, dataSet);
         data1.setValueFormatter(new MyValueFormatter());
         data1.setValueTextSize(10f);
-        data1.setValueTextColor(Color.BLACK);
+        data1.setValueTextColor(Color.rgb(160, 160, 160));
         mPieChart.setData(data1);
 
         // undo all highlights
         mPieChart.highlightValues(null);
 
         mPieChart.invalidate();
+    }
+
+    public void initLineChart() {
+        lc_speed.setDescription("");
+        lc_speed.setHighlightEnabled(true);
+        lc_speed.setDrawGridBackground(false);
+        lc_speed.setDragEnabled(true);
+        lc_speed.setScaleEnabled(true);
+        XAxis xAxis = lc_speed.getXAxis();
+
+        xAxis.setPosition(XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setSpaceBetweenLabels(2);
+        YAxis leftAxis = lc_speed.getAxisLeft();
+        leftAxis.setLabelCount(5, false);
+        leftAxis.setAxisMaxValue(255);
+        leftAxis.setAxisMinValue(0);
+        leftAxis.setValueFormatter(new MyValueFormatter());
+        leftAxis.setTextColor(Color.GRAY);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setStartAtZero(true);
+        leftAxis.setDrawGridLines(false);
+        lc_speed.getAxisRight().setEnabled(false);
+        lc_speed.setData(new LineData());
+        lc_speed.invalidate();
+
+        Legend mLegend = lc_speed.getLegend(); // 设置比例图标示
+
+        mLegend.setTextColor(Color.GRAY);//(Color.rgb(107, 181, 77));// 下标颜色
+        mLegend.setTextSize(12f);
+    }
+
+    int linValue = -1;
+
+    public void addLineEntry(int speed) {
+        if (linValue == speed)
+            return;
+        linValue = speed;
+        LineData data = lc_speed.getData();
+        if (data != null) {
+
+            LineDataSet set = data.getDataSetByIndex(0);
+            if (set == null) {
+                set = createSet("");
+                data.addDataSet(set);
+            }
+            data.addXValue("");
+            data.addEntry(new Entry(speed, set.getEntryCount()), 0);
+            lc_speed.notifyDataSetChanged();
+            lc_speed.setVisibleXRangeMaximum(50);
+            lc_speed.moveViewTo(data.getXValCount() - 50, 0.0f,
+                    AxisDependency.LEFT);
+            lc_speed.invalidate();
+        }
+
+    }
+
+    private LineDataSet createSet(String title) {
+        LineDataSet set = new LineDataSet(null, "Speed");
+
+        set.setLineWidth(2f);
+        set.setCircleSize(5f);
+        set.setValueTextColor(Color.GRAY);
+        set.setDrawCircleHole(false);
+        set.setDrawValues(false);
+        set.setDrawFilled(true);
+        set.setDrawCircles(false);
+
+        return set;
     }
 }

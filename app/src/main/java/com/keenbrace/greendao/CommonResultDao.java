@@ -27,12 +27,33 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         public final static Property Type = new Property(1, Integer.class, "type", false, "TYPE");
         public final static Property Set = new Property(2, Integer.class, "set", false, "SET");
         public final static Property Reps = new Property(3, byte[].class, "reps", false, "REPS");
-        public final static Property Load = new Property(4, Integer.class, "load", false, "LOAD");
-        public final static Property RM = new Property(5, Integer.class, "RM", false, "RM");
-        public final static Property Duration = new Property(6, Long.class, "duration", false, "DURATION");
-        public final static Property RestTime = new Property(7, Long.class, "restTime", false, "REST_TIME");
-        public final static Property WasteTime = new Property(8, Long.class, "wasteTime", false, "WASTE_TIME");
-        public final static Property NewRecord = new Property(9, byte[].class, "newRecord", false, "NEW_RECORD");
+        public final static Property Rep_duration = new Property(4, byte[].class, "rep_duration", false, "REP_DURATION");
+        public final static Property Load = new Property(5, Integer.class, "load", false, "LOAD");
+        public final static Property RM = new Property(6, Integer.class, "RM", false, "RM");
+        public final static Property Duration = new Property(7, Long.class, "duration", false, "DURATION");
+        public final static Property RestTime = new Property(8, Long.class, "restTime", false, "REST_TIME");
+        public final static Property WasteTime = new Property(9, Long.class, "wasteTime", false, "WASTE_TIME");
+        public final static Property NewRecord = new Property(10, byte[].class, "newRecord", false, "NEW_RECORD");
+        public final static Property Mileage = new Property(11, Integer.class, "mileage", false, "MILEAGE");
+        public final static Property Speed = new Property(12, Integer.class, "speed", false, "SPEED");
+        public final static Property Cadence = new Property(13, Integer.class, "cadence", false, "CADENCE");
+        public final static Property SpeedPerKm = new Property(14, byte[].class, "speedPerKm", false, "SPEED_PER_KM");
+        public final static Property CadencePerKm = new Property(15, byte[].class, "cadencePerKm", false, "CADENCE_PER_KM");
+        public final static Property Stride = new Property(16, Integer.class, "stride", false, "STRIDE");
+        public final static Property KneePress = new Property(17, Integer.class, "kneePress", false, "KNEE_PRESS");
+        public final static Property Step = new Property(18, Long.class, "step", false, "STEP");
+        public final static Property VertOsci = new Property(19, Integer.class, "vertOsci", false, "VERT_OSCI");
+        public final static Property EmgDecrease = new Property(20, Integer.class, "emgDecrease", false, "EMG_DECREASE");
+        public final static Property Calorie = new Property(21, Long.class, "calorie", false, "CALORIE");
+        public final static Property Stability = new Property(22, Integer.class, "stability", false, "STABILITY");
+        public final static Property StartTime = new Property(23, Long.class, "startTime", false, "START_TIME");
+        public final static Property EndTime = new Property(24, Long.class, "endTime", false, "END_TIME");
+        public final static Property Startlatitude = new Property(25, Double.class, "startlatitude", false, "STARTLATITUDE");
+        public final static Property Startlongitude = new Property(26, Double.class, "startlongitude", false, "STARTLONGITUDE");
+        public final static Property Endlatitude = new Property(27, Double.class, "endlatitude", false, "ENDLATITUDE");
+        public final static Property Endlongitude = new Property(28, Double.class, "endlongitude", false, "ENDLONGITUDE");
+        public final static Property LatLngs = new Property(29, String.class, "latLngs", false, "LAT_LNGS");
+        public final static Property Notification = new Property(30, byte[].class, "notification", false, "NOTIFICATION");
     };
 
 
@@ -52,12 +73,33 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
                 "\"TYPE\" INTEGER," + // 1: type
                 "\"SET\" INTEGER," + // 2: set
                 "\"REPS\" BLOB," + // 3: reps
-                "\"LOAD\" INTEGER," + // 4: load
-                "\"RM\" INTEGER," + // 5: RM
-                "\"DURATION\" INTEGER," + // 6: duration
-                "\"REST_TIME\" INTEGER," + // 7: restTime
-                "\"WASTE_TIME\" INTEGER," + // 8: wasteTime
-                "\"NEW_RECORD\" BLOB);"); // 9: newRecord
+                "\"REP_DURATION\" BLOB," + // 4: rep_duration
+                "\"LOAD\" INTEGER," + // 5: load
+                "\"RM\" INTEGER," + // 6: RM
+                "\"DURATION\" INTEGER," + // 7: duration
+                "\"REST_TIME\" INTEGER," + // 8: restTime
+                "\"WASTE_TIME\" INTEGER," + // 9: wasteTime
+                "\"NEW_RECORD\" BLOB," + // 10: newRecord
+                "\"MILEAGE\" INTEGER," + // 11: mileage
+                "\"SPEED\" INTEGER," + // 12: speed
+                "\"CADENCE\" INTEGER," + // 13: cadence
+                "\"SPEED_PER_KM\" BLOB," + // 14: speedPerKm
+                "\"CADENCE_PER_KM\" BLOB," + // 15: cadencePerKm
+                "\"STRIDE\" INTEGER," + // 16: stride
+                "\"KNEE_PRESS\" INTEGER," + // 17: kneePress
+                "\"STEP\" INTEGER," + // 18: step
+                "\"VERT_OSCI\" INTEGER," + // 19: vertOsci
+                "\"EMG_DECREASE\" INTEGER," + // 20: emgDecrease
+                "\"CALORIE\" INTEGER," + // 21: calorie
+                "\"STABILITY\" INTEGER," + // 22: stability
+                "\"START_TIME\" INTEGER," + // 23: startTime
+                "\"END_TIME\" INTEGER," + // 24: endTime
+                "\"STARTLATITUDE\" REAL," + // 25: startlatitude
+                "\"STARTLONGITUDE\" REAL," + // 26: startlongitude
+                "\"ENDLATITUDE\" REAL," + // 27: endlatitude
+                "\"ENDLONGITUDE\" REAL," + // 28: endlongitude
+                "\"LAT_LNGS\" TEXT," + // 29: latLngs
+                "\"NOTIFICATION\" BLOB);"); // 30: notification
     }
 
     /** Drops the underlying database table. */
@@ -91,34 +133,139 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
             stmt.bindBlob(4, reps);
         }
  
+        byte[] rep_duration = entity.getRep_duration();
+        if (rep_duration != null) {
+            stmt.bindBlob(5, rep_duration);
+        }
+ 
         Integer load = entity.getLoad();
         if (load != null) {
-            stmt.bindLong(5, load);
+            stmt.bindLong(6, load);
         }
  
         Integer RM = entity.getRM();
         if (RM != null) {
-            stmt.bindLong(6, RM);
+            stmt.bindLong(7, RM);
         }
  
         Long duration = entity.getDuration();
         if (duration != null) {
-            stmt.bindLong(7, duration);
+            stmt.bindLong(8, duration);
         }
  
         Long restTime = entity.getRestTime();
         if (restTime != null) {
-            stmt.bindLong(8, restTime);
+            stmt.bindLong(9, restTime);
         }
  
         Long wasteTime = entity.getWasteTime();
         if (wasteTime != null) {
-            stmt.bindLong(9, wasteTime);
+            stmt.bindLong(10, wasteTime);
         }
  
         byte[] newRecord = entity.getNewRecord();
         if (newRecord != null) {
-            stmt.bindBlob(10, newRecord);
+            stmt.bindBlob(11, newRecord);
+        }
+ 
+        Integer mileage = entity.getMileage();
+        if (mileage != null) {
+            stmt.bindLong(12, mileage);
+        }
+ 
+        Integer speed = entity.getSpeed();
+        if (speed != null) {
+            stmt.bindLong(13, speed);
+        }
+ 
+        Integer cadence = entity.getCadence();
+        if (cadence != null) {
+            stmt.bindLong(14, cadence);
+        }
+ 
+        byte[] speedPerKm = entity.getSpeedPerKm();
+        if (speedPerKm != null) {
+            stmt.bindBlob(15, speedPerKm);
+        }
+ 
+        byte[] cadencePerKm = entity.getCadencePerKm();
+        if (cadencePerKm != null) {
+            stmt.bindBlob(16, cadencePerKm);
+        }
+ 
+        Integer stride = entity.getStride();
+        if (stride != null) {
+            stmt.bindLong(17, stride);
+        }
+ 
+        Integer kneePress = entity.getKneePress();
+        if (kneePress != null) {
+            stmt.bindLong(18, kneePress);
+        }
+ 
+        Long step = entity.getStep();
+        if (step != null) {
+            stmt.bindLong(19, step);
+        }
+ 
+        Integer vertOsci = entity.getVertOsci();
+        if (vertOsci != null) {
+            stmt.bindLong(20, vertOsci);
+        }
+ 
+        Integer emgDecrease = entity.getEmgDecrease();
+        if (emgDecrease != null) {
+            stmt.bindLong(21, emgDecrease);
+        }
+ 
+        Long calorie = entity.getCalorie();
+        if (calorie != null) {
+            stmt.bindLong(22, calorie);
+        }
+ 
+        Integer stability = entity.getStability();
+        if (stability != null) {
+            stmt.bindLong(23, stability);
+        }
+ 
+        Long startTime = entity.getStartTime();
+        if (startTime != null) {
+            stmt.bindLong(24, startTime);
+        }
+ 
+        Long endTime = entity.getEndTime();
+        if (endTime != null) {
+            stmt.bindLong(25, endTime);
+        }
+ 
+        Double startlatitude = entity.getStartlatitude();
+        if (startlatitude != null) {
+            stmt.bindDouble(26, startlatitude);
+        }
+ 
+        Double startlongitude = entity.getStartlongitude();
+        if (startlongitude != null) {
+            stmt.bindDouble(27, startlongitude);
+        }
+ 
+        Double endlatitude = entity.getEndlatitude();
+        if (endlatitude != null) {
+            stmt.bindDouble(28, endlatitude);
+        }
+ 
+        Double endlongitude = entity.getEndlongitude();
+        if (endlongitude != null) {
+            stmt.bindDouble(29, endlongitude);
+        }
+ 
+        String latLngs = entity.getLatLngs();
+        if (latLngs != null) {
+            stmt.bindString(30, latLngs);
+        }
+ 
+        byte[] notification = entity.getNotification();
+        if (notification != null) {
+            stmt.bindBlob(31, notification);
         }
     }
 
@@ -136,12 +283,33 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // type
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // set
             cursor.isNull(offset + 3) ? null : cursor.getBlob(offset + 3), // reps
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // load
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // RM
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // duration
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // restTime
-            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // wasteTime
-            cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9) // newRecord
+            cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4), // rep_duration
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // load
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // RM
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // duration
+            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // restTime
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // wasteTime
+            cursor.isNull(offset + 10) ? null : cursor.getBlob(offset + 10), // newRecord
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // mileage
+            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // speed
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // cadence
+            cursor.isNull(offset + 14) ? null : cursor.getBlob(offset + 14), // speedPerKm
+            cursor.isNull(offset + 15) ? null : cursor.getBlob(offset + 15), // cadencePerKm
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // stride
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // kneePress
+            cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18), // step
+            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // vertOsci
+            cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20), // emgDecrease
+            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // calorie
+            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // stability
+            cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23), // startTime
+            cursor.isNull(offset + 24) ? null : cursor.getLong(offset + 24), // endTime
+            cursor.isNull(offset + 25) ? null : cursor.getDouble(offset + 25), // startlatitude
+            cursor.isNull(offset + 26) ? null : cursor.getDouble(offset + 26), // startlongitude
+            cursor.isNull(offset + 27) ? null : cursor.getDouble(offset + 27), // endlatitude
+            cursor.isNull(offset + 28) ? null : cursor.getDouble(offset + 28), // endlongitude
+            cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29), // latLngs
+            cursor.isNull(offset + 30) ? null : cursor.getBlob(offset + 30) // notification
         );
         return entity;
     }
@@ -153,12 +321,33 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         entity.setType(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setSet(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setReps(cursor.isNull(offset + 3) ? null : cursor.getBlob(offset + 3));
-        entity.setLoad(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setRM(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setDuration(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
-        entity.setRestTime(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
-        entity.setWasteTime(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
-        entity.setNewRecord(cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9));
+        entity.setRep_duration(cursor.isNull(offset + 4) ? null : cursor.getBlob(offset + 4));
+        entity.setLoad(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setRM(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setDuration(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setRestTime(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
+        entity.setWasteTime(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setNewRecord(cursor.isNull(offset + 10) ? null : cursor.getBlob(offset + 10));
+        entity.setMileage(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setSpeed(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setCadence(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setSpeedPerKm(cursor.isNull(offset + 14) ? null : cursor.getBlob(offset + 14));
+        entity.setCadencePerKm(cursor.isNull(offset + 15) ? null : cursor.getBlob(offset + 15));
+        entity.setStride(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
+        entity.setKneePress(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setStep(cursor.isNull(offset + 18) ? null : cursor.getLong(offset + 18));
+        entity.setVertOsci(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
+        entity.setEmgDecrease(cursor.isNull(offset + 20) ? null : cursor.getInt(offset + 20));
+        entity.setCalorie(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
+        entity.setStability(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
+        entity.setStartTime(cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23));
+        entity.setEndTime(cursor.isNull(offset + 24) ? null : cursor.getLong(offset + 24));
+        entity.setStartlatitude(cursor.isNull(offset + 25) ? null : cursor.getDouble(offset + 25));
+        entity.setStartlongitude(cursor.isNull(offset + 26) ? null : cursor.getDouble(offset + 26));
+        entity.setEndlatitude(cursor.isNull(offset + 27) ? null : cursor.getDouble(offset + 27));
+        entity.setEndlongitude(cursor.isNull(offset + 28) ? null : cursor.getDouble(offset + 28));
+        entity.setLatLngs(cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29));
+        entity.setNotification(cursor.isNull(offset + 30) ? null : cursor.getBlob(offset + 30));
      }
     
     /** @inheritdoc */

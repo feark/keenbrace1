@@ -10,7 +10,6 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.keenbrace.greendao.User;
-import com.keenbrace.greendao.RunResult;
 import com.keenbrace.greendao.CommonResult;
 import com.keenbrace.greendao.SportsStructure;
 import com.keenbrace.greendao.ShortPlan;
@@ -18,7 +17,6 @@ import com.keenbrace.greendao.LongPlan;
 import com.keenbrace.greendao.HistoryRecord;
 
 import com.keenbrace.greendao.UserDao;
-import com.keenbrace.greendao.RunResultDao;
 import com.keenbrace.greendao.CommonResultDao;
 import com.keenbrace.greendao.SportsStructureDao;
 import com.keenbrace.greendao.ShortPlanDao;
@@ -35,7 +33,6 @@ import com.keenbrace.greendao.HistoryRecordDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig userDaoConfig;
-    private final DaoConfig runResultDaoConfig;
     private final DaoConfig commonResultDaoConfig;
     private final DaoConfig sportsStructureDaoConfig;
     private final DaoConfig shortPlanDaoConfig;
@@ -43,7 +40,6 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig historyRecordDaoConfig;
 
     private final UserDao userDao;
-    private final RunResultDao runResultDao;
     private final CommonResultDao commonResultDao;
     private final SportsStructureDao sportsStructureDao;
     private final ShortPlanDao shortPlanDao;
@@ -56,9 +52,6 @@ public class DaoSession extends AbstractDaoSession {
 
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
-
-        runResultDaoConfig = daoConfigMap.get(RunResultDao.class).clone();
-        runResultDaoConfig.initIdentityScope(type);
 
         commonResultDaoConfig = daoConfigMap.get(CommonResultDao.class).clone();
         commonResultDaoConfig.initIdentityScope(type);
@@ -76,7 +69,6 @@ public class DaoSession extends AbstractDaoSession {
         historyRecordDaoConfig.initIdentityScope(type);
 
         userDao = new UserDao(userDaoConfig, this);
-        runResultDao = new RunResultDao(runResultDaoConfig, this);
         commonResultDao = new CommonResultDao(commonResultDaoConfig, this);
         sportsStructureDao = new SportsStructureDao(sportsStructureDaoConfig, this);
         shortPlanDao = new ShortPlanDao(shortPlanDaoConfig, this);
@@ -84,7 +76,6 @@ public class DaoSession extends AbstractDaoSession {
         historyRecordDao = new HistoryRecordDao(historyRecordDaoConfig, this);
 
         registerDao(User.class, userDao);
-        registerDao(RunResult.class, runResultDao);
         registerDao(CommonResult.class, commonResultDao);
         registerDao(SportsStructure.class, sportsStructureDao);
         registerDao(ShortPlan.class, shortPlanDao);
@@ -94,7 +85,6 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         userDaoConfig.getIdentityScope().clear();
-        runResultDaoConfig.getIdentityScope().clear();
         commonResultDaoConfig.getIdentityScope().clear();
         sportsStructureDaoConfig.getIdentityScope().clear();
         shortPlanDaoConfig.getIdentityScope().clear();
@@ -104,10 +94,6 @@ public class DaoSession extends AbstractDaoSession {
 
     public UserDao getUserDao() {
         return userDao;
-    }
-
-    public RunResultDao getRunResultDao() {
-        return runResultDao;
     }
 
     public CommonResultDao getCommonResultDao() {

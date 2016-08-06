@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,15 +15,18 @@ import android.widget.Toast;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 import com.keenbrace.bean.Constant;
-import com.keenbrace.bean.RunResultDBHelper;
+import com.keenbrace.bean.UserDBHelper;
 import com.keenbrace.core.datepicker.picker.DatePicker;
 import com.keenbrace.core.datepicker.picker.NumberPicker;
 import com.keenbrace.core.datepicker.picker.OptionPicker;
 import com.keenbrace.core.datepicker.picker.SexPicker;
 import com.keenbrace.core.datepicker.util.DateUtils;
 import com.keenbrace.greendao.User;
+import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.util.DateUitl;
 import com.keenbrace.util.StringUtils;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -35,10 +39,13 @@ public class UserInfoActivity extends BaseActivity {
     int year,month,day;
     @Bind(R.id.tv_sex)
     TextView tvGender;
-    @Bind(R.id.tv_birthday)
-    TextView tvBirthday;
+    @Bind(R.id.tv_age)
+    TextView tvAge;
     @Bind(R.id.tv_name)
     TextView tvName;
+
+    @Bind(R.id.btn_calibrate)
+    ImageView btn_calibrate;
 
     @Bind(R.id.tv_email)
     TextView tvEmail;
@@ -99,16 +106,81 @@ public class UserInfoActivity extends BaseActivity {
         */
     }
 
+    public boolean check() {
+        String userName = tvName.getText().toString();
+        String weight = tvWeight.getText().toString();
+        String height = tvHeight.getText().toString();
+        String age = tvAge.getText().toString();
+        if ("".equals(userName) || "--".equals(userName)) {
+            Toast.makeText(this, "name is null!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if ("".equals(age) || "--".equals(age)) {
+            Toast.makeText(this, "age is null!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if ("".equals(weight) || "--".equals(weight)) {
+            Toast.makeText(this, "weight is null!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if ("".equals(height) || "--".equals(height)) {
+            Toast.makeText(this, "height is null!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    @OnClick(R.id.btn_calibrate)
+    void calibration(){
+        //发送校准信息
+        if (!check())
+            return;
+        byte[] data = new byte[4];
+        data[0] = 0x51;
+
+        if (sex == 1)
+            data[1] = 0x01;
+        else
+            data[1] = 0x00;
+
+        int w = 75;
+        int h = 175;
+        try {
+            w = Integer.parseInt(tvWeight.getText().toString());
+            h = Integer.parseInt(tvHeight.getText().toString());
+        } catch (Exception e) {
+        }
+        data[2] = (byte) w;
+        data[3] = (byte) h;
+
+        if (BluetoothConstant.mConnected && BluetoothConstant.mwriteCharacteristic != null) {
+
+            BluetoothConstant.mwriteCharacteristic.setValue(data);
+            BluetoothConstant.mBluetoothLeService
+                    .writeCharacteristic(BluetoothConstant.mwriteCharacteristic);
+            Toast.makeText(UserInfoActivity.this, "Calibration sucess!", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            Toast.makeText(UserInfoActivity.this, "Calibration Faild!", Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+    }
+
     @OnClick(R.id.rl_birthday)
     void pickBirthday() {
-        DatePicker picker = new DatePicker(this);
-        picker.setRange(1900, 2016);
+        NumberPicker picker = new NumberPicker(this);
+        picker.setRange(8, 100);
         if(year!=0&&month!=0&&day!=0)
-        picker.setSelectedItem(year, month, day);
-        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
+            picker.setSelectedItem("25");
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onDatePicked(String year, String month, String day) {
-                tvBirthday.setText(year + "-" + month + "-" + day);
+            public void onOptionPicked(String option) {
+                tvAge.setText(option);
             }
         });
         picker.show();
@@ -167,11 +239,12 @@ public class UserInfoActivity extends BaseActivity {
         users.setWeight(StringUtils.partToInt(tvWeight.getText().toString()));
         users.setHeight(StringUtils.partToInt(tvHeight.getText().toString()));
         users.setGender(gender);
-        users.setBirthday(com.keenbrace.core.utils.DateUtils.convertServerDate2(tvBirthday.getText() + " 00:00:00"));
+        //要换成年龄 leave
+        //users.setBirthday(com.keenbrace.core.utils.DateUtils.convertServerDate2(tvBirthday.getText() + " 00:00:00"));
         users.setNickname(tvName.getText().toString());
         users.setEmail(tvEmail.getText().toString());
         users.setMobile(tvMobile.getText().toString());
-        RunResultDBHelper.getInstance(this).upateUser(users);
+        UserDBHelper.getInstance(this).upateUser(users);
         finish();
     }
 
@@ -212,10 +285,12 @@ public class UserInfoActivity extends BaseActivity {
 
 
     }
+
     @Override
     protected boolean hasBackButton() {
         return true;
     }
+
     @Override
     protected boolean hasActionBar() {
         return true;
@@ -240,7 +315,8 @@ public class UserInfoActivity extends BaseActivity {
                     day=users.getBirthday().getDate();
 
             }
-            tvBirthday.setText(DateUitl.getDatetoString(Constant.user.getBirthday().getTime()));
+            //换成年龄
+            //tvBirthday.setText(DateUitl.getDatetoString(Constant.user.getBirthday().getTime()));
             tvEmail.setText(Constant.user.getEmail());
             tvMobile.setText(Constant.user.getMobile());
 

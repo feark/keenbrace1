@@ -18,7 +18,7 @@ public class GreenDaoGenerate {
 
         //addRunWaring(schema);
 
-        addRunResult(schema);
+        //addRunResult(schema);
 
         addCommonSportsResult(schema);
 
@@ -35,7 +35,7 @@ public class GreenDaoGenerate {
         new DaoGenerator().generateAll(schema,"/home/ken/workspace/GreenDao_gen");
     }
 
-    //User Info
+    //User Info Constant 全局
     private static void addUser(Schema schema){
 
         Entity user = schema.addEntity("User");
@@ -80,8 +80,8 @@ public class GreenDaoGenerate {
 
     }
 
-
-    //跑步的运动结果
+    //将其合并到CommonResult
+    //跑步的运动结果 每次开始运动就新建一个对象
     private static void addRunResult(Schema schema)
     {
         Entity user = schema.addEntity("RunResult");
@@ -94,12 +94,12 @@ public class GreenDaoGenerate {
         user.addByteArrayProperty("speedPerKm");
         user.addByteArrayProperty("cadencePerKm");
         user.addIntProperty("stride");
-        user.addIntProperty("kneePress");
+        user.addIntProperty("kneePress"); //**
         user.addLongProperty("step");
-        user.addIntProperty("vertOsci");
+        user.addIntProperty("vertOsci");  //**
         user.addIntProperty("emgDecrease");
         user.addLongProperty("calorie");
-        user.addIntProperty("stability");
+        user.addIntProperty("stability"); //**
 
         user.addLongProperty("startTime");
         user.addLongProperty("endTime");
@@ -111,11 +111,10 @@ public class GreenDaoGenerate {
 
         user.addStringProperty("latLngs");
         user.addByteArrayProperty("notification");  //出现过的提示
-
-
     }
 
-    //其他动作训练的运动结果
+    //所有运动的结果合并到一处
+    //其他动作训练的运动结果 每次开始运动就新建一个对象
     private static void addCommonSportsResult(Schema schema)
     {
         Entity user = schema.addEntity("CommonResult");
@@ -124,15 +123,40 @@ public class GreenDaoGenerate {
         user.addIntProperty("type");
         user.addIntProperty("set");
         user.addByteArrayProperty("reps");
+        user.addByteArrayProperty("rep_duration");
         user.addIntProperty("load");
         user.addIntProperty("RM");
         user.addLongProperty("duration");
         user.addLongProperty("restTime");
         user.addLongProperty("wasteTime");
         user.addByteArrayProperty("newRecord");
+
+        user.addIntProperty("mileage");
+        user.addIntProperty("speed");
+        user.addIntProperty("cadence");
+        user.addByteArrayProperty("speedPerKm");
+        user.addByteArrayProperty("cadencePerKm");
+        user.addIntProperty("stride");
+        user.addIntProperty("kneePress"); //**
+        user.addLongProperty("step");
+        user.addIntProperty("vertOsci");  //**
+        user.addIntProperty("emgDecrease");
+        user.addLongProperty("calorie");
+        user.addIntProperty("stability"); //**
+
+        user.addLongProperty("startTime");
+        user.addLongProperty("endTime");
+
+        user.addDoubleProperty("startlatitude");
+        user.addDoubleProperty("startlongitude");
+        user.addDoubleProperty("endlatitude");
+        user.addDoubleProperty("endlongitude");
+
+        user.addStringProperty("latLngs");
+        user.addByteArrayProperty("notification");  //出现过的提示
     }
 
-    //单项运动的数据结构
+    //单项运动的数据结构 这个需要用到类似 UtilConstants的HashMap方法管理  ++
     private static void addSportsStructure(Schema schema)
     {
         Entity user = schema.addEntity("SportsStructure");
@@ -155,11 +179,14 @@ public class GreenDaoGenerate {
         user.addLongProperty("bestTime");
     }
 
-    //运动计划 单次 单次里面就可能包含多种运动 一个训练天里就包含一个单次计划
+    //运动计划 单次 单次里面就可能包含多种运动 即包含多个SportsStructure的索引ID 一个训练天里就包含一个单次计划
+    //HashMap管理训练日的date
     private static void addShortPlan(Schema schema)
     {
         Entity user = schema.addEntity("ShortPlan");
         user.addIdProperty();
+
+        user.addStringProperty("loginName").unique();
 
         user.addIntProperty("singleTrainID");   //单次计划的ID号
 
@@ -182,11 +209,13 @@ public class GreenDaoGenerate {
 
     }
 
-    //运动计划 长期
+    //运动计划 长期 这个只需要update一个表即可
     private static void addLongPlan(Schema schema)
     {
         Entity user = schema.addEntity("LongPlan");
         user.addIdProperty();
+
+        user.addStringProperty("loginName").unique();
 
         user.addIntProperty("weekdays");    //一周几天练
         user.addDateProperty("start_date"); //训练计划的开始日期
@@ -199,11 +228,13 @@ public class GreenDaoGenerate {
         user.addByteArrayProperty("trainIDset"); //每一天都做哪一种单次计划
     }
 
-    //个人最佳和历史总计 包含身体各部分肌肉的运动频率
+    //个人最佳和历史总计 包含身体各部分肌肉的运动频率  update一个表
     private static void addHistoryRecord(Schema schema)
     {
         Entity user = schema.addEntity("HistoryRecord");
         user.addIdProperty();
+
+        user.addStringProperty("loginName").unique();
 
         //各部分训练次数
         user.addLongProperty("triceps");
@@ -244,6 +275,15 @@ public class GreenDaoGenerate {
         user.addLongProperty("mostCalorie");
 
         //每项运动应该有对应的一个历史最佳次数 最大负重 最长时间
+
+        //最近一周的训练与否
+        user.addBooleanProperty("mondayTrain");
+        user.addBooleanProperty("tuesdayTrain");
+        user.addBooleanProperty("wednesdayTrain");
+        user.addBooleanProperty("thursdayTrain");
+        user.addBooleanProperty("fridayTrain");
+        user.addBooleanProperty("saturdayTrain");
+        user.addBooleanProperty("sundayTrain");
 
     }
 

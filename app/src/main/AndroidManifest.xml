@@ -60,6 +60,13 @@
         <activity android:name=".activity.InputActivity" />
         <activity android:name=".activity.ViewRecordActivity" />
         <activity android:name=".activity.RecordActivity" />
+        <activity android:name=".activity.SportSelectActivity" />
+        <activity android:name=".activity.HistoryActivity" />
+        <activity android:name=".activity.PlanMainActivity" />
+        <activity android:name=".activity.StoreActivity" />
+        <activity android:name=".activity.DiaryActivity" />
+        <activity android:name=".activity.InsightActivity" />
+        <activity android:name=".activity.PicwallActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -71,7 +78,7 @@
             android:name="com.amap.api.v2.apikey"
             android:value="7bac16554e4339cfe0226e7992571c03" />
 
-        <activity android:name=".activity.PlanMainActivity"></activity>
+        <activity android:name=".activity.ProgressActivity"></activity>
     </application>
 
 </manifest>

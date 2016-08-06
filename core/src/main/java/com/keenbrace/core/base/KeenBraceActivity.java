@@ -20,6 +20,8 @@ import com.keenbrace.core.dialog.WaitDialog;
 import com.keenbrace.core.utils.StringUtils;
 import com.keenbrace.core.utils.WDevice;
 
+import java.util.Date;
+
 import butterknife.ButterKnife;
 
 
@@ -59,6 +61,7 @@ public abstract class KeenBraceActivity extends FragmentActivity
                             finish();
                         }
                     });
+
                 }
                 tv_title = (TextView) toolbar.findViewById(R.id.tv_title);
                 tv_title.setText(getActionBarTitle());

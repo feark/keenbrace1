@@ -6,22 +6,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.keenbrace.R;
 import com.keenbrace.activity.MainMenuActivity;
-import com.keenbrace.activity.RecordActivity;
-import com.keenbrace.activity.SportSelectActivity;
-import com.keenbrace.bean.RunResultDBHelper;
+import com.keenbrace.bean.CommonResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.core.utils.StringUtils;
-import com.keenbrace.core.utils.SystemTool;
-import com.keenbrace.AppConfig;
-import com.keenbrace.AppContext;
 import com.keenbrace.activity.MainActivity;
-import com.keenbrace.api.KeenbraceRetrofit;
 import com.keenbrace.base.BaseFragment;
-import com.keenbrace.greendao.RunResult;
-import com.keenbrace.util.StringUtil;
+import com.keenbrace.greendao.CommonResult;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,10 +22,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 
@@ -40,15 +29,23 @@ import rx.schedulers.Schedulers;
  * Created by zrq on 16/1/28.
  */
 public class MainFragment extends BaseFragment {
-
+    /*
     @Bind(R.id.tx_times)
     TextView tx_times;
     @Bind(R.id.tx_warnings)
     TextView tx_warnings;
     @Bind(R.id.tx_mileage)
     TextView tx_mileage;
+    */
     @Bind(R.id.tv_msg)
     TextView tv_msg;
+
+    @Bind(R.id.iv_outdoor)
+    ImageView iv_outdoor;
+    @Bind(R.id.iv_apparatus)
+    ImageView iv_apparatus;
+    @Bind(R.id.iv_bodyweight)
+    ImageView iv_bodyweight;
 
     @Bind(R.id.iv_run)
     ImageView iv_run;
@@ -75,11 +72,63 @@ public class MainFragment extends BaseFragment {
 
     @OnClick(R.id.ss_start)
     void onClickStart() {
-        //ss_start.setVisibility(View.INVISIBLE);
+        //ss_start.setVisibility(View.INVISIBLE);//ken 直接到主界面
         //start_loading.setVisibility(View.VISIBLE);
 
+        //ss_start.setBackgroundResource(R.mipmap.select_y);
+
+        Toast.makeText(super.getActivity(), "loading...",
+                Toast.LENGTH_SHORT).show();
+
+        //ss_start.setBackgroundResource(R.mipmap.select);
+
         readyGo(MainMenuActivity.class);
-       // ss_start.setVisibility(View.VISIBLE);
+
+    }
+
+    @OnClick (R.id.iv_outdoor)
+    void categoryOutdoor(){
+        tv_msg.setText("");
+
+        iv_outdoor.setImageResource(R.mipmap.outdoor_sports_y);
+        iv_apparatus.setImageResource(R.mipmap.facilities_sports);
+        iv_bodyweight.setImageResource(R.mipmap.non_apparatus_sports);
+
+        iv_run.setVisibility(View.VISIBLE);
+        iv_squat.setVisibility(View.GONE);
+        iv_dumbbell.setVisibility(View.GONE);
+        iv_plank.setVisibility(View.GONE);
+        iv_pullup.setVisibility(View.GONE);
+    }
+
+    @OnClick (R.id.iv_apparatus)
+    void categoryApparatus(){
+        tv_msg.setText("");
+
+        iv_outdoor.setImageResource(R.mipmap.outdoor_sports);
+        iv_apparatus.setImageResource(R.mipmap.facilities_sports_y);
+        iv_bodyweight.setImageResource(R.mipmap.non_apparatus_sports);
+
+        iv_run.setVisibility(View.GONE);
+        iv_squat.setVisibility(View.GONE);
+        iv_dumbbell.setVisibility(View.VISIBLE);
+        iv_plank.setVisibility(View.GONE);
+        iv_pullup.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick (R.id.iv_bodyweight)
+    void categoryBodyweight(){
+        tv_msg.setText("");
+
+        iv_outdoor.setImageResource(R.mipmap.outdoor_sports);
+        iv_apparatus.setImageResource(R.mipmap.facilities_sports);
+        iv_bodyweight.setImageResource(R.mipmap.non_apparatus_sports_y);
+
+        iv_run.setVisibility(View.GONE);
+        iv_squat.setVisibility(View.VISIBLE);
+        iv_dumbbell.setVisibility(View.GONE);
+        iv_plank.setVisibility(View.VISIBLE);
+        iv_pullup.setVisibility(View.GONE);
     }
 
     @OnClick (R.id.iv_more)
@@ -134,7 +183,7 @@ public class MainFragment extends BaseFragment {
 
         tv_msg.setText("Dumb Bell");
 
-        howtowear.setImageResource(R.mipmap.wear_on_arm);
+        howtowear.setImageResource(R.mipmap.wear_on_wrist);
 
         sport_type = UtilConstants.sport_dumbbell;
     }
@@ -168,7 +217,7 @@ public class MainFragment extends BaseFragment {
 
         tv_msg.setText("Pull Up");
 
-        howtowear.setImageResource(R.mipmap.wear_on_wrist);
+        howtowear.setImageResource(R.mipmap.wear_on_arm);
 
         sport_type = UtilConstants.sport_pullup;
     }
@@ -180,24 +229,33 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        //默认为跑步
-        iv_run.setImageResource(R.mipmap.main_run_y);
+        iv_outdoor.setImageResource(R.mipmap.outdoor_sports_y);
 
+        //默认为跑步
+        //iv_run.setImageResource(R.mipmap.main_run_y);
+        iv_run.setVisibility(View.VISIBLE);
+        iv_squat.setVisibility(View.GONE);
+        iv_dumbbell.setVisibility(View.GONE);
+        iv_plank.setVisibility(View.GONE);
+        iv_pullup.setVisibility(View.GONE);
+
+        ss_start.setBackgroundResource(R.mipmap.select);
     }
 
     @Override
     public void initData() {
-        List<RunResult> datas = RunResultDBHelper.getInstance(this.getActivity()).queryRunResult();
+        List<CommonResult> datas = CommonResultDBHelper.getInstance(this.getActivity()).queryCommonResult();
         if(datas==null)
             return;
-        HashMap<String, String> sumMap = RunResultDBHelper.getInstance(this.getActivity()).querySumBle();
+        HashMap<String, String> sumMap = CommonResultDBHelper.getInstance(this.getActivity()).querySumRunResult();
         int sumDistance = 0;
 
         //计算总里程
-        for (RunResult data : datas) {
+        for (CommonResult data : datas) {
             sumDistance += data.getMileage()==null?0:data.getMileage();
         }
 
+        /*
         tx_times.setText("" + datas.size());
 //		if (sumMap.get("timelength") != null)
 //			tx_times.setText( DateUitl.getDateFormat4(Integer.parseInt(sumMap.get("timelength"))));
@@ -211,6 +269,7 @@ public class MainFragment extends BaseFragment {
             tx_mileage.setText("" + StringUtil.formatToLC(sumMap.get("mileage")));
         else
             tx_mileage.setText("0");
+        */
     }
 
 

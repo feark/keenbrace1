@@ -7,7 +7,7 @@
     android:padding="0.0px">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/Upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -21,7 +21,7 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/textView1"
+        android:layout_toLeftOf="@+id/Upload"
         android:src="@mipmap/top_running" />
 
     <RelativeLayout
@@ -29,7 +29,8 @@
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/img_ble"
@@ -38,7 +39,8 @@
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@mipmap/ble_off" />
+            android:background="@mipmap/ble_off"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <RelativeLayout

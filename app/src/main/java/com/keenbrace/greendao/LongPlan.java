@@ -7,6 +7,7 @@ package com.keenbrace.greendao;
 public class LongPlan {
 
     private Long id;
+    private String loginName;
     private Integer weekdays;
     private java.util.Date start_date;
     private java.util.Date end_date;
@@ -23,8 +24,9 @@ public class LongPlan {
         this.id = id;
     }
 
-    public LongPlan(Long id, Integer weekdays, java.util.Date start_date, java.util.Date end_date, byte[] types, Integer times, byte[] interval, byte[] finishStatus, byte[] trainIDset) {
+    public LongPlan(Long id, String loginName, Integer weekdays, java.util.Date start_date, java.util.Date end_date, byte[] types, Integer times, byte[] interval, byte[] finishStatus, byte[] trainIDset) {
         this.id = id;
+        this.loginName = loginName;
         this.weekdays = weekdays;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -41,6 +43,14 @@ public class LongPlan {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public Integer getWeekdays() {

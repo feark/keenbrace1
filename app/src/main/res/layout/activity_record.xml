@@ -3,161 +3,10 @@
     xmlns:kb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5">
+    android:background="#e2e2e2">
 
 <include android:id="@+id/toolbar" layout="@layout/toolbar"></include>
-    <LinearLayout
-        android:id="@+id/relativeLayout1"
 
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="40dp">
-
-        <RelativeLayout
-            android:id="@+id/rl_showlists"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Detail"
-                android:textColor="#6DCAEC"
-                android:textSize="20dp" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="1px"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:background="#D1D2D4" />
-
-        <RelativeLayout
-            android:id="@+id/rl_showReports"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Analysis"
-                android:textColor="#3f4247"
-                android:textSize="20dp" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tx_line"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/relativeLayout1"
-        android:background="#D1D2D4" />
-
-    <LinearLayout
-        android:id="@+id/ll_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:visibility="gone"
-        android:layout_marginTop="5dp">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="sum"
-                android:textColor="#6DCAEC" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Distances"
-                android:textColor="#6DCAEC" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tx_sun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="alarms"
-                android:textColor="#6DCAEC" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_v"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_title"
-        android:visibility="gone"
-        android:layout_marginTop="5dp">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tx_sum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="0"
-                android:textColor="#3f4247" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tx_mileage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="0"
-                android:textColor="#3f4247" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tx_warnings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="0"
-                android:textColor="#3f4247" />
-        </RelativeLayout>
-    </LinearLayout>
     <com.keenbrace.widget.SwipeListView
         android:id="@+id/lv_data"
         android:layout_width="match_parent"
@@ -168,37 +17,13 @@
         android:divider="@null"
         android:drawSelectorOnTop="false"
         android:listSelector="@android:color/transparent"
-        android:layout_margin="@dimen/space_7"
         android:dividerHeight="@dimen/space_8"
-        android:layout_below="@+id/ll_v"
-        >
+        android:layout_marginLeft="@dimen/space_7"
+        android:layout_marginRight="@dimen/space_7"
+        android:layout_marginBottom="@dimen/space_7"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="5dp">
     </com.keenbrace.widget.SwipeListView>
 
-
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_v"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="320dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal" />
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
-                android:layout_width="320dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-    </ScrollView>
 
 </RelativeLayout>

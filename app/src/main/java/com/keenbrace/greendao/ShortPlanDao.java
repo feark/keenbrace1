@@ -24,20 +24,21 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property SingleTrainID = new Property(1, Integer.class, "singleTrainID", false, "SINGLE_TRAIN_ID");
-        public final static Property WarmUpTime = new Property(2, Integer.class, "warmUpTime", false, "WARM_UP_TIME");
-        public final static Property Distance = new Property(3, Integer.class, "distance", false, "DISTANCE");
-        public final static Property Section = new Property(4, Integer.class, "section", false, "SECTION");
-        public final static Property Content = new Property(5, byte[].class, "content", false, "CONTENT");
-        public final static Property Duration = new Property(6, byte[].class, "duration", false, "DURATION");
-        public final static Property Cadence = new Property(7, Integer.class, "cadence", false, "CADENCE");
-        public final static Property Speed = new Property(8, Integer.class, "speed", false, "SPEED");
-        public final static Property TotalTime = new Property(9, Integer.class, "totalTime", false, "TOTAL_TIME");
-        public final static Property Type = new Property(10, byte[].class, "type", false, "TYPE");
-        public final static Property Set = new Property(11, byte[].class, "set", false, "SET");
-        public final static Property Reps = new Property(12, byte[].class, "reps", false, "REPS");
-        public final static Property RestBtwType = new Property(13, Integer.class, "restBtwType", false, "REST_BTW_TYPE");
-        public final static Property RestBtwSet = new Property(14, byte[].class, "restBtwSet", false, "REST_BTW_SET");
+        public final static Property LoginName = new Property(1, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property SingleTrainID = new Property(2, Integer.class, "singleTrainID", false, "SINGLE_TRAIN_ID");
+        public final static Property WarmUpTime = new Property(3, Integer.class, "warmUpTime", false, "WARM_UP_TIME");
+        public final static Property Distance = new Property(4, Integer.class, "distance", false, "DISTANCE");
+        public final static Property Section = new Property(5, Integer.class, "section", false, "SECTION");
+        public final static Property Content = new Property(6, byte[].class, "content", false, "CONTENT");
+        public final static Property Duration = new Property(7, byte[].class, "duration", false, "DURATION");
+        public final static Property Cadence = new Property(8, Integer.class, "cadence", false, "CADENCE");
+        public final static Property Speed = new Property(9, Integer.class, "speed", false, "SPEED");
+        public final static Property TotalTime = new Property(10, Integer.class, "totalTime", false, "TOTAL_TIME");
+        public final static Property Type = new Property(11, byte[].class, "type", false, "TYPE");
+        public final static Property Set = new Property(12, byte[].class, "set", false, "SET");
+        public final static Property Reps = new Property(13, byte[].class, "reps", false, "REPS");
+        public final static Property RestBtwType = new Property(14, Integer.class, "restBtwType", false, "REST_BTW_TYPE");
+        public final static Property RestBtwSet = new Property(15, byte[].class, "restBtwSet", false, "REST_BTW_SET");
     };
 
 
@@ -54,20 +55,21 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SHORT_PLAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"SINGLE_TRAIN_ID\" INTEGER," + // 1: singleTrainID
-                "\"WARM_UP_TIME\" INTEGER," + // 2: warmUpTime
-                "\"DISTANCE\" INTEGER," + // 3: distance
-                "\"SECTION\" INTEGER," + // 4: section
-                "\"CONTENT\" BLOB," + // 5: content
-                "\"DURATION\" BLOB," + // 6: duration
-                "\"CADENCE\" INTEGER," + // 7: cadence
-                "\"SPEED\" INTEGER," + // 8: speed
-                "\"TOTAL_TIME\" INTEGER," + // 9: totalTime
-                "\"TYPE\" BLOB," + // 10: type
-                "\"SET\" BLOB," + // 11: set
-                "\"REPS\" BLOB," + // 12: reps
-                "\"REST_BTW_TYPE\" INTEGER," + // 13: restBtwType
-                "\"REST_BTW_SET\" BLOB);"); // 14: restBtwSet
+                "\"LOGIN_NAME\" TEXT UNIQUE ," + // 1: loginName
+                "\"SINGLE_TRAIN_ID\" INTEGER," + // 2: singleTrainID
+                "\"WARM_UP_TIME\" INTEGER," + // 3: warmUpTime
+                "\"DISTANCE\" INTEGER," + // 4: distance
+                "\"SECTION\" INTEGER," + // 5: section
+                "\"CONTENT\" BLOB," + // 6: content
+                "\"DURATION\" BLOB," + // 7: duration
+                "\"CADENCE\" INTEGER," + // 8: cadence
+                "\"SPEED\" INTEGER," + // 9: speed
+                "\"TOTAL_TIME\" INTEGER," + // 10: totalTime
+                "\"TYPE\" BLOB," + // 11: type
+                "\"SET\" BLOB," + // 12: set
+                "\"REPS\" BLOB," + // 13: reps
+                "\"REST_BTW_TYPE\" INTEGER," + // 14: restBtwType
+                "\"REST_BTW_SET\" BLOB);"); // 15: restBtwSet
     }
 
     /** Drops the underlying database table. */
@@ -86,74 +88,79 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
             stmt.bindLong(1, id);
         }
  
+        String loginName = entity.getLoginName();
+        if (loginName != null) {
+            stmt.bindString(2, loginName);
+        }
+ 
         Integer singleTrainID = entity.getSingleTrainID();
         if (singleTrainID != null) {
-            stmt.bindLong(2, singleTrainID);
+            stmt.bindLong(3, singleTrainID);
         }
  
         Integer warmUpTime = entity.getWarmUpTime();
         if (warmUpTime != null) {
-            stmt.bindLong(3, warmUpTime);
+            stmt.bindLong(4, warmUpTime);
         }
  
         Integer distance = entity.getDistance();
         if (distance != null) {
-            stmt.bindLong(4, distance);
+            stmt.bindLong(5, distance);
         }
  
         Integer section = entity.getSection();
         if (section != null) {
-            stmt.bindLong(5, section);
+            stmt.bindLong(6, section);
         }
  
         byte[] content = entity.getContent();
         if (content != null) {
-            stmt.bindBlob(6, content);
+            stmt.bindBlob(7, content);
         }
  
         byte[] duration = entity.getDuration();
         if (duration != null) {
-            stmt.bindBlob(7, duration);
+            stmt.bindBlob(8, duration);
         }
  
         Integer cadence = entity.getCadence();
         if (cadence != null) {
-            stmt.bindLong(8, cadence);
+            stmt.bindLong(9, cadence);
         }
  
         Integer speed = entity.getSpeed();
         if (speed != null) {
-            stmt.bindLong(9, speed);
+            stmt.bindLong(10, speed);
         }
  
         Integer totalTime = entity.getTotalTime();
         if (totalTime != null) {
-            stmt.bindLong(10, totalTime);
+            stmt.bindLong(11, totalTime);
         }
  
         byte[] type = entity.getType();
         if (type != null) {
-            stmt.bindBlob(11, type);
+            stmt.bindBlob(12, type);
         }
  
         byte[] set = entity.getSet();
         if (set != null) {
-            stmt.bindBlob(12, set);
+            stmt.bindBlob(13, set);
         }
  
         byte[] reps = entity.getReps();
         if (reps != null) {
-            stmt.bindBlob(13, reps);
+            stmt.bindBlob(14, reps);
         }
  
         Integer restBtwType = entity.getRestBtwType();
         if (restBtwType != null) {
-            stmt.bindLong(14, restBtwType);
+            stmt.bindLong(15, restBtwType);
         }
  
         byte[] restBtwSet = entity.getRestBtwSet();
         if (restBtwSet != null) {
-            stmt.bindBlob(15, restBtwSet);
+            stmt.bindBlob(16, restBtwSet);
         }
     }
 
@@ -168,20 +175,21 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     public ShortPlan readEntity(Cursor cursor, int offset) {
         ShortPlan entity = new ShortPlan( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // singleTrainID
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // warmUpTime
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // distance
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // section
-            cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5), // content
-            cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6), // duration
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // cadence
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // speed
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // totalTime
-            cursor.isNull(offset + 10) ? null : cursor.getBlob(offset + 10), // type
-            cursor.isNull(offset + 11) ? null : cursor.getBlob(offset + 11), // set
-            cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12), // reps
-            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // restBtwType
-            cursor.isNull(offset + 14) ? null : cursor.getBlob(offset + 14) // restBtwSet
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // loginName
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // singleTrainID
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // warmUpTime
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // distance
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // section
+            cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6), // content
+            cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7), // duration
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // cadence
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // speed
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // totalTime
+            cursor.isNull(offset + 11) ? null : cursor.getBlob(offset + 11), // type
+            cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12), // set
+            cursor.isNull(offset + 13) ? null : cursor.getBlob(offset + 13), // reps
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // restBtwType
+            cursor.isNull(offset + 15) ? null : cursor.getBlob(offset + 15) // restBtwSet
         );
         return entity;
     }
@@ -190,20 +198,21 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     @Override
     public void readEntity(Cursor cursor, ShortPlan entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setSingleTrainID(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setWarmUpTime(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setDistance(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setSection(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setContent(cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5));
-        entity.setDuration(cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6));
-        entity.setCadence(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setSpeed(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setTotalTime(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setType(cursor.isNull(offset + 10) ? null : cursor.getBlob(offset + 10));
-        entity.setSet(cursor.isNull(offset + 11) ? null : cursor.getBlob(offset + 11));
-        entity.setReps(cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12));
-        entity.setRestBtwType(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
-        entity.setRestBtwSet(cursor.isNull(offset + 14) ? null : cursor.getBlob(offset + 14));
+        entity.setLoginName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSingleTrainID(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setWarmUpTime(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setDistance(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setSection(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setContent(cursor.isNull(offset + 6) ? null : cursor.getBlob(offset + 6));
+        entity.setDuration(cursor.isNull(offset + 7) ? null : cursor.getBlob(offset + 7));
+        entity.setCadence(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setSpeed(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setTotalTime(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setType(cursor.isNull(offset + 11) ? null : cursor.getBlob(offset + 11));
+        entity.setSet(cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12));
+        entity.setReps(cursor.isNull(offset + 13) ? null : cursor.getBlob(offset + 13));
+        entity.setRestBtwType(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setRestBtwSet(cursor.isNull(offset + 15) ? null : cursor.getBlob(offset + 15));
      }
     
     /** @inheritdoc */

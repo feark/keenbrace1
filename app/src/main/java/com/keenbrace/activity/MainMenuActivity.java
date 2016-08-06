@@ -48,12 +48,12 @@ import android.widget.Toast;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.keenbrace.R;
-import com.keenbrace.adapter.LeDeviceListAdapter;
 import com.keenbrace.base.BaseActivity;
-import com.keenbrace.bean.RunResultDBHelper;
+import com.keenbrace.bean.CommonResultDBHelper;
 import com.keenbrace.constants.UtilConstants;
-import com.keenbrace.greendao.RunResult;
-import com.keenbrace.greendao.RunResultDao;
+import com.keenbrace.core.base.KeenbraceApplication;
+import com.keenbrace.greendao.CommonResult;
+import com.keenbrace.greendao.CommonResultDao;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
 import com.keenbrace.util.ByteHelp;
@@ -64,6 +64,9 @@ import com.keenbrace.widget.GifView;
 
 public class MainMenuActivity extends BaseActivity implements
         OnClickListener, OnLongClickListener,TextToSpeech.OnInitListener {
+
+    KeenbraceApplication application;
+
     FragmentRun fragmentHistory;
     FragmentMapGoogle fragmentMapGoogle;
     FragmentMap fragmentMap;
@@ -88,9 +91,7 @@ public class MainMenuActivity extends BaseActivity implements
     ImageView switch2map;
     ImageView switch2runner;
 
-    int nowIndex = 0;
-    ProgressDialog progressDialog;
-    LeDeviceListAdapter leDeviceListAdapter;
+
     TextView tv_nowday, tv_nowtime;
     private TransferUtility transferUtility;
     int wrCount = 0;
@@ -102,12 +103,13 @@ public class MainMenuActivity extends BaseActivity implements
     private final static int ACQ_TASK_TIMER_PERIOD = 200;
     boolean isAdd = false;
     long bakjldTimes = 0;
-    int jldTimes;
     private TextToSpeech tts;
+
     @Override
     protected boolean hasBackButton() {
         return true;
     }
+
     @Override
     protected boolean hasActionBar() {
         return true;
@@ -116,16 +118,19 @@ public class MainMenuActivity extends BaseActivity implements
     protected int getLayoutId() {
         return R.layout.activity_manager;
     }
+
     @Override
     public void initView() {
+        /*
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                openDeives();
+                //openDeives();
                 return true;
             }
         });
+        */
 
         //初始化后10秒检查有没有运动
         delay_times = 20;
@@ -208,16 +213,6 @@ public class MainMenuActivity extends BaseActivity implements
             switch2runner.setVisibility(View.VISIBLE);
         }
 
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("");
-
-        // mypDialog.setIcon(R.mipmap.w);
-        progressDialog.setIndeterminate(false);
-        progressDialog.setCancelable(true);
-        leDeviceListAdapter = new LeDeviceListAdapter(this);
-
         tv_nowday = (TextView) findViewById(R.id.tv_nowday);
         tv_nowtime = (TextView) findViewById(R.id.tv_nowtime);
         tv_nowtime.setText(new Date().toGMTString());
@@ -251,12 +246,41 @@ public class MainMenuActivity extends BaseActivity implements
     }
 
 
+    public void checkBleConnect()
+    {
+        Date d = new Date();
+        if (BluetoothConstant.mConnected) {
+            if (BluetoothConstant.mBluetoothLeService != null
+                    && BluetoothConstant.mwriteCharacteristic != null) {
+                //BluetoothConstant.mBluetoothLeService.startRun(1, (byte)sport_type, d);
+                handler.sendEmptyMessageDelayed(199, 1000);
+                handler.sendEmptyMessage(5);
+                updateTimer = new Timer();
+                updateUiTimerTask = new UpdateUiTimerTask();
+                updateTimer.schedule(updateUiTimerTask, 0,
+                        ACQ_TASK_TIMER_PERIOD);
+                bakjldTimes = System.currentTimeMillis();
+            }
+
+        }
+        else{
+            Toast.makeText(
+                    this,
+                    "You are not connected to the device, will not be able to monitor the status of your movement",
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
 
     File file;
     FileOutputStream fos = null;
     long bak;
     boolean isStartRun;
-    RunResult runResult;
+
+    //不是跑步的时候用这个  ken
+    CommonResult commonResult;
 
     @Override
     public void onClick(View v) {
@@ -293,7 +317,7 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                 }
                 else {
-                    //不是跑步时作为下一种运动的按钮
+                    //不是跑步时作为下一种运动的按钮 leave
 
                 }
                 break;
@@ -319,7 +343,7 @@ public class MainMenuActivity extends BaseActivity implements
                     changeFragment(this, fragmentHistory, null, null);
                 }
                 else{
-                    
+                    //上一種運动 leave
                 }
                 break;
 
@@ -328,27 +352,8 @@ public class MainMenuActivity extends BaseActivity implements
                 btn_start.setVisibility(View.GONE);
                 btn_pause.setVisibility(View.VISIBLE);
                 handler.post(runnable);
-                Date d = new Date();
 
-                if (BluetoothConstant.mConnected) {
-                    if (BluetoothConstant.mBluetoothLeService != null
-                            && BluetoothConstant.mwriteCharacteristic != null) {
-                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)sport_type, d);
-                        handler.sendEmptyMessageDelayed(199, 1000);
-                        handler.sendEmptyMessage(5);
-                        updateTimer = new Timer();
-                        updateUiTimerTask = new UpdateUiTimerTask();
-                        updateTimer.schedule(updateUiTimerTask, 0,
-                                ACQ_TASK_TIMER_PERIOD);
-                        bakjldTimes = System.currentTimeMillis();
-                    }
-
-                } else {
-                    Toast.makeText(
-                            this,
-                            "You are not connected to the device, will not be able to monitor the status of your movement",
-                            Toast.LENGTH_SHORT).show();
-                }
+                checkBleConnect();
 
                 if (file == null)
                     file = new File(StringUtil.ROOT_FILEPATH + File.separator + bak
@@ -362,31 +367,35 @@ public class MainMenuActivity extends BaseActivity implements
                 } catch (FileNotFoundException e) {
                 }
 
-                isStartRun = true;
-                runResult = new RunResult();
-
-                runResult.setStartTime(d.getTime());
-                runResult.setDuration(new Long(0L));
-                if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-                    runResult.setStartlatitude(fragmentMap.getLatitude());
-                    runResult.setStartlongitude(fragmentMap.getLongitude());
-                    runResult.setEndlatitude(fragmentMap.getLatitude());
-                    runResult.setEndlongitude(fragmentMap.getLongitude());
-                }else {
-                    runResult.setStartlatitude(fragmentMapGoogle.getLatitude());
-                    runResult.setStartlongitude(fragmentMapGoogle.getLongitude());
-                    runResult.setEndlatitude(fragmentMapGoogle.getLatitude());
-                    runResult.setEndlongitude(fragmentMapGoogle.getLongitude());
+                //已经开始运动后就不说这句
+                if(isStartRun == false) {
+                    tts.speak("beginning workout",
+                            TextToSpeech.QUEUE_FLUSH, null);
                 }
 
-                runResult.setId(RunResultDBHelper.getInstance(this).insertKeenBrace(runResult));
+                isStartRun = true;
+                commonResult = new CommonResult();
+                Date d = new Date();
+
+                commonResult.setStartTime(d.getTime());
+                commonResult.setDuration(new Long(0L));
+                if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
+                    commonResult.setStartlatitude(fragmentMap.getLatitude());
+                    commonResult.setStartlongitude(fragmentMap.getLongitude());
+                    commonResult.setEndlatitude(fragmentMap.getLatitude());
+                    commonResult.setEndlongitude(fragmentMap.getLongitude());
+                }else {
+                    commonResult.setStartlatitude(fragmentMapGoogle.getLatitude());
+                    commonResult.setStartlongitude(fragmentMapGoogle.getLongitude());
+                    commonResult.setEndlatitude(fragmentMapGoogle.getLatitude());
+                    commonResult.setEndlongitude(fragmentMapGoogle.getLongitude());
+                }
+
+                //在数据库中插入一个新的项 ken 注意ID是在插入数据库时生成的
+                commonResult.setId(CommonResultDBHelper.getInstance(this).insertCommonResult(commonResult));
                 if (fragmentHistory != null)
-                    fragmentHistory.updateBleId(runResult.getId());
-                /*
-                RunWaring rw = new RunWaring();
-                rw.setIndex(0+"");
-                rw.setCreateTime(System.currentTimeMillis());
-                */
+                    fragmentHistory.updateBleId(commonResult.getId());
+
                 break;
 
             case R.id.btn_pause:
@@ -397,9 +406,7 @@ public class MainMenuActivity extends BaseActivity implements
                 btn_pause.setVisibility(View.GONE);
                 break;
 
-            case R.id.btn_bluetooth:
-                openDeives();
-                break;
+
             case R.id.btn_back:
                 showTips();
                 break;
@@ -413,6 +420,7 @@ public class MainMenuActivity extends BaseActivity implements
                         TextToSpeech.QUEUE_FLUSH, null);
                 continueRun();
                 break;
+
         }
 
     }
@@ -421,12 +429,17 @@ public class MainMenuActivity extends BaseActivity implements
 
         @Override
         public void run() {
-            handler.sendEmptyMessage(19);
+            if(sport_type == UtilConstants.sport_running) {
+                handler.sendEmptyMessage(19);
+            }
+
             handler.postDelayed(runnable, 1000);
 
         }
 
     };
+
+
     int blue = 0, yellow = 0, red = 0;
     long mins = 0;
     int[] steprates = new int[]{0, 0, 0, 0, 0};
@@ -438,6 +451,7 @@ public class MainMenuActivity extends BaseActivity implements
     int countdown_times;
     String countdown_str;
     //int test_reps = 1;
+    int indiCountdown = 100;
 
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -448,6 +462,8 @@ public class MainMenuActivity extends BaseActivity implements
                         //每秒检查一次有没有在运动
                         delay_times--;
                         handler.sendEmptyMessageDelayed(1, 1000);
+
+
 
                         /*  testing
                         String s;
@@ -465,8 +481,10 @@ public class MainMenuActivity extends BaseActivity implements
                     {
                         //检查是否有运动 没运动就语音提示一下
                         if(!isAnyMove) {
+                            /*
                             tts.speak((String) getText(R.string.tx_running_welcome),
                                     TextToSpeech.QUEUE_FLUSH, null);
+                            */
                         }
                     }
                     break;
@@ -474,8 +492,12 @@ public class MainMenuActivity extends BaseActivity implements
                 //检测到有动作 播放动画
                 case 2:
                     if (mLastFragment == fragmentHistory) {
-
-                        fragmentHistory.updateAnimation(anino);
+                        if(sport_type == UtilConstants.sport_running) {
+                            fragmentHistory.updateAnimation(anino);
+                        }
+                        else {
+                            fragmentHistory.updateAnimation(0);
+                        }
                     }
                     break;
 
@@ -503,14 +525,16 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 5:
-                    //用这种形式实现循环
+                    //用这种形式实现自循环
                     if (isStartRun) {
                         int lc_gap = distance - distance_old;
                         int speed = lc_gap / 5;
+                        //用这种方法更新速度 如果地图不动值就是错的 leave
                         fragmentMap.updateSpeed(speed * 3600);
                         fragmentHistory.updateSpeed(speed * 3600);
                         distance_old = distance;
                         handler.sendEmptyMessageDelayed(5, 5000);
+                        //打印调试信息
                         com.umeng.socialize.utils.Log.e("speed-------------------"
                                 + speed);
                     }
@@ -539,24 +563,17 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                     break;
 
-                case 7:
+                case 7: //测试用 leave
                     if (mLastFragment == fragmentHistory) {
                         fragmentHistory.updateParaBox(reps, 0, 0, 0);
                     }
                     break;
+
                 case 8:
-                    //这里是将TAB隐藏
-                    /*
-                    ly_tab.setBackgroundColor(Color.argb(alagn,61,196,233));
-                    if(alagn>0) {
-                        handler.sendEmptyMessageDelayed(8, 1000);
-                        alagn=alagn-20;
-                    }else
-                    {
-                        ly_tab.setVisibility(View.GONE);
-                        alagn=255;
+                    //更新跑步以外运动的参数框
+                    if (mLastFragment == fragmentHistory) {
+                        fragmentHistory.updateParaBox(reps, muscleDec, commDuration, stability);
                     }
-                    */
                     break;
 
                 case 19:
@@ -617,10 +634,10 @@ public class MainMenuActivity extends BaseActivity implements
                     }
 
                     old_steprate = steprate;
-                    if (steprate < 140 && steprate > 100) {
+                    if (steprate < 150) {
                         //if (rw8 != null) {
                         //步频太低
-                        if (step_history[3] != step_history[0])
+                        if (steprate > 0)
                         {
                             straight_spine++;
 
@@ -659,26 +676,39 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                     else if(steprate == 0)
                     {
+                        //站着没动 显示停止的小人
                         anino = 12;
 
                         indiCaseCount[anino]++;
 
-                        if(indiCaseCount[anino] > 3) {
+                        if(indiCaseCount[anino] > 5) {
                             handler.sendEmptyMessage(2);
 
                             indiCaseCount[anino] = 0;
                         }
                     }
-                    else
+                    else if(steprate > 150)
                     {
-                        anino = 10;
+                        if(anino != 10)
+                        {
+                            indiCountdown--;
 
-                        indiCaseCount[anino]++;
+                            if(indiCountdown == 0)
+                            {
+                                anino = 10;
+                                indiCountdown = 100;
+                            }
+                        }
+                        else {
+                            anino = 10;
 
-                        if(indiCaseCount[anino] > 3) {
-                            handler.sendEmptyMessage(2);
+                            indiCaseCount[anino]++;
 
-                            indiCaseCount[anino] = 0;
+                            if (indiCaseCount[anino] > 3) {
+                                handler.sendEmptyMessage(2);
+
+                                indiCaseCount[anino] = 0;
+                            }
                         }
                     }
 
@@ -704,17 +734,28 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 199:
-                    int ss = 0;
+                    int st = 0;
                     if(sport_type == UtilConstants.sport_running)
-                        ss = 0;
+                        st = 0;
 
                     if(sport_type == UtilConstants.sport_squat)
-                        ss = 3;
+                        st = 3;
+
+                    if(sport_type == UtilConstants.sport_pullup)
+                        st = 5;
+
+                    if(sport_type == UtilConstants.sport_dumbbell)
+                        st = 6;
+
+                    if(sport_type == UtilConstants.sport_plank)
+                        st = 9;
 
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null)
-                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)ss,
+                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)st,
                                 new Date());
+
+                    application.setIsSendBleEnd(false);
                     break;
             }
         }
@@ -760,70 +801,16 @@ public class MainMenuActivity extends BaseActivity implements
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (BluetoothLeService.BLEAPI_GATT_FOUNDDEVICE.equals(action)) {
-                BluetoothDevice curBleDevice = (BluetoothDevice) intent
-                        .getExtras().get("device");
-                String strMacAddress = (String) intent.getExtras().get(
-                        "macaddress");
-                scanAndCheckDevice(curBleDevice, strMacAddress);
 
-            } else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                Toast.makeText(MainMenuActivity.this, "device connected",
-                        Toast.LENGTH_SHORT).show();
-                BluetoothConstant.mConnected = true;
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-                    .equals(action)) {
-                BluetoothConstant.mConnected = false;
-
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Toast.makeText(MainMenuActivity.this, "device disconnected",
-                        Toast.LENGTH_SHORT).show();
-                BluetoothConstant.mBluetoothLeService.close();
-                BluetoothConstant.mConnected = false;
-                BluetoothConstant.mdevice = null;
-                handler.sendEmptyMessage(1);
-
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
-                    .equals(action)) {
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Toast.makeText(MainMenuActivity.this, "services disovered",
-                        Toast.LENGTH_SHORT).show();
-                if (isStartRun) {
-                    Date d = new Date();
-                    BluetoothConstant.mBluetoothLeService.startRun(1,(byte)sport_type, d);
-                }
-                handler.sendEmptyMessage(2);
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                //在这个位置接收蓝牙数据 ken
-                data = intent
-                        .getByteArrayExtra(BluetoothLeService.EXTRA_DATA_BYTE);
-
-                if (tgt == 0 && isAdd) {
-                    isAdd = false;
-                    jldTimes = (int) (System.currentTimeMillis() - bakjldTimes);
-                    handler.sendEmptyMessage(7);
-                }
-                if (!isAdd & tgt == 100) {
-                    isAdd = true;
-                    bakjldTimes = System.currentTimeMillis();
-                }
-            }
-        }
-    };
     private final Object m_CritObj = new Object();
 
     private class UpdateUiTimerTask extends TimerTask {
         @Override
         public void run() {
             synchronized (m_CritObj) {
+                data = application.getBleData();
                 if (data != null && data.length > 0)
-                    //在这个updateView的函数里处理data ken
+                    //解释数据包 ken
                     CheckPacket();
             }
 
@@ -836,7 +823,7 @@ public class MainMenuActivity extends BaseActivity implements
     public void onResume() {
         super.onResume();
         tts = new TextToSpeech(this, this);
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        //registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
     }
 
@@ -844,43 +831,11 @@ public class MainMenuActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         tts.shutdown();
-        unregisterReceiver(mGattUpdateReceiver);
+        //unregisterReceiver(mGattUpdateReceiver);
     }
 
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter
-                .addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        intentFilter.addAction(BluetoothLeService.BLEAPI_GATT_FOUNDDEVICE);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        //intentFilter.addAction(FragmentMessage.SHOW_MODEL);
-        return intentFilter;
-    }
 
-    public void scanAndCheckDevice(BluetoothDevice device, String strMacAddress) {
-        if (null == device || null == device.getAddress()) {
-            return;
-        }
-        leDeviceListAdapter.addDevice(device);
 
-        if (BluetoothConstant.mdevice == null) {
-            BluetoothConstant.mdevice = device;
-            final boolean result = BluetoothConstant.mBluetoothLeService
-                    .connect(device.getAddress());
-            progressDialog.setMessage("");
-            progressDialog.show();
-        } else {
-            if (!BluetoothConstant.mConnected) {
-                BluetoothConstant.mBluetoothLeService.connect(device
-                        .getAddress());
-                progressDialog.setMessage("");
-                progressDialog.show();
-            }
-        }
-
-    }
 
     int bpi = 0;
     int bsi = 0;
@@ -917,14 +872,14 @@ public class MainMenuActivity extends BaseActivity implements
 
     void updateView() {
 
-        step = ByteHelp.ByteArrayToShort(new byte[]{data[9], data[10]});    //步数
-
         int z = ByteHelp.ByteArrayToShort(new byte[]{data[1], data[2]});
         int h = ByteHelp.ByteArrayToShort(new byte[]{data[3], data[4]});
         pressure = (int) Math.sqrt(z * z + h * h);
 
-        int xuzhuan = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});    //旋转
-        int fanzhuan = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});   //翻转
+        int twist = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});    //旋转
+        int flip = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});   //翻转
+
+        step = ByteHelp.ByteArrayToShort(new byte[]{data[9], data[10]});    //步数
 
         int iangle = ByteHelp.byteArrayToInt(new byte[]{data[11], data[12]});   //夹角
 
@@ -954,11 +909,16 @@ public class MainMenuActivity extends BaseActivity implements
             legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 3) / 3.74);
         }
 
-        //
-        int stride_dis = (int) (legLen * Math.sin((stride / 2) * PI / 180) * 2);
+        //每步的距离
+        int stride_dis = (int) (legLen * Math.sin((stride / 2) * PI / 180));
 
-        //
+        //步数不能出现负数
         if (step < 0) {
+            step = old_step;
+        }
+
+        if((step - old_step) > 5)
+        {
             step = old_step;
         }
 
@@ -972,7 +932,6 @@ public class MainMenuActivity extends BaseActivity implements
         }
 
 
-
         if (power < 10) {
             power_valid = 10;
         }
@@ -982,16 +941,20 @@ public class MainMenuActivity extends BaseActivity implements
         }
 
 
-        if (stride > 140 && steprate > 120) {
+        if (stride > 130 && steprate > 120) {
             if (step_history[3] != step_history[0]) {
                 warn_lock = 1;
-                //步幅太大
-                big_stride_count++;
+
+                //步幅太大 达到危险
+                if(stride > 150) {
+                    big_stride_count++;
+                }
+
                 if(big_stride_count < 5) {
                     anino = 2;
                     indiCaseCount[anino]++;
 
-                    if(indiCaseCount[anino] > 10) {
+                    if(indiCaseCount[anino] > 30) {
                         //语音
                         updateVoice(R.string.tx_decrease_stride_l);
                         //动画和提示框信息
@@ -1005,7 +968,7 @@ public class MainMenuActivity extends BaseActivity implements
                     anino = 8;
                     indiCaseCount[anino]++;
 
-                    if(indiCaseCount[anino] > 10) {
+                    if(indiCaseCount[anino] > 60) {
                         //语音
                         updateVoice(R.string.tx_land_underneath);
                         //动画和提示框信息
@@ -1047,21 +1010,24 @@ public class MainMenuActivity extends BaseActivity implements
             if (tgt == 100) {
                 count++;
 
-                if (count >= 4 && steprate > 130) {
-                    anino = 6;
+                if (count >= 10 && steprate > 130) {
+                    if(steprate < 160) {
+                        anino = 6;
 
-                    indiCaseCount[anino]++;
+                        indiCaseCount[anino]++;
 
-                    if(indiCaseCount[anino] > 10) {
-                        //触地时间过长
-                        updateVoice(R.string.tx_lift_faster);
+                        if (indiCaseCount[anino] > 15) {
+                            //触地时间过长
+                            updateVoice(R.string.tx_increase_cadence);
 
-                        handler.sendEmptyMessage(2);
-                        indiCaseCount[anino] = 0;
+                            handler.sendEmptyMessage(2);
+                            indiCaseCount[anino] = 0;
+                        }
+
                     }
                 }
 
-
+                /* 暂没有有效得到iangle夹角的方法 不报这个
                 if (iangle > 130 && steprate < 180) {
                     anino = 7;
 
@@ -1077,15 +1043,15 @@ public class MainMenuActivity extends BaseActivity implements
                         indiCaseCount[anino] = 0;
                     }
                 }
+                */
 
-
-                if (pressure > UtilConstants.Weight * 9.8f * 13) {
+                if (pressure > UtilConstants.Weight * 9.8f * 6) {
                     //膝盖压力太大
                     if (steprate > 130)
                     {
                         bend_kneeNelbow++;
 
-                        if( bend_kneeNelbow < 5) {
+                        if( bend_kneeNelbow < 6) {
                             anino = 3;
                             indiCaseCount[anino]++;
 
@@ -1121,13 +1087,13 @@ public class MainMenuActivity extends BaseActivity implements
 
                 //这两个还没实现
                 //内旋
-                if (xuzhuan > 80 && fanzhuan < -50) {
+                if (twist > 80 && flip < -50) {
                     //if (steprate > 100)
                         //rw4 = getWarning(4, rw4);
                 }
 
                 //内旋
-                if (xuzhuan < -80 && fanzhuan > 50) {
+                if (twist < -80 && flip > 50) {
                     //if (steprate > 100)
                         //rw5 = getWarning(5, rw5);
                 }
@@ -1169,6 +1135,7 @@ public class MainMenuActivity extends BaseActivity implements
             }
         }
 
+        /*
         if(warn_lock == 0) {
             if (osc > 25) {
                 //垂直摆动太大
@@ -1189,22 +1156,30 @@ public class MainMenuActivity extends BaseActivity implements
                 }
             }
         }
-        // int jrll = FftUtil.getJrll(power);
+        */
 
         bak = System.currentTimeMillis();
 
         index++;
 
 
-        float distance = 0f;
+        float mapDistance = 0f;
         if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
-                fragmentMap.getDistance();
+            mapDistance = fragmentMap.getDistance();
         else
-            fragmentMapGoogle.getDistance();
+            mapDistance = fragmentMapGoogle.getDistance();
 
-        if (distance >= 5000) {
-            distance += distance;
-        } else {
+        if(mapDistance != 0) {
+            //if (distance >= 5000) {
+                //distance += mapDistance;
+            //} else {
+                if (updateStep != step_true) {
+                    distance += stride_dis;
+                }
+           // }
+        }
+        else
+        {
             if (updateStep != step_true) {
                 distance += stride_dis;
             }
@@ -1213,6 +1188,7 @@ public class MainMenuActivity extends BaseActivity implements
         updateStep = step_true;
         old_step = step;
         handler.sendEmptyMessage(6);
+
     }
 
     //data接收到蓝牙数据包 在这里发出语音 ken
@@ -1222,149 +1198,122 @@ public class MainMenuActivity extends BaseActivity implements
                 TextToSpeech.QUEUE_FLUSH, null);
     }
 
-    int old_reps = 0;
-    int reps = 0;
+    static int old_reps = 0;
+    static int reps = 0;
+    int commDuration;
+    int bias;
+    int stability;
+    int muscleDec;
+    String strCommResult;
+    int xAngle, yAngle, zAngle, xAcc, yAcc, zAcc;
 
     void CheckPacket() {
+
         switch (data[0])
         {
             //实时数据包
             case (byte)0xa5:
-                //临时 testing
-                if(data[1] == 0xa5)
+                if(data[19] != 0x03)
                 {
-                    if(data[2] == 0xa5)
-                    {
-                        reps = ByteHelp.byteArrayToInt(new byte[]{data[3], data[4]});
-
-                        if(reps == 0)
-                        {
-                            isAnyMove = false;
-                        }
-                        else
-                        {
-                            //将每一个计数读出来
-                            if(reps != old_reps)
-                            {
-                                handler.sendEmptyMessage(7);
-                                String s;
-                                s = "" + reps;
-                                tts.speak(s,
-                                        TextToSpeech.QUEUE_FLUSH, null);
-                                old_reps = reps;
-                            }
-                        }
-                        return;
-                    }
+                    break;
                 }
 
                 updateView();
-                break;
+            break;
 
-            //运动参数及提示
-            /*
+            //跑步以外的其他运动参数及提示
             case (byte)0xab:
+
+                if(data[15] != 0x03)
+                {
+                    break;
+                }
+
                 //动作次数
-                int reps = ByteHelp.byteArrayToInt(new byte[]{data[2], data[3]});
+                reps = ByteHelp.byteArrayToInt(new byte[]{data[2], data[3]});
                 if(reps == 0)
                 {
                     isAnyMove = false;
                 }
+                else if((reps - old_reps) > 5)
+                {
+                    break;
+                }
                 else
                 {
                     //将每一个计数读出来
-                    if(reps != old_reps)
+                    //如果是平板支撑 一直变化的rep说明没处在运动姿势 leave
+                    if(sport_type == UtilConstants.sport_plank)
                     {
-                        String s;
-                        s = "" + reps;
-                        tts.speak(s,
-                                TextToSpeech.QUEUE_FLUSH, null);
-                        old_reps = reps;
+                        reps++;
                     }
+                    else
+                    {
+                        if(reps != old_reps)
+                        {
+                            commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
+
+                            if(sport_type == UtilConstants.sport_dumbbell) {
+                                if (commDuration < 1) {
+                                    reps = reps / 2;
+                                }
+                            }
+
+                            strCommResult = "" + reps;
+                            tts.speak(strCommResult,
+                                    TextToSpeech.QUEUE_FLUSH, null);
+
+                            //播动画
+                            handler.sendEmptyMessage(2);
+                        }
+                    }
+
                 }
 
-                int duration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
+                commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
 
-                int bias = (int)data[6];
-                int stability = (int)data[7];
-                int muscle = (int)data[8];
+                bias = (int)data[6];
+                stability = (int)data[7];
+                muscleDec = (int)data[8];
 
-                anino = (int)data[9];
-
-                //更新参数框
-                if (mLastFragment == fragmentHistory) {
-                    fragmentHistory.updateParaBox(reps, muscle, duration, stability);
-                }
-
-                //提示信息不为空
-                if(anino!=0)
+                //X angle
+                xAngle = (int)data[9];
+                if(xAngle > 0x80)
                 {
-                    handler.sendEmptyMessage(2);
+                    xAngle = xAngle - 0xFF - 1;
                 }
+                //X acc
+                xAcc = (int)data[10];
 
-                //语音报数
-                //updateVoice(anino);
-                break;
-                */
+                //X angle
+                yAngle = (int)data[11];
+                if(yAngle > 0x80)
+                {
+                    yAngle = yAngle - 0xFF - 1;
+                }
+                //X acc
+                yAcc = (int)data[12];
+
+                //X angle
+                zAngle = (int)data[13];
+                if(zAngle > 0x80)
+                {
+                    zAngle = zAngle - 0xFF - 1;
+                }
+                //X acc
+                zAcc = (int)data[14];
+
+
+                old_reps = reps;
+
+                //更新参数
+                handler.sendEmptyMessage(8);
+
+            break;
+
         }
     }
 
-    /*
-    private RunWaring getWarning(int index, RunWaring brw) {
-
-        nowIndex = index;
-        if (brw != null) {
-            // float jl = AMapUtils.calculateLineDistance(
-            // new LatLng(fragmentMap.getLatitude(), fragmentMap
-            // .getLongitude()),
-            // new LatLng(brw.getLatitude(), brw.getLongitude()));
-            int sublc = lc - brw.getLc();
-            if (sublc >= 4000) {
-                RunWaring rw = new RunWaring();
-                rw.setIndex(index + "");
-                if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-                    rw.setLatitude(fragmentMap.getLatitude());
-                    rw.setLongitude(fragmentMap.getLongitude());
-                }else
-                {
-                    rw.setLatitude(fragmentMapGoogle.getLatitude());
-                    rw.setLongitude(fragmentMapGoogle.getLongitude());
-                }
-
-                        rw.setCreateTime(System.currentTimeMillis());
-                rw.setLc(lc);
-                rw.setRunId(keenBrace_sports.getId());
-                //ken
-                KeenbraceDBHelper.getInstance(this).insertRunWaring(rw);
-                wrCount++;
-                // iv_messagecount.setVisibility(View.VISIBLE);
-
-                return rw;
-            } else {
-                return brw;
-            }
-        } else {
-            RunWaring rw = new RunWaring();
-            rw.setIndex(index+"");
-            if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-                rw.setLatitude(fragmentMap.getLatitude());
-                rw.setLongitude(fragmentMap.getLongitude());
-            }else
-            {
-                rw.setLatitude(fragmentMapGoogle.getLatitude());
-                rw.setLongitude(fragmentMapGoogle.getLongitude());
-            }
-            rw.setCreateTime(System.currentTimeMillis());
-            rw.setLc(lc);
-            wrCount++;
-            rw.setRunId(keenBrace_sports.getId());
-            KeenbraceDBHelper.getInstance(this).insertRunWaring(rw);
-
-            return rw;
-        }
-
-    }
-    */
 
     public void continueRun() {
         btn_end.setVisibility(View.GONE);
@@ -1380,6 +1329,9 @@ public class MainMenuActivity extends BaseActivity implements
         if (BluetoothConstant.mBluetoothLeService != null
                 && BluetoothConstant.mwriteCharacteristic != null)
             BluetoothConstant.mBluetoothLeService.startRun(0, (byte)sport_type, new Date());
+
+        application.setIsSendBleEnd(true);
+
         if (updateTimer != null) {
             updateTimer.cancel();
             updateTimer = null;
@@ -1393,26 +1345,31 @@ public class MainMenuActivity extends BaseActivity implements
         } catch (IOException e) {
         }
 
-        runResult.setDuration(mins);
-        runResult.setMileage(distance);
+        commonResult.setDuration(mins);
+        commonResult.setMileage(distance);
+        commonResult.setCadence(steprate);
+        commonResult.setStep((long) step_true);
+        //runResult.setEmgDecrease();
         //runResult.setFileName(file.getAbsolutePath());    //ken
-        runResult.setEndTime(bak);
+        commonResult.setEndTime(bak);
         if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
-            runResult.setLatLngs(fragmentMap.getMap());
+            commonResult.setLatLngs(fragmentMap.getMap());
 
-            runResult.setEndlatitude(fragmentMap.getLatitude());
-            runResult.setEndlongitude(fragmentMap.getLongitude());
+            commonResult.setEndlatitude(fragmentMap.getLatitude());
+            commonResult.setEndlongitude(fragmentMap.getLongitude());
         }else
         {
-            runResult.setLatLngs(fragmentMapGoogle.getMaps());
+            commonResult.setLatLngs(fragmentMapGoogle.getMaps());
 
-            runResult.setEndlatitude(fragmentMapGoogle.getLatitude());
-            runResult.setEndlongitude(fragmentMapGoogle.getLongitude());
+            commonResult.setEndlatitude(fragmentMapGoogle.getLatitude());
+            commonResult.setEndlongitude(fragmentMapGoogle.getLongitude());
         }
         //总共发生过的警报数
         //runResult.setSumwarings(wrCount);
-        RunResultDBHelper.getInstance(this).updateRunResult(runResult);
+        //将本次的运动结果更新数据库 ken
+        CommonResultDBHelper.getInstance(this).updateCommonResult(commonResult);
 
+        //CommonResultDBHelper.getInstance(this).
 
         btn_end.setVisibility(View.GONE);
         btn_pause.setVisibility(View.GONE);
@@ -1424,8 +1381,9 @@ public class MainMenuActivity extends BaseActivity implements
                 UtilConstants.BUCKET_NAME, file.getName(), file);
                 */
 
+        //数据传到结果页
         Intent intent = new Intent();
-        intent.putExtra("bleData", runResult);
+        intent.putExtra("CommonResult", commonResult);
         intent.putExtra("sport_type", sport_type);
         intent.setClass(this, ViewRecordActivity.class);
         startActivity(intent);
@@ -1435,47 +1393,6 @@ public class MainMenuActivity extends BaseActivity implements
     public boolean onLongClick(View arg0) {
 
         return false;
-    }
-
-    AlertDialog popupWindow;
-
-    public void openDeives() {
-        // leDeviceListAdapter.clear();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        popupWindow = builder.create();
-        popupWindow.show();
-        Window window = popupWindow.getWindow();
-        window.setContentView(R.layout.ble_select);
-        popupWindow.setCancelable(true);
-        ListView listview = (ListView) window.findViewById(R.id.blelist);
-        listview.setAdapter(leDeviceListAdapter);
-        listview.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                BluetoothDevice ble = leDeviceListAdapter.getDevice(arg2);
-                if (BluetoothConstant.mdevice != null) {
-                    if (BluetoothConstant.mConnected) {
-                        BluetoothConstant.mBluetoothLeService.close();
-                    }
-                    BluetoothConstant.mdevice = ble;
-                    final boolean result = BluetoothConstant.mBluetoothLeService
-                            .connect(ble.getAddress());
-                    progressDialog.setMessage("正在连接...");
-                    progressDialog.show();
-                }
-            }
-        });
-        Button cancle = (Button) window.findViewById(R.id.cancel);
-        cancle.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-        popupWindow.show();
     }
 
     private void showTips() {
@@ -1496,42 +1413,48 @@ public class MainMenuActivity extends BaseActivity implements
                                     handler.removeCallbacks(runnable);
                                     btn_pause.setVisibility(View.GONE);
                                     btn_start.setVisibility(View.VISIBLE);
+
                                     if (BluetoothConstant.mBluetoothLeService != null
                                             && BluetoothConstant.mwriteCharacteristic != null)
                                         BluetoothConstant.mBluetoothLeService
-                                                .startRun(0, (byte)sport_type, new Date());
+                                                .startRun(0, (byte) sport_type, new Date());
+
+                                    application.setIsSendBleEnd(true);
+
                                     isStartRun = false;
                                     try {
                                         fos.close();
                                         fos = null;
                                     } catch (IOException e) {
                                     }
-                                    runResult.setDuration(mins);
+                                    commonResult.setDuration(mins);
                                     //keenBrace_sports.setSumscore(80);
                                     // ble.setCadence((int)
                                     // bpChart.getAverage());
                                     // ble.setStride((int)
                                     // bfChart.getAverage());
-                                    runResult.setMileage(distance);
+                                    commonResult.setMileage(distance);
                                     //runResult.setFileName(file.getAbsolutePath());
-                                    runResult.setEndTime(bak);
-                                    if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
-                                        runResult.setLatLngs(fragmentMap.getMap());
+                                    commonResult.setEndTime(bak);
+                                    if (UtilConstants.MapType == UtilConstants.MAP_GAODE)
+                                        commonResult.setLatLngs(fragmentMap.getMap());
                                     else
-                                        runResult.setLatLngs(fragmentMapGoogle.getMaps());
+                                        commonResult.setLatLngs(fragmentMapGoogle.getMaps());
                                     //runResult.setSumwarings(wrCount);
-                                    RunResultDBHelper.getInstance(MainMenuActivity.this).updateRunResult(runResult);
+                                    CommonResultDBHelper.getInstance(MainMenuActivity.this).updateCommonResult(commonResult);
                                 } catch (Exception e) {
 
                                 }
+                                /*
                                 if (BluetoothConstant.mConnected
                                         && BluetoothConstant.mBluetoothLeService != null)
                                     BluetoothConstant.mBluetoothLeService
                                             .close();
+                                */
                                 finish();
                             }
                         })
-                .setNegativeButton(getText(R.string.cancle),
+                .setNegativeButton(getText(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int which) {
@@ -1566,17 +1489,20 @@ public class MainMenuActivity extends BaseActivity implements
             }
         }
 
-        //已经开始运动后就不说这句
-        if(isStartRun == false) {
-            tts.speak("beginning workout",
-                    TextToSpeech.QUEUE_FLUSH, null);
-        }
-
-        btn_start.performClick();
-
         //得到运动类型 再传到fragment
         sport_type = this.getIntent().getIntExtra("sport_type", 0);
         data2Fragment.putInt("sport_type", sport_type);
+
+        application = (KeenbraceApplication) getApplication();
+
+        //开始一个新运动的时候先检查原来的旧运动有没有正确结束
+        //没结束的补一个结束 结束是不管哪种运动的
+        if(!application.getIsSendBleEnd())
+        {
+            if (BluetoothConstant.mBluetoothLeService != null
+                    && BluetoothConstant.mwriteCharacteristic != null)
+                BluetoothConstant.mBluetoothLeService.startRun(0, (byte)sport_type, new Date());
+        }
 
         //testing
         /*

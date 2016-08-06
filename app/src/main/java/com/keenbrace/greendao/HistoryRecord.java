@@ -7,6 +7,7 @@ package com.keenbrace.greendao;
 public class HistoryRecord {
 
     private Long id;
+    private String loginName;
     private Long triceps;
     private Long biceps;
     private Long shoulder;
@@ -38,6 +39,13 @@ public class HistoryRecord {
     private Long longestTime;
     private Integer fastestSpeed;
     private Long mostCalorie;
+    private Boolean mondayTrain;
+    private Boolean tuesdayTrain;
+    private Boolean wednesdayTrain;
+    private Boolean thursdayTrain;
+    private Boolean fridayTrain;
+    private Boolean saturdayTrain;
+    private Boolean sundayTrain;
 
     public HistoryRecord() {
     }
@@ -46,8 +54,9 @@ public class HistoryRecord {
         this.id = id;
     }
 
-    public HistoryRecord(Long id, Long triceps, Long biceps, Long shoulder, Long forearm, Long chest, Long back, Long abs, Long glutes, Long upperleg, Long lowerleg, Long cardio, Long tricepsReps, Long bicepsReps, Long shoulderReps, Long forearmReps, Long chestReps, Long backReps, Long absReps, Long glutesReps, Long upperlegReps, Long lowerlegReps, Long totalWorkout, Long totalDistance, Integer averSpeed, Long totalCalorie, Long totalTime, Integer RM, Integer longestDistance, Long longestTime, Integer fastestSpeed, Long mostCalorie) {
+    public HistoryRecord(Long id, String loginName, Long triceps, Long biceps, Long shoulder, Long forearm, Long chest, Long back, Long abs, Long glutes, Long upperleg, Long lowerleg, Long cardio, Long tricepsReps, Long bicepsReps, Long shoulderReps, Long forearmReps, Long chestReps, Long backReps, Long absReps, Long glutesReps, Long upperlegReps, Long lowerlegReps, Long totalWorkout, Long totalDistance, Integer averSpeed, Long totalCalorie, Long totalTime, Integer RM, Integer longestDistance, Long longestTime, Integer fastestSpeed, Long mostCalorie, Boolean mondayTrain, Boolean tuesdayTrain, Boolean wednesdayTrain, Boolean thursdayTrain, Boolean fridayTrain, Boolean saturdayTrain, Boolean sundayTrain) {
         this.id = id;
+        this.loginName = loginName;
         this.triceps = triceps;
         this.biceps = biceps;
         this.shoulder = shoulder;
@@ -79,6 +88,13 @@ public class HistoryRecord {
         this.longestTime = longestTime;
         this.fastestSpeed = fastestSpeed;
         this.mostCalorie = mostCalorie;
+        this.mondayTrain = mondayTrain;
+        this.tuesdayTrain = tuesdayTrain;
+        this.wednesdayTrain = wednesdayTrain;
+        this.thursdayTrain = thursdayTrain;
+        this.fridayTrain = fridayTrain;
+        this.saturdayTrain = saturdayTrain;
+        this.sundayTrain = sundayTrain;
     }
 
     public Long getId() {
@@ -87,6 +103,14 @@ public class HistoryRecord {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public Long getTriceps() {
@@ -335,6 +359,62 @@ public class HistoryRecord {
 
     public void setMostCalorie(Long mostCalorie) {
         this.mostCalorie = mostCalorie;
+    }
+
+    public Boolean getMondayTrain() {
+        return mondayTrain;
+    }
+
+    public void setMondayTrain(Boolean mondayTrain) {
+        this.mondayTrain = mondayTrain;
+    }
+
+    public Boolean getTuesdayTrain() {
+        return tuesdayTrain;
+    }
+
+    public void setTuesdayTrain(Boolean tuesdayTrain) {
+        this.tuesdayTrain = tuesdayTrain;
+    }
+
+    public Boolean getWednesdayTrain() {
+        return wednesdayTrain;
+    }
+
+    public void setWednesdayTrain(Boolean wednesdayTrain) {
+        this.wednesdayTrain = wednesdayTrain;
+    }
+
+    public Boolean getThursdayTrain() {
+        return thursdayTrain;
+    }
+
+    public void setThursdayTrain(Boolean thursdayTrain) {
+        this.thursdayTrain = thursdayTrain;
+    }
+
+    public Boolean getFridayTrain() {
+        return fridayTrain;
+    }
+
+    public void setFridayTrain(Boolean fridayTrain) {
+        this.fridayTrain = fridayTrain;
+    }
+
+    public Boolean getSaturdayTrain() {
+        return saturdayTrain;
+    }
+
+    public void setSaturdayTrain(Boolean saturdayTrain) {
+        this.saturdayTrain = saturdayTrain;
+    }
+
+    public Boolean getSundayTrain() {
+        return sundayTrain;
+    }
+
+    public void setSundayTrain(Boolean sundayTrain) {
+        this.sundayTrain = sundayTrain;
     }
 
 }

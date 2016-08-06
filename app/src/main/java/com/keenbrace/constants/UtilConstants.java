@@ -1,8 +1,12 @@
 package com.keenbrace.constants;
 
+import android.bluetooth.BluetoothDevice;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import com.keenbrace.greendao.ShortPlan;
+import com.keenbrace.greendao.SportsStructure;
 import com.keenbrace.greendao.User;
 
 public class UtilConstants {
@@ -10,7 +14,14 @@ public class UtilConstants {
     public static User user;
 
     //这个是构造类似结构体数组的方法 ken
-    //public static HashMap<String, WaringModel> WaringMap = new HashMap<String, WaringModel>();
+    //第一个值是索引 第二个是结构体的值
+    public static HashMap<String, SportsStructure> SportsContent = new HashMap<String, SportsStructure>();
+
+    //不同的单次计划
+    public static HashMap<String, ShortPlan> ShortPlanContent = new HashMap<String, ShortPlan>();
+
+    //public static HashMap<String, BluetoothDevice> DeviceList = new HashMap<String, BluetoothDevice>();
+    //public static int DeviceNumber = 0;
 
     /*
      * You should replace these values with your own. See the README for details
@@ -29,16 +40,27 @@ public class UtilConstants {
     public static final String BUCKET_NAME = "keenbrace";
     public static int Weight = 65;
     public static int Height = 175;
-    public static int MapType=1;
+    public static int MapType=1;        //这种可以直接设置值
     public static final String SHARE_PREF = "keenbrace_share.pref";
     public static final String KEY_HAS_LOGIN = "has_login";
     public static final String KEY_ACCOUNT  ="key_account";
+    public static final String BLE_NAME = "ble_name";   //上一次连接的设备名称
+
+    public static final String KEY_HAS_SHORTPLAN = "has_shortplan"; //是否有单项计划
+    public static final String KEY_TRAIN_TODAY  = "train_today"; //今天的单项计划是否已经完成
+
+    public static final String KEY_HAS_LONGPLAN = "has_longplan"; //是否有长期计划
+    public static final String KEY_LONGPLAN_FINISH  = "long_plan_finish"; //长期计划是否已经完成
+
+    //历史记录的数据查询名称同user一样用登录名
 
     //不同的运动种类
     public static final int sport_running = 0;
-    public static final int sport_squat = 1;
-    public static final int sport_dumbbell = 2;
-    public static final int sport_plank = 3;
-    public static final int sport_pullup = 4;
+    public static final int sport_squat = 3;
+    public static final int sport_pushup = 4;
+    public static final int sport_pullup = 5;
+    public static final int sport_dumbbell = 6;
+    public static final int sport_plank = 9;
+
 
 }
