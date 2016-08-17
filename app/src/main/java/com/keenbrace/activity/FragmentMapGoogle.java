@@ -97,8 +97,8 @@ public class FragmentMapGoogle extends Fragment implements
         }
     }
 
-    public void updateTime(long mins) {
-        tv_sumtimes.setText(DateUitl.getDateFormat4(mins) + "");
+    public void updateTime(String timeStr) {
+        tv_sumtimes.setText(timeStr + "");
     }
 
     public void updateSpeed(int speed) {

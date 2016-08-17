@@ -61,6 +61,9 @@ public class UtilConstants {
     public static final int sport_pullup = 5;
     public static final int sport_dumbbell = 6;
     public static final int sport_plank = 9;
+    public static final int sport_bicyclesitup = 10;
+    public static final int sport_closestancesquat = 11;
+
 
 
 }

@@ -58,6 +58,15 @@ public class MainFragment extends BaseFragment {
     @Bind(R.id.iv_pullup)
     ImageView iv_pullup;
 
+    @Bind(R.id.iv_pushup)
+    ImageView iv_pushup;
+
+    @Bind(R.id.iv_bicyclesitup)
+    ImageView iv_bicyclesitup;
+
+    @Bind(R.id.iv_closestandsquat)
+    ImageView iv_closestancefrontsquat;
+
     @Bind(R.id.howtowear)
     ImageView howtowear;
 
@@ -99,6 +108,9 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setVisibility(View.GONE);
         iv_plank.setVisibility(View.GONE);
         iv_pullup.setVisibility(View.GONE);
+        iv_pushup.setVisibility(View.GONE);
+        iv_bicyclesitup.setVisibility(View.GONE);
+        iv_closestancefrontsquat.setVisibility(View.GONE);
     }
 
     @OnClick (R.id.iv_apparatus)
@@ -109,11 +121,15 @@ public class MainFragment extends BaseFragment {
         iv_apparatus.setImageResource(R.mipmap.facilities_sports_y);
         iv_bodyweight.setImageResource(R.mipmap.non_apparatus_sports);
 
+
         iv_run.setVisibility(View.GONE);
         iv_squat.setVisibility(View.GONE);
         iv_dumbbell.setVisibility(View.VISIBLE);
         iv_plank.setVisibility(View.GONE);
         iv_pullup.setVisibility(View.VISIBLE);
+        iv_pushup.setVisibility(View.GONE);
+        iv_bicyclesitup.setVisibility(View.GONE);
+        iv_closestancefrontsquat.setVisibility(View.VISIBLE);
     }
 
     @OnClick (R.id.iv_bodyweight)
@@ -129,6 +145,9 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setVisibility(View.GONE);
         iv_plank.setVisibility(View.VISIBLE);
         iv_pullup.setVisibility(View.GONE);
+        iv_pushup.setVisibility(View.VISIBLE);
+        iv_bicyclesitup.setVisibility(View.VISIBLE);
+        iv_closestancefrontsquat.setVisibility(View.GONE);
     }
 
     @OnClick (R.id.iv_more)
@@ -146,6 +165,9 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
         iv_plank.setImageResource(R.mipmap.main_plank_w);
         iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
 
         tv_msg.setText("Running");
 
@@ -163,6 +185,9 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
         iv_plank.setImageResource(R.mipmap.main_plank_w);
         iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
 
         tv_msg.setText("Squat");
 
@@ -180,6 +205,9 @@ public class MainFragment extends BaseFragment {
         iv_run.setImageResource(R.mipmap.main_run_w);
         iv_plank.setImageResource(R.mipmap.main_plank_w);
         iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
 
         tv_msg.setText("Dumb Bell");
 
@@ -197,6 +225,9 @@ public class MainFragment extends BaseFragment {
         iv_squat.setImageResource(R.mipmap.main_squat_w);
         iv_run.setImageResource(R.mipmap.main_run_w);
         iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
 
         tv_msg.setText("Plank");
 
@@ -214,12 +245,73 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
         iv_squat.setImageResource(R.mipmap.main_squat_w);
         iv_run.setImageResource(R.mipmap.main_run_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
 
         tv_msg.setText("Pull Up");
 
         howtowear.setImageResource(R.mipmap.wear_on_arm);
 
         sport_type = UtilConstants.sport_pullup;
+    }
+
+    @OnClick(R.id.iv_bicyclesitup)
+    void gotoBicycleSitup()
+    {
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_y);
+        tv_msg.setText("Bicycle Sit Up");
+
+        iv_squat.setImageResource(R.mipmap.main_squat_w);
+        iv_run.setImageResource(R.mipmap.main_run_w);
+        iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
+        iv_plank.setImageResource(R.mipmap.main_plank_w);
+        iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
+
+        howtowear.setImageResource(R.mipmap.wear_on_thigh);
+
+        sport_type = UtilConstants.sport_pushup;
+    }
+
+    @OnClick(R.id.iv_pushup)
+    void gotoPushup()
+    {
+        iv_pushup.setImageResource(R.mipmap.main_pushup_y);
+        tv_msg.setText("Push Up");
+
+        iv_squat.setImageResource(R.mipmap.main_squat_w);
+        iv_run.setImageResource(R.mipmap.main_run_w);
+        iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
+        iv_plank.setImageResource(R.mipmap.main_plank_w);
+        iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_w);
+
+        howtowear.setImageResource(R.mipmap.wear_on_arm);
+
+        sport_type = UtilConstants.sport_bicyclesitup;
+    }
+
+    @OnClick(R.id.iv_closestandsquat)
+    void gotoCloseStanceFrontSquat()
+    {
+        iv_closestancefrontsquat.setImageResource(R.mipmap.main_closestandsquat_y);
+
+        tv_msg.setText("Close-Stance Front Squat");
+
+        iv_squat.setImageResource(R.mipmap.main_squat_w);
+        iv_run.setImageResource(R.mipmap.main_run_w);
+        iv_dumbbell.setImageResource(R.mipmap.main_dumbbell_w);
+        iv_plank.setImageResource(R.mipmap.main_plank_w);
+        iv_pullup.setImageResource(R.mipmap.main_pullup_w);
+        iv_pushup.setImageResource(R.mipmap.main_pushup_w);
+        iv_bicyclesitup.setImageResource(R.mipmap.main_bicyclesitup_w);
+
+        howtowear.setImageResource(R.mipmap.wear_on_thigh);
+
+        sport_type = UtilConstants.sport_closestancesquat;
     }
 
     @Override
@@ -238,6 +330,9 @@ public class MainFragment extends BaseFragment {
         iv_dumbbell.setVisibility(View.GONE);
         iv_plank.setVisibility(View.GONE);
         iv_pullup.setVisibility(View.GONE);
+        iv_pushup.setVisibility(View.GONE);
+        iv_bicyclesitup.setVisibility(View.GONE);
+        iv_closestancefrontsquat.setVisibility(View.GONE);
 
         ss_start.setBackgroundResource(R.mipmap.select);
     }

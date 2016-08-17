@@ -18,22 +18,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.keenbrace.base.BaseActivity;
 import com.keenbrace.picwall.MultiColumnListView;
 import com.keenbrace.widget.SlidingTabLayout;
 
 import com.keenbrace.R;
 
-public class PicwallActivity extends ActionBarActivity {
+public class PicwallActivity extends BaseActivity implements View.OnClickListener {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.picwall_act);
+    protected boolean hasBackButton() {
+        return true;
+    }
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+    @Override
+    protected boolean hasActionBar() {
+        return true;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.picwall_act;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void initView() {
+        this.setActionBarTitle("Gallery");
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -43,7 +65,9 @@ public class PicwallActivity extends ActionBarActivity {
 
         final SlidingTabLayout tabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
         tabLayout.setViewPager(mViewPager);
+
     }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -130,4 +154,5 @@ public class PicwallActivity extends ActionBarActivity {
             super(context, R.layout.picwall_item, android.R.id.text1);
         }
     }
+
 }

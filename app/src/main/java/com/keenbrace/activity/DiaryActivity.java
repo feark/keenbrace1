@@ -169,6 +169,8 @@ public class DiaryActivity extends BaseActivity implements View.OnClickListener 
             case R.id.iv_ruler:
                 imm.hideSoftInputFromWindow(v.getWindowToken(),0);
 
+                //弹出自定义对话框 让用户输入身体信息
+
                 break;
 
             case R.id.tv_post:
