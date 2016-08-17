@@ -202,7 +202,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
         this.id = id;
     }
 
-    public void updateSpeed(int speed) {
+    public void updateSpeed(float speed) {
         tv_speed.setText("" + DateUitl.formatToM(speed / 100000)
                 + "km/h");
     }

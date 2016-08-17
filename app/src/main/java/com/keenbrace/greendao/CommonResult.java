@@ -23,15 +23,16 @@ public class CommonResult implements Serializable {
     private Integer mileage;
     private Integer speed;
     private Integer cadence;
-    private byte[] speedPerKm;
+    private byte[] speedPerMinute;
+    private Integer minuteCount;
     private byte[] cadencePerKm;
     private Integer stride;
-    private Integer kneePress;
+    private byte[] kneePress;
     private Long step;
-    private Integer vertOsci;
-    private Integer emgDecrease;
+    private byte[] vertOsci;
+    private byte[] emgDecrease;
     private Long calorie;
-    private Integer stability;
+    private byte[] stability;
     private Long startTime;
     private Long endTime;
     private Double startlatitude;
@@ -40,6 +41,19 @@ public class CommonResult implements Serializable {
     private Double endlongitude;
     private String latLngs;
     private byte[] notification;
+    private String comment;
+    private String picturePath;
+    private Integer weight;
+    private Integer bodyFat;
+    private Integer waist;
+    private Integer chest;
+    private Integer arms;
+    private Integer forArms;
+    private Integer shoulder;
+    private Integer hips;
+    private Integer thighs;
+    private Integer calves;
+    private Integer neck;
 
     public CommonResult() {
     }
@@ -48,7 +62,7 @@ public class CommonResult implements Serializable {
         this.id = id;
     }
 
-    public CommonResult(Long id, Integer type, Integer set, byte[] reps, byte[] rep_duration, Integer load, Integer RM, Long duration, Long restTime, Long wasteTime, byte[] newRecord, Integer mileage, Integer speed, Integer cadence, byte[] speedPerKm, byte[] cadencePerKm, Integer stride, Integer kneePress, Long step, Integer vertOsci, Integer emgDecrease, Long calorie, Integer stability, Long startTime, Long endTime, Double startlatitude, Double startlongitude, Double endlatitude, Double endlongitude, String latLngs, byte[] notification) {
+    public CommonResult(Long id, Integer type, Integer set, byte[] reps, byte[] rep_duration, Integer load, Integer RM, Long duration, Long restTime, Long wasteTime, byte[] newRecord, Integer mileage, Integer speed, Integer cadence, byte[] speedPerMinute, Integer minuteCount, byte[] cadencePerKm, Integer stride, byte[] kneePress, Long step, byte[] vertOsci, byte[] emgDecrease, Long calorie, byte[] stability, Long startTime, Long endTime, Double startlatitude, Double startlongitude, Double endlatitude, Double endlongitude, String latLngs, byte[] notification, String comment, String picturePath, Integer weight, Integer bodyFat, Integer waist, Integer chest, Integer arms, Integer forArms, Integer shoulder, Integer hips, Integer thighs, Integer calves, Integer neck) {
         this.id = id;
         this.type = type;
         this.set = set;
@@ -63,7 +77,8 @@ public class CommonResult implements Serializable {
         this.mileage = mileage;
         this.speed = speed;
         this.cadence = cadence;
-        this.speedPerKm = speedPerKm;
+        this.speedPerMinute = speedPerMinute;
+        this.minuteCount = minuteCount;
         this.cadencePerKm = cadencePerKm;
         this.stride = stride;
         this.kneePress = kneePress;
@@ -80,6 +95,19 @@ public class CommonResult implements Serializable {
         this.endlongitude = endlongitude;
         this.latLngs = latLngs;
         this.notification = notification;
+        this.comment = comment;
+        this.picturePath = picturePath;
+        this.weight = weight;
+        this.bodyFat = bodyFat;
+        this.waist = waist;
+        this.chest = chest;
+        this.arms = arms;
+        this.forArms = forArms;
+        this.shoulder = shoulder;
+        this.hips = hips;
+        this.thighs = thighs;
+        this.calves = calves;
+        this.neck = neck;
     }
 
     public Long getId() {
@@ -194,12 +222,20 @@ public class CommonResult implements Serializable {
         this.cadence = cadence;
     }
 
-    public byte[] getSpeedPerKm() {
-        return speedPerKm;
+    public byte[] getSpeedPerMinute() {
+        return speedPerMinute;
     }
 
-    public void setSpeedPerKm(byte[] speedPerKm) {
-        this.speedPerKm = speedPerKm;
+    public void setSpeedPerMinute(byte[] speedPerMinute) {
+        this.speedPerMinute = speedPerMinute;
+    }
+
+    public Integer getMinuteCount() {
+        return minuteCount;
+    }
+
+    public void setMinuteCount(Integer minuteCount) {
+        this.minuteCount = minuteCount;
     }
 
     public byte[] getCadencePerKm() {
@@ -218,11 +254,11 @@ public class CommonResult implements Serializable {
         this.stride = stride;
     }
 
-    public Integer getKneePress() {
+    public byte[] getKneePress() {
         return kneePress;
     }
 
-    public void setKneePress(Integer kneePress) {
+    public void setKneePress(byte[] kneePress) {
         this.kneePress = kneePress;
     }
 
@@ -234,19 +270,19 @@ public class CommonResult implements Serializable {
         this.step = step;
     }
 
-    public Integer getVertOsci() {
+    public byte[] getVertOsci() {
         return vertOsci;
     }
 
-    public void setVertOsci(Integer vertOsci) {
+    public void setVertOsci(byte[] vertOsci) {
         this.vertOsci = vertOsci;
     }
 
-    public Integer getEmgDecrease() {
+    public byte[] getEmgDecrease() {
         return emgDecrease;
     }
 
-    public void setEmgDecrease(Integer emgDecrease) {
+    public void setEmgDecrease(byte[] emgDecrease) {
         this.emgDecrease = emgDecrease;
     }
 
@@ -258,11 +294,11 @@ public class CommonResult implements Serializable {
         this.calorie = calorie;
     }
 
-    public Integer getStability() {
+    public byte[] getStability() {
         return stability;
     }
 
-    public void setStability(Integer stability) {
+    public void setStability(byte[] stability) {
         this.stability = stability;
     }
 
@@ -328,6 +364,110 @@ public class CommonResult implements Serializable {
 
     public void setNotification(byte[] notification) {
         this.notification = notification;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public Integer getBodyFat() {
+        return bodyFat;
+    }
+
+    public void setBodyFat(Integer bodyFat) {
+        this.bodyFat = bodyFat;
+    }
+
+    public Integer getWaist() {
+        return waist;
+    }
+
+    public void setWaist(Integer waist) {
+        this.waist = waist;
+    }
+
+    public Integer getChest() {
+        return chest;
+    }
+
+    public void setChest(Integer chest) {
+        this.chest = chest;
+    }
+
+    public Integer getArms() {
+        return arms;
+    }
+
+    public void setArms(Integer arms) {
+        this.arms = arms;
+    }
+
+    public Integer getForArms() {
+        return forArms;
+    }
+
+    public void setForArms(Integer forArms) {
+        this.forArms = forArms;
+    }
+
+    public Integer getShoulder() {
+        return shoulder;
+    }
+
+    public void setShoulder(Integer shoulder) {
+        this.shoulder = shoulder;
+    }
+
+    public Integer getHips() {
+        return hips;
+    }
+
+    public void setHips(Integer hips) {
+        this.hips = hips;
+    }
+
+    public Integer getThighs() {
+        return thighs;
+    }
+
+    public void setThighs(Integer thighs) {
+        this.thighs = thighs;
+    }
+
+    public Integer getCalves() {
+        return calves;
+    }
+
+    public void setCalves(Integer calves) {
+        this.calves = calves;
+    }
+
+    public Integer getNeck() {
+        return neck;
+    }
+
+    public void setNeck(Integer neck) {
+        this.neck = neck;
     }
 
 }

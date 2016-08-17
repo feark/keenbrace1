@@ -7,6 +7,8 @@ import android.view.View;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
 
+//
+
 public class InsightActivity extends BaseActivity implements View.OnClickListener {
 
 

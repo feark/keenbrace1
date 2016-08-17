@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -93,6 +90,7 @@ public class MainMenuActivity extends BaseActivity implements
 
 
     TextView tv_nowday, tv_nowtime;
+    TextView tv_duration;
     private TransferUtility transferUtility;
     int wrCount = 0;
 
@@ -104,6 +102,8 @@ public class MainMenuActivity extends BaseActivity implements
     boolean isAdd = false;
     long bakjldTimes = 0;
     private TextToSpeech tts;
+
+    CommonResult commonResult;
 
     @Override
     protected boolean hasBackButton() {
@@ -121,16 +121,32 @@ public class MainMenuActivity extends BaseActivity implements
 
     @Override
     public void initView() {
-        /*
+
         toolbar.inflateMenu(R.menu.main_menu);
+        /*  //去除了蓝牙按钮
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                //openDeives();
+                if (isStartRun) {
+                    showTips();
+                }
                 return true;
             }
         });
         */
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isStartRun) {
+                    showTips();
+                }
+                else
+                {
+                    finish();
+                }
+            }
+        });
+
 
         //初始化后10秒检查有没有运动
         delay_times = 20;
@@ -217,6 +233,11 @@ public class MainMenuActivity extends BaseActivity implements
         tv_nowtime = (TextView) findViewById(R.id.tv_nowtime);
         tv_nowtime.setText(new Date().toGMTString());
         transferUtility = Util.getTransferUtility(this);
+
+        tv_duration = (TextView) findViewById(R.id.tv_duration);
+
+        //开始1秒的循环
+        handler.post(runnable);
     }
 
     public void updateViewIcon() {
@@ -231,7 +252,7 @@ public class MainMenuActivity extends BaseActivity implements
 
     @Override
     public void initData() {
-
+        commonResult = new CommonResult();
     }
 
     public void updateBG() {
@@ -278,9 +299,6 @@ public class MainMenuActivity extends BaseActivity implements
     FileOutputStream fos = null;
     long bak;
     boolean isStartRun;
-
-    //不是跑步的时候用这个  ken
-    CommonResult commonResult;
 
     @Override
     public void onClick(View v) {
@@ -351,12 +369,15 @@ public class MainMenuActivity extends BaseActivity implements
 
                 btn_start.setVisibility(View.GONE);
                 btn_pause.setVisibility(View.VISIBLE);
-                handler.post(runnable);
+
+                //数据文件名
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss",Locale.US);
+                String fname = sdf.format(new Date());
 
                 checkBleConnect();
 
                 if (file == null)
-                    file = new File(StringUtil.ROOT_FILEPATH + File.separator + bak
+                    file = new File(StringUtil.ROOT_FILEPATH + File.separator + fname
                             + ".ble");
                 try {
                     if (fos == null)
@@ -374,11 +395,13 @@ public class MainMenuActivity extends BaseActivity implements
                 }
 
                 isStartRun = true;
-                commonResult = new CommonResult();
+
                 Date d = new Date();
 
                 commonResult.setStartTime(d.getTime());
                 commonResult.setDuration(new Long(0L));
+                commonResult.setType(sport_type);
+
                 if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
                     commonResult.setStartlatitude(fragmentMap.getLatitude());
                     commonResult.setStartlongitude(fragmentMap.getLongitude());
@@ -410,6 +433,7 @@ public class MainMenuActivity extends BaseActivity implements
             case R.id.btn_back:
                 showTips();
                 break;
+
             case R.id.btn_end:
                 tts.speak("workout complete",
                         TextToSpeech.QUEUE_FLUSH, null);
@@ -440,8 +464,7 @@ public class MainMenuActivity extends BaseActivity implements
     };
 
 
-    int blue = 0, yellow = 0, red = 0;
-    long mins = 0;
+    long milli_second = 0;
     int[] steprates = new int[]{0, 0, 0, 0, 0};
 
     int delay_times;
@@ -452,6 +475,13 @@ public class MainMenuActivity extends BaseActivity implements
     String countdown_str;
     //int test_reps = 1;
     int indiCountdown = 100;
+
+    byte speedPerMin[] = new byte[600];
+    int fiveSecondCount = 0;
+    int minuteCount = 0;
+    float speedSum = 0.0f;
+
+    int du_hour = 0, du_min = 0, du_sec = 0;
 
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -527,9 +557,25 @@ public class MainMenuActivity extends BaseActivity implements
                 case 5:
                     //用这种形式实现自循环
                     if (isStartRun) {
-                        int lc_gap = distance - distance_old;
-                        int speed = lc_gap / 5;
-                        //用这种方法更新速度 如果地图不动值就是错的 leave
+                        int distance_gap = distance - distance_old;
+
+                        //每5秒读一次距离
+                        float speed = (float)distance_gap / 5;
+
+                        speedSum = speedSum + speed;
+                        fiveSecondCount++;
+
+                        //5秒一次 12次1秒
+                        if(fiveSecondCount == 12)
+                        {
+                            speedSum = speedSum / 12;
+                            fiveSecondCount = 0;
+                            speedPerMin[minuteCount] = (byte)(speedSum * 10); //放大10倍
+                            minuteCount++;
+                            speedSum = 0;
+                        }
+
+                        //用这种方法更新速度 如果地图不动值就是错的
                         fragmentMap.updateSpeed(speed * 3600);
                         fragmentHistory.updateSpeed(speed * 3600);
                         distance_old = distance;
@@ -548,18 +594,18 @@ public class MainMenuActivity extends BaseActivity implements
 
                         if (mLastFragment == fragmentHistory)
                             fragmentHistory.updateView(wrCount, steprate, stride,
-                                    bkstep, mins, distance);
+                                    bkstep, milli_second, distance);
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateView(wrCount, steprate, stride,
-                                    bkstep, mins, distance);
+                                    bkstep, milli_second, distance);
                     } else {
 
                         if (mLastFragment == fragmentHistory)
                             fragmentHistory.updateView(wrCount, steprate, stride,
-                                    step_true, mins, distance);
+                                    step_true, milli_second, distance);
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateView(wrCount, steprate, stride,
-                                    step_true, mins, distance);
+                                    step_true, milli_second, distance);
                     }
                     break;
 
@@ -576,161 +622,161 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                     break;
 
-                case 19:
-                    mins += 1000;
-                    if (steprate < 40) {
-                        blue += 1;
-                    } else if (steprate <= 190) {
-                        yellow += 1;
+                case 19:    //每秒一次循环
+                    tv_nowtime.setText(new Date().toGMTString());
 
-                    } else if (steprate > 190) {
-                        red += 1;
-                    }
+                    if(isStartRun) {
+                        milli_second += 1000;
 
-                    //if (mLastFragment == fragmentHistory)
-                    //fragmentHistory.updateTime(mins / 1000, blue, yellow, red);
-
-                    if (mLastFragment == fragmentMap)
-                        fragmentMap.updateTime(mins);
-
-                    if (mLastFragment == fragmentMapGoogle)
-                        fragmentMapGoogle.updateTime(mins);
-
-                    bs[0] = bs[1];
-                    bs[1] = bs[2];
-                    bs[2] = bs[3];
-                    bs[3] = bs[4];
-                    if (updateStep != step_true)
-                        bs[4] = bkstep;
-                    else
-                        bs[4] = step_true;
-
-                    float a = Math.abs(bs[4] - bs[0]);
-                    float b = Math.abs(bs[4] - bs[1]);
-                    float c = Math.abs(bs[4] - bs[2]);
-                    float d = Math.abs(bs[4] - bs[3]);
-                    float pp = (a + b + c + d) * 6;
-                    steprate = (int) pp;
-                    if (mins > 5000) {
-
-                        steprate = (95 * steprate + 5 * old_steprate) / 100;
-                    }
-                    steprates[0] = steprates[1];
-                    steprates[1] = steprates[2];
-                    steprates[2] = steprates[3];
-                    steprates[3] = steprates[4];
-                    steprates[4] = steprate;
-
-                    if (mins > 5000) {
-                        int totalStep = 0;
-                        for (int i = 0; i < 5; i++) {
-                            if (steprates[i] > 0) {
-                                totalStep += steprates[i];
-                                count++;
-                            }
-                        }
-                        steprate = totalStep / 5;
-
-                    }
-
-                    old_steprate = steprate;
-                    if (steprate < 150) {
-                        //if (rw8 != null) {
-                        //步频太低
-                        if (steprate > 0)
+                        //实时更新运动的总时长
+                        du_sec++;
+                        if(du_sec >= 60)
                         {
-                            straight_spine++;
+                            du_min++;
+                            if(du_min >= 60){
+                                du_hour++;
+                                du_min = 0;
+                            }
+                            du_sec = 0;
+                        }
 
-                            if(straight_spine < 5) {
-                                anino = 1;
-                                //语音
-                                indiCaseCount[anino]++;
+                        String str_du = String.format("%02d:%02d:%02d",du_hour,du_min,du_sec);
+                        tv_duration.setText("Duration :  "+str_du);
 
-                                if(indiCaseCount[anino] > 10) {
-                                    updateVoice(R.string.tx_increase_cadence);
-                                    //动画和提示框信息
-                                    handler.sendEmptyMessage(2);
+                        //if (mLastFragment == fragmentHistory)
+                        //fragmentHistory.updateTime(milli_second / 1000, blue, yellow, red);
 
-                                    indiCaseCount[anino] = 0;
+                        if (mLastFragment == fragmentMap)
+                            fragmentMap.updateTime(str_du);
+
+                        if (mLastFragment == fragmentMapGoogle)
+                            fragmentMapGoogle.updateTime(str_du);
+
+                        bs[0] = bs[1];
+                        bs[1] = bs[2];
+                        bs[2] = bs[3];
+                        bs[3] = bs[4];
+                        if (updateStep != step_true)
+                            bs[4] = bkstep;
+                        else
+                            bs[4] = step_true;
+
+                        float a = Math.abs(bs[4] - bs[0]);
+                        float b = Math.abs(bs[4] - bs[1]);
+                        float c = Math.abs(bs[4] - bs[2]);
+                        float d = Math.abs(bs[4] - bs[3]);
+                        float pp = (a + b + c + d) * 6;
+                        steprate = (int) pp;
+                        if (milli_second > 5000) {
+
+                            steprate = (95 * steprate + 5 * old_steprate) / 100;
+                        }
+                        steprates[0] = steprates[1];
+                        steprates[1] = steprates[2];
+                        steprates[2] = steprates[3];
+                        steprates[3] = steprates[4];
+                        steprates[4] = steprate;
+
+                        if (milli_second > 5000) {
+                            int totalStep = 0;
+                            for (int i = 0; i < 5; i++) {
+                                if (steprates[i] > 0) {
+                                    totalStep += steprates[i];
+                                    count++;
                                 }
                             }
-                            else
-                            {
-                                //动画和提示框信息
-                                anino = 0;
+                            steprate = totalStep / 5;
 
-                                indiCaseCount[anino]++;
+                        }
 
-                                if(indiCaseCount[anino] > 10) {
+                        old_steprate = steprate;
+                        if (steprate < 150) {
+                            //if (rw8 != null) {
+                            //步频太低
+                            if (steprate > 0) {
+                                straight_spine++;
+
+                                if (straight_spine < 5) {
+                                    anino = 1;
                                     //语音
-                                    updateVoice(R.string.tx_straight_spine);
+                                    indiCaseCount[anino]++;
 
-                                    handler.sendEmptyMessage(2);
-                                    straight_spine = 0;
+                                    if (indiCaseCount[anino] > 10) {
+                                        updateVoice(R.string.tx_increase_cadence);
+                                        //动画和提示框信息
+                                        handler.sendEmptyMessage(2);
 
-                                    indiCaseCount[anino] = 0;
+                                        indiCaseCount[anino] = 0;
+                                    }
+                                } else {
+                                    //动画和提示框信息
+                                    anino = 0;
+
+                                    indiCaseCount[anino]++;
+
+                                    if (indiCaseCount[anino] > 10) {
+                                        //语音
+                                        updateVoice(R.string.tx_straight_spine);
+
+                                        handler.sendEmptyMessage(2);
+                                        straight_spine = 0;
+
+                                        indiCaseCount[anino] = 0;
+                                    }
                                 }
                             }
-                        }
-                        //}
-                    }
-                    else if(steprate == 0)
-                    {
-                        //站着没动 显示停止的小人
-                        anino = 12;
-
-                        indiCaseCount[anino]++;
-
-                        if(indiCaseCount[anino] > 5) {
-                            handler.sendEmptyMessage(2);
-
-                            indiCaseCount[anino] = 0;
-                        }
-                    }
-                    else if(steprate > 150)
-                    {
-                        if(anino != 10)
-                        {
-                            indiCountdown--;
-
-                            if(indiCountdown == 0)
-                            {
-                                anino = 10;
-                                indiCountdown = 100;
-                            }
-                        }
-                        else {
-                            anino = 10;
+                            //}
+                        } else if (steprate == 0) {
+                            //站着没动 显示停止的小人
+                            anino = 12;
 
                             indiCaseCount[anino]++;
 
-                            if (indiCaseCount[anino] > 3) {
+                            if (indiCaseCount[anino] > 5) {
                                 handler.sendEmptyMessage(2);
 
                                 indiCaseCount[anino] = 0;
                             }
+                        } else if (steprate > 150) {
+                            if (anino != 10) {
+                                indiCountdown--;
+
+                                if (indiCountdown == 0) {
+                                    anino = 10;
+                                    indiCountdown = 100;
+                                }
+                            } else {
+                                anino = 10;
+
+                                indiCaseCount[anino]++;
+
+                                if (indiCaseCount[anino] > 3) {
+                                    handler.sendEmptyMessage(2);
+
+                                    indiCaseCount[anino] = 0;
+                                }
+                            }
+                        }
+
+                        bpi = 0;
+
+
+                        step_history[second] = step_true;
+                        second++; //
+
+                        if (second >= 4)
+                            second = 0;
+
+                        if (power_valid != 10) {
+                            power_record[power_index] = power_valid;
+                            power_index++;
+                        }
+
+                        if (power_index >= 200) {
+                            power_index = 0;
+                            power_flag = true;
                         }
                     }
-
-                    bpi = 0;
-
-
-                    step_history[second] = step_true;
-                    second++; //
-
-                    if (second >= 4)
-                        second = 0;
-
-                    if (power_valid != 10) {
-                        power_record[power_index] = power_valid;
-                        power_index++;
-                    }
-
-                    if (power_index >= 200) {
-                        power_index = 0;
-                        power_flag = true;
-                    }
-
                     break;
 
                 case 199:
@@ -808,6 +854,7 @@ public class MainMenuActivity extends BaseActivity implements
         @Override
         public void run() {
             synchronized (m_CritObj) {
+                //获取蓝牙接收到的数据包
                 data = application.getBleData();
                 if (data != null && data.length > 0)
                     //解释数据包 ken
@@ -1213,9 +1260,17 @@ public class MainMenuActivity extends BaseActivity implements
         {
             //实时数据包
             case (byte)0xa5:
+
                 if(data[19] != 0x03)
                 {
                     break;
+                }
+
+                try{
+                    if(fos != null) {
+                        fos.write(data, 0, 20);
+                    }
+                }catch (IOException e) {
                 }
 
                 updateView();
@@ -1227,6 +1282,13 @@ public class MainMenuActivity extends BaseActivity implements
                 if(data[15] != 0x03)
                 {
                     break;
+                }
+
+                try{
+                    if(fos != null) {
+                        fos.write(data, 0, 16);
+                    }
+                }catch (IOException e) {
                 }
 
                 //动作次数
@@ -1338,17 +1400,20 @@ public class MainMenuActivity extends BaseActivity implements
         }
         isStartRun = false;
 
-        //无法创建文件 ken
         try {
             fos.close();
             fos = null;
         } catch (IOException e) {
         }
 
-        commonResult.setDuration(mins);
+        commonResult.setDuration(milli_second);
         commonResult.setMileage(distance);
         commonResult.setCadence(steprate);
         commonResult.setStep((long) step_true);
+
+        commonResult.setSpeedPerMinute(speedPerMin);
+        commonResult.setMinuteCount(minuteCount);
+
         //runResult.setEmgDecrease();
         //runResult.setFileName(file.getAbsolutePath());    //ken
         commonResult.setEndTime(bak);
@@ -1364,8 +1429,7 @@ public class MainMenuActivity extends BaseActivity implements
             commonResult.setEndlatitude(fragmentMapGoogle.getLatitude());
             commonResult.setEndlongitude(fragmentMapGoogle.getLongitude());
         }
-        //总共发生过的警报数
-        //runResult.setSumwarings(wrCount);
+
         //将本次的运动结果更新数据库 ken
         CommonResultDBHelper.getInstance(this).updateCommonResult(commonResult);
 
@@ -1427,7 +1491,7 @@ public class MainMenuActivity extends BaseActivity implements
                                         fos = null;
                                     } catch (IOException e) {
                                     }
-                                    commonResult.setDuration(mins);
+                                    commonResult.setDuration(milli_second);
                                     //keenBrace_sports.setSumscore(80);
                                     // ble.setCadence((int)
                                     // bpChart.getAverage());

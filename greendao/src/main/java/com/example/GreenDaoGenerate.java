@@ -13,12 +13,6 @@ public class GreenDaoGenerate {
         Schema schema = new Schema(1, "com.keenbrace.greendao");
 
         addUser(schema);
-        //addRunWaring(schema);
-        //addKeenBraceSports(schema);
-
-        //addRunWaring(schema);
-
-        //addRunResult(schema);
 
         addCommonSportsResult(schema);
 
@@ -62,55 +56,20 @@ public class GreenDaoGenerate {
         user.addStringProperty("loginName").unique();
         user.addStringProperty("password");
 
+        //目标三围体脂等
+        user.addIntProperty("goal_weight");
+        user.addIntProperty("goal_bodyFat");
+        user.addIntProperty("goal_waist");
+        user.addIntProperty("goal_chest");
+        user.addIntProperty("goal_arms");
+        user.addIntProperty("goal_forArms");
+        user.addIntProperty("goal_shoulder");
+        user.addIntProperty("goal_hips");
+        user.addIntProperty("goal_thighs");
+        user.addIntProperty("goal_calves");
+        user.addIntProperty("goal_neck");
+
         user.addStringProperty("fileName");
-    }
-
-
-    private static void addRunWaring(Schema schema)
-    {
-
-        Entity user = schema.addEntity("RunWaring");
-        user.addIdProperty();
-        user.addStringProperty("index");
-        user.addLongProperty("createTime");
-        user.addDoubleProperty("latitude");
-        user.addDoubleProperty("longitude");
-        user.addLongProperty("runId");
-        user.addIntProperty("lc");
-
-    }
-
-    //将其合并到CommonResult
-    //跑步的运动结果 每次开始运动就新建一个对象
-    private static void addRunResult(Schema schema)
-    {
-        Entity user = schema.addEntity("RunResult");
-        user.addIdProperty();
-
-        user.addIntProperty("mileage");
-        user.addLongProperty("duration");
-        user.addIntProperty("speed");
-        user.addIntProperty("cadence");
-        user.addByteArrayProperty("speedPerKm");
-        user.addByteArrayProperty("cadencePerKm");
-        user.addIntProperty("stride");
-        user.addIntProperty("kneePress"); //**
-        user.addLongProperty("step");
-        user.addIntProperty("vertOsci");  //**
-        user.addIntProperty("emgDecrease");
-        user.addLongProperty("calorie");
-        user.addIntProperty("stability"); //**
-
-        user.addLongProperty("startTime");
-        user.addLongProperty("endTime");
-
-        user.addDoubleProperty("startlatitude");
-        user.addDoubleProperty("startlongitude");
-        user.addDoubleProperty("endlatitude");
-        user.addDoubleProperty("endlongitude");
-
-        user.addStringProperty("latLngs");
-        user.addByteArrayProperty("notification");  //出现过的提示
     }
 
     //所有运动的结果合并到一处
@@ -121,6 +80,7 @@ public class GreenDaoGenerate {
         user.addIdProperty();
 
         user.addIntProperty("type");
+
         user.addIntProperty("set");
         user.addByteArrayProperty("reps");
         user.addByteArrayProperty("rep_duration");
@@ -134,15 +94,16 @@ public class GreenDaoGenerate {
         user.addIntProperty("mileage");
         user.addIntProperty("speed");
         user.addIntProperty("cadence");
-        user.addByteArrayProperty("speedPerKm");
-        user.addByteArrayProperty("cadencePerKm");
+        user.addByteArrayProperty("speedPerMinute");
+        user.addIntProperty("minuteCount");
+        user.addByteArrayProperty("cadencePerKm"); //**
         user.addIntProperty("stride");
-        user.addIntProperty("kneePress"); //**
+        user.addByteArrayProperty("kneePress"); //**
         user.addLongProperty("step");
-        user.addIntProperty("vertOsci");  //**
-        user.addIntProperty("emgDecrease");
+        user.addByteArrayProperty("vertOsci");  //**
+        user.addByteArrayProperty("emgDecrease"); //**
         user.addLongProperty("calorie");
-        user.addIntProperty("stability"); //**
+        user.addByteArrayProperty("stability"); //**
 
         user.addLongProperty("startTime");
         user.addLongProperty("endTime");
@@ -154,6 +115,23 @@ public class GreenDaoGenerate {
 
         user.addStringProperty("latLngs");
         user.addByteArrayProperty("notification");  //出现过的提示
+
+        user.addStringProperty("comment");
+        user.addStringProperty("picturePath");
+
+        //三围体脂等
+        user.addIntProperty("weight");
+        user.addIntProperty("bodyFat");
+        user.addIntProperty("waist");
+        user.addIntProperty("chest");
+        user.addIntProperty("arms");
+        user.addIntProperty("forArms");
+        user.addIntProperty("shoulder");
+        user.addIntProperty("hips");
+        user.addIntProperty("thighs");
+        user.addIntProperty("calves");
+        user.addIntProperty("neck");
+
     }
 
     //单项运动的数据结构 这个需要用到类似 UtilConstants的HashMap方法管理  ++
@@ -287,28 +265,5 @@ public class GreenDaoGenerate {
 
     }
 
-
-    private static void addKeenBraceSports(Schema schema)
-    {
-        Entity user = schema.addEntity("KeenBrace_Sports");
-        user.addIdProperty();
-        user.addIntProperty("type");
-        user.addLongProperty("startTime");
-        user.addLongProperty("timelength");
-        user.addIntProperty("sumscore");
-        user.addIntProperty("cadence");
-        user.addIntProperty("stride");
-        user.addIntProperty("mileage");
-        user.addStringProperty("fileName");
-        user.addLongProperty("endTime");
-        user.addStringProperty("latLngs");//x,y;x,y  地图上的运动路径
-        user.addIntProperty("sumwarings");
-
-        user.addDoubleProperty("latitude");
-        user.addDoubleProperty("longitude");
-        user.addDoubleProperty("endlatitude");
-        user.addDoubleProperty("endlongitude");
-
-    }
 
 }

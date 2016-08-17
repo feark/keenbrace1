@@ -45,7 +45,18 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property PicturePath = new Property(19, String.class, "picturePath", false, "PICTURE_PATH");
         public final static Property LoginName = new Property(20, String.class, "loginName", false, "LOGIN_NAME");
         public final static Property Password = new Property(21, String.class, "password", false, "PASSWORD");
-        public final static Property FileName = new Property(22, String.class, "fileName", false, "FILE_NAME");
+        public final static Property Goal_weight = new Property(22, Integer.class, "goal_weight", false, "GOAL_WEIGHT");
+        public final static Property Goal_bodyFat = new Property(23, Integer.class, "goal_bodyFat", false, "GOAL_BODY_FAT");
+        public final static Property Goal_waist = new Property(24, Integer.class, "goal_waist", false, "GOAL_WAIST");
+        public final static Property Goal_chest = new Property(25, Integer.class, "goal_chest", false, "GOAL_CHEST");
+        public final static Property Goal_arms = new Property(26, Integer.class, "goal_arms", false, "GOAL_ARMS");
+        public final static Property Goal_forArms = new Property(27, Integer.class, "goal_forArms", false, "GOAL_FOR_ARMS");
+        public final static Property Goal_shoulder = new Property(28, Integer.class, "goal_shoulder", false, "GOAL_SHOULDER");
+        public final static Property Goal_hips = new Property(29, Integer.class, "goal_hips", false, "GOAL_HIPS");
+        public final static Property Goal_thighs = new Property(30, Integer.class, "goal_thighs", false, "GOAL_THIGHS");
+        public final static Property Goal_calves = new Property(31, Integer.class, "goal_calves", false, "GOAL_CALVES");
+        public final static Property Goal_neck = new Property(32, Integer.class, "goal_neck", false, "GOAL_NECK");
+        public final static Property FileName = new Property(33, String.class, "fileName", false, "FILE_NAME");
     };
 
 
@@ -83,7 +94,18 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"PICTURE_PATH\" TEXT," + // 19: picturePath
                 "\"LOGIN_NAME\" TEXT UNIQUE ," + // 20: loginName
                 "\"PASSWORD\" TEXT," + // 21: password
-                "\"FILE_NAME\" TEXT);"); // 22: fileName
+                "\"GOAL_WEIGHT\" INTEGER," + // 22: goal_weight
+                "\"GOAL_BODY_FAT\" INTEGER," + // 23: goal_bodyFat
+                "\"GOAL_WAIST\" INTEGER," + // 24: goal_waist
+                "\"GOAL_CHEST\" INTEGER," + // 25: goal_chest
+                "\"GOAL_ARMS\" INTEGER," + // 26: goal_arms
+                "\"GOAL_FOR_ARMS\" INTEGER," + // 27: goal_forArms
+                "\"GOAL_SHOULDER\" INTEGER," + // 28: goal_shoulder
+                "\"GOAL_HIPS\" INTEGER," + // 29: goal_hips
+                "\"GOAL_THIGHS\" INTEGER," + // 30: goal_thighs
+                "\"GOAL_CALVES\" INTEGER," + // 31: goal_calves
+                "\"GOAL_NECK\" INTEGER," + // 32: goal_neck
+                "\"FILE_NAME\" TEXT);"); // 33: fileName
     }
 
     /** Drops the underlying database table. */
@@ -207,9 +229,64 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(22, password);
         }
  
+        Integer goal_weight = entity.getGoal_weight();
+        if (goal_weight != null) {
+            stmt.bindLong(23, goal_weight);
+        }
+ 
+        Integer goal_bodyFat = entity.getGoal_bodyFat();
+        if (goal_bodyFat != null) {
+            stmt.bindLong(24, goal_bodyFat);
+        }
+ 
+        Integer goal_waist = entity.getGoal_waist();
+        if (goal_waist != null) {
+            stmt.bindLong(25, goal_waist);
+        }
+ 
+        Integer goal_chest = entity.getGoal_chest();
+        if (goal_chest != null) {
+            stmt.bindLong(26, goal_chest);
+        }
+ 
+        Integer goal_arms = entity.getGoal_arms();
+        if (goal_arms != null) {
+            stmt.bindLong(27, goal_arms);
+        }
+ 
+        Integer goal_forArms = entity.getGoal_forArms();
+        if (goal_forArms != null) {
+            stmt.bindLong(28, goal_forArms);
+        }
+ 
+        Integer goal_shoulder = entity.getGoal_shoulder();
+        if (goal_shoulder != null) {
+            stmt.bindLong(29, goal_shoulder);
+        }
+ 
+        Integer goal_hips = entity.getGoal_hips();
+        if (goal_hips != null) {
+            stmt.bindLong(30, goal_hips);
+        }
+ 
+        Integer goal_thighs = entity.getGoal_thighs();
+        if (goal_thighs != null) {
+            stmt.bindLong(31, goal_thighs);
+        }
+ 
+        Integer goal_calves = entity.getGoal_calves();
+        if (goal_calves != null) {
+            stmt.bindLong(32, goal_calves);
+        }
+ 
+        Integer goal_neck = entity.getGoal_neck();
+        if (goal_neck != null) {
+            stmt.bindLong(33, goal_neck);
+        }
+ 
         String fileName = entity.getFileName();
         if (fileName != null) {
-            stmt.bindString(23, fileName);
+            stmt.bindString(34, fileName);
         }
     }
 
@@ -245,7 +322,18 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // picturePath
             cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // loginName
             cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // password
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22) // fileName
+            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // goal_weight
+            cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23), // goal_bodyFat
+            cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24), // goal_waist
+            cursor.isNull(offset + 25) ? null : cursor.getInt(offset + 25), // goal_chest
+            cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26), // goal_arms
+            cursor.isNull(offset + 27) ? null : cursor.getInt(offset + 27), // goal_forArms
+            cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28), // goal_shoulder
+            cursor.isNull(offset + 29) ? null : cursor.getInt(offset + 29), // goal_hips
+            cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30), // goal_thighs
+            cursor.isNull(offset + 31) ? null : cursor.getInt(offset + 31), // goal_calves
+            cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32), // goal_neck
+            cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33) // fileName
         );
         return entity;
     }
@@ -275,7 +363,18 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setPicturePath(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
         entity.setLoginName(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
         entity.setPassword(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setFileName(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setGoal_weight(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
+        entity.setGoal_bodyFat(cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23));
+        entity.setGoal_waist(cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24));
+        entity.setGoal_chest(cursor.isNull(offset + 25) ? null : cursor.getInt(offset + 25));
+        entity.setGoal_arms(cursor.isNull(offset + 26) ? null : cursor.getInt(offset + 26));
+        entity.setGoal_forArms(cursor.isNull(offset + 27) ? null : cursor.getInt(offset + 27));
+        entity.setGoal_shoulder(cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28));
+        entity.setGoal_hips(cursor.isNull(offset + 29) ? null : cursor.getInt(offset + 29));
+        entity.setGoal_thighs(cursor.isNull(offset + 30) ? null : cursor.getInt(offset + 30));
+        entity.setGoal_calves(cursor.isNull(offset + 31) ? null : cursor.getInt(offset + 31));
+        entity.setGoal_neck(cursor.isNull(offset + 32) ? null : cursor.getInt(offset + 32));
+        entity.setFileName(cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33));
      }
     
     /** @inheritdoc */

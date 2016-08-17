@@ -262,17 +262,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
         leDeviceListAdapter.addDevice(device);
 
-        //如果之前没连过 要先点选后再连
-        /*
-        String ble_name =  PreferenceHelper.readString(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.BLE_NAME, "");
-        if(!ble_name.isEmpty())
-        {
-            //return;
-            Toast.makeText(MainActivity.this, "Preference " + ble_name,
-                    Toast.LENGTH_SHORT).show();
-        }
-        */
-
         //调试信息的打印方法 ken
         System.out.println("----------------------> has ble name");
 

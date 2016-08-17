@@ -85,11 +85,11 @@ public class FragmentMap extends Fragment implements OnClickListener,
 		}
 	}
 
-	public void updateTime(long mins) {
-		tv_sumtimes.setText(DateUitl.getDateFormat4(mins) + "");
+	public void updateTime(String timeStr) {
+		tv_sumtimes.setText(timeStr + "");
 	}
 
-	public void updateSpeed(int speed) {
+	public void updateSpeed(float speed) {
 		tv_speed.setText("" + DateUitl.formatToM(speed  / 100000)
 				+ "km/h");
 	}

@@ -190,15 +190,16 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         addRepsBarEntry(20);
         addRepsBarEntry(15);
 
-        //测试线图
-        addLineEntry(10);
-        addLineEntry(20);
-        addLineEntry(15);
-        addLineEntry(10);
-
-
         //得到数据
         commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
+
+        int minuteCount = commonResult.getMinuteCount();
+        byte speedPerMinute[];
+        speedPerMinute = commonResult.getSpeedPerMinute();
+
+        for(int n=0; n<minuteCount; n++){
+            addSpeedLineEntry(speedPerMinute[n]);
+        }
 
         //得到运动种类
         sport_type = this.getIntent().getIntExtra("sport_type", 0);
@@ -231,7 +232,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
 
             tv_runStep.setText("" + commonResult.getStep());
 
-            tv_runDuration.setText("" + commonResult.getDuration()/3600 + "min");
+            tv_runDuration.setText("" + commonResult.getDuration()/60000 + "min");
 
             //还有emg没显示 leave
 
@@ -658,10 +659,15 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
 
     int linValue = -1;
 
-    public void addLineEntry(int speed) {
+    public void addSpeedLineEntry(int speed) {
+        float speed_valid;
+
         if (linValue == speed)
             return;
-        linValue = speed;
+
+        speed_valid = (float)(speed / 10);
+        linValue = (int) speed_valid;
+
         LineData data = lc_speed.getData();
         if (data != null) {
 
@@ -671,7 +677,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
                 data.addDataSet(set);
             }
             data.addXValue("");
-            data.addEntry(new Entry(speed, set.getEntryCount()), 0);
+            data.addEntry(new Entry(speed_valid, set.getEntryCount()), 0);
             lc_speed.notifyDataSetChanged();
             lc_speed.setVisibleXRangeMaximum(50);
             lc_speed.moveViewTo(data.getXValCount() - 50, 0.0f,
