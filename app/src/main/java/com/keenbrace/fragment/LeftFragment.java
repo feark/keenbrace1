@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.keenbrace.R;
+import com.keenbrace.activity.AddCustomActivity;
+import com.keenbrace.activity.ChallengeActivity;
 import com.keenbrace.activity.HistoryActivity;
 import com.keenbrace.activity.MainActivity;
 import com.keenbrace.activity.PlanMainActivity;
@@ -41,14 +43,17 @@ public class LeftFragment extends BaseFragment {
     @Bind(R.id.ll_history)
     LinearLayout ll_history;
 
-    @Bind(R.id.ll_progress)
-    LinearLayout ll_progress;
+    @Bind(R.id.ll_custom)
+    LinearLayout ll_custom;
 
     @OnClick(R.id.ll_plan)
     void openPlanSettings() { readyGo(PlanMainActivity.class); }
 
-    @OnClick(R.id.ll_progress)
-    void openProgress(){ readyGo(ProgressActivity.class); }
+    @OnClick(R.id.ll_custom)
+    void openProgress(){ readyGo(AddCustomActivity.class); }
+
+    @OnClick(R.id.ll_challenge)
+    void openChallenge(){ readyGo(ChallengeActivity.class);}
 
     @OnClick(R.id.ll_store)
     void openStoreWebSite() { readyGo(StoreActivity.class); }

@@ -75,11 +75,17 @@ public class MainMenuActivity extends BaseActivity implements
     //运动参数相关
     Boolean isAnyMove = false;
 
-    int[] indiCaseCount = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] indiCaseCount = {0, 0, 0, 0, 0,
+                           0, 0, 0, 0, 0,
+                           0, 0, 0, 0, 0,
+                           0, 0, 0, 0, 0};
+
+    int goodFormCount = 0;
     //------------------------------------------------------
 
     //根据不同种类的运动显示不同的动画或图片 ken
     int sport_type = 0;
+    int startFrom = 0;
     Bundle data2Fragment = new Bundle();
 
     Button btn_start, btn_pause, btn_end, btn_continue;
@@ -94,16 +100,113 @@ public class MainMenuActivity extends BaseActivity implements
     private TransferUtility transferUtility;
     int wrCount = 0;
 
-    int distance_old;
+
     byte[] data;
     private Timer updateTimer;
     private UpdateUiTimerTask updateUiTimerTask;
     private final static int ACQ_TASK_TIMER_PERIOD = 200;
-    boolean isAdd = false;
-    long bakjldTimes = 0;
     private TextToSpeech tts;
 
     CommonResult commonResult;
+
+    //---------------------------------------------------
+    //  algorithm data-structure
+    //用于语音调度的FIFO
+    int voiceReadN;
+    int voiceWriteN;
+    int voiceInLine;
+    int lastPlayTime;
+    int[] voiceStrBuf = new int[50];
+
+    //触发的条件与提醒之前的概率关系
+    //不同的事件触发之后数组里面的概率值也应该重新计算
+    //与提示字符串信息一一对应
+    int[] probability = {0,0,0,0,0,
+                         0,0,0,0,0,
+                         0,0,0,0,0,
+                         0,0,0,};
+
+    int lastVoiceEvent = UtilConstants.eventStill;
+    //---------------------------------------------------
+
+    //时间控制的变量-----------------------------
+    long milli_second = 0;
+    int second;
+
+    int delay_times;
+    int anino;  //动画的编号
+
+    int countdown_times;
+    String countdown_str;
+    //int test_reps = 1;
+    int animaCountdown;
+
+    //跑步运动变量------------------------------
+    int[] steprates = new int[]{0, 0, 0, 0, 0};
+
+    byte speedPerMin[] = new byte[600];
+    byte stabilityPerMin[] = new byte[600];
+    byte kneePressPerMin[] = new byte[600];
+    byte vertOsciPerMin[] = new byte[600];
+
+    byte emgDecPerKm[] = new byte[50];
+    byte cadencePerKm[] = new byte[50];
+
+    int distance_old;
+    int aver_stride;
+    long calorieSum;
+    int fiveSecondCount = 0;
+    int minuteCount = 0;
+
+    float speedSum = 0.0f;
+    int kneepressSum = 0;
+    int vertOscSum = 0;
+    int stabilitySum = 0;
+    float speed = 0.0f;
+
+    int step = 0, stride = 0, distance = 0, index= 0, steprate = 0, osc = 0,
+            pressure = 0, tgt = 0, twist, flip, power, strike, iangle;
+    int[] bs = new int[5];
+
+    int pressTimes;
+
+    int touchGroundCount;
+
+    int[] step_history = new int[4];
+
+    int[] power_record = new int[200];
+    int power_aver = 0;
+    int power_index;
+    boolean power_flag = false;
+    int power_valid = 0;
+
+    int step_true = 0;
+    int old_step = 0;
+    int updateStep = 0;
+    int bkstep = 0;
+    float PI = 3.1415926f;
+
+    int old_steprate = 0;
+
+    //用于控制每公里一次的行为
+    int mileage_km = 0, oldMileageKm = 0;
+    int km_count = 0;
+
+    //每公里的步数
+    int stepPerKm = 0;
+    int secondsPerKm = 0;
+
+    int big_stride_count = 0;
+
+    //非跑步运动的变量---------------------------
+    int setSum;
+    byte repsPerSet[] = new byte[100];
+    byte repsDuration[] = new byte[100];
+    int load;
+    int RM;
+    long restTime;
+
+    int duration_hour = 0, duration_min = 0, duration_sec = 0;
 
     @Override
     protected boolean hasBackButton() {
@@ -196,6 +299,18 @@ public class MainMenuActivity extends BaseActivity implements
         sport_type = this.getIntent().getIntExtra("sport_type",0);
         data2Fragment.putInt("sport_type", sport_type);
 
+        //从哪个位置开始的
+        startFrom = this.getIntent().getIntExtra("StartFrom",0);
+        if(startFrom == UtilConstants.fromChallenge)
+        {
+            //从挑战开始
+            //隐掉左右切换按钮
+            switch2map.setVisibility(View.GONE);
+            switch2runner.setVisibility(View.GONE);
+
+            //加载挑战的几项运动 进入计时自动切换模式
+        }
+
         //导航条标题
         if(sport_type == UtilConstants.sport_running)
         {
@@ -213,7 +328,16 @@ public class MainMenuActivity extends BaseActivity implements
                 this.setActionBarTitle(getString(R.string.tx_plank));
 
             if(sport_type == UtilConstants.sport_pullup)
-                this.setActionBarTitle(getString(R.string.tx_pullup));
+                this.setActionBarTitle(getString(R.string.tx_pushup));
+
+            if(sport_type == UtilConstants.sport_pushup)
+                this.setActionBarTitle(getString(R.string.tx_pushup));
+
+            if(sport_type == UtilConstants.sport_bicyclesitup)
+                this.setActionBarTitle(getString(R.string.tx_bicyclesitup));
+
+            if(sport_type == UtilConstants.sport_closestancesquat)
+                this.setActionBarTitle(getString(R.string.tx_dumbbellsquat));
         }
 
         fragmentHistory.setArguments(data2Fragment);
@@ -280,7 +404,6 @@ public class MainMenuActivity extends BaseActivity implements
                 updateUiTimerTask = new UpdateUiTimerTask();
                 updateTimer.schedule(updateUiTimerTask, 0,
                         ACQ_TASK_TIMER_PERIOD);
-                bakjldTimes = System.currentTimeMillis();
             }
 
         }
@@ -289,7 +412,6 @@ public class MainMenuActivity extends BaseActivity implements
                     this,
                     "You are not connected to the device, will not be able to monitor the status of your movement",
                     Toast.LENGTH_SHORT).show();
-
         }
 
     }
@@ -401,6 +523,8 @@ public class MainMenuActivity extends BaseActivity implements
                 commonResult.setStartTime(d.getTime());
                 commonResult.setDuration(new Long(0L));
                 commonResult.setType(sport_type);
+                //把数据文件名保存进数据库
+                commonResult.setDataFileName(fname);
 
                 if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
                     commonResult.setStartlatitude(fragmentMap.getLatitude());
@@ -463,26 +587,6 @@ public class MainMenuActivity extends BaseActivity implements
 
     };
 
-
-    long milli_second = 0;
-    int[] steprates = new int[]{0, 0, 0, 0, 0};
-
-    int delay_times;
-
-    int anino;  //动画的编号
-
-    int countdown_times;
-    String countdown_str;
-    //int test_reps = 1;
-    int indiCountdown = 100;
-
-    byte speedPerMin[] = new byte[600];
-    int fiveSecondCount = 0;
-    int minuteCount = 0;
-    float speedSum = 0.0f;
-
-    int du_hour = 0, du_min = 0, du_sec = 0;
-
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -492,20 +596,6 @@ public class MainMenuActivity extends BaseActivity implements
                         //每秒检查一次有没有在运动
                         delay_times--;
                         handler.sendEmptyMessageDelayed(1, 1000);
-
-
-
-                        /*  testing
-                        String s;
-                        s = "" + test_reps;
-                        tts.speak(s,
-                                TextToSpeech.QUEUE_FLUSH, null);
-                        test_reps++;
-
-                        if (mLastFragment == fragmentHistory) {
-                            fragmentHistory.updateParaBox(test_reps, 10, 30, 30);
-                        }
-                        */
                     }
                     else
                     {
@@ -522,11 +612,30 @@ public class MainMenuActivity extends BaseActivity implements
                 //检测到有动作 播放动画
                 case 2:
                     if (mLastFragment == fragmentHistory) {
-                        if(sport_type == UtilConstants.sport_running) {
-                            fragmentHistory.updateAnimation(anino);
+                        if(sport_type == UtilConstants.sport_running)
+                        {
+                            if(anino < UtilConstants.eventStill)
+                            {
+                                //让这个提示动画保持7秒
+                                animaCountdown = 7;
+                            }
+
+                            if(animaCountdown > 0)  //7秒内不接受静止或一般跑的动画
+                            {
+                                if(anino == UtilConstants.eventStill)   //静止
+                                {
+                                    break;
+                                }
+                                else if(anino == UtilConstants.eventNormalRun)  //一般跑
+                                {
+                                    break;
+                                }
+                            }
+
+                            fragmentHistory.updateAnimation(anino, (int)steprate);
                         }
                         else {
-                            fragmentHistory.updateAnimation(0);
+                            fragmentHistory.updateAnimation(0, 0);
                         }
                     }
                     break;
@@ -555,38 +664,11 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 5:
-                    //用这种形式实现自循环
-                    if (isStartRun) {
-                        int distance_gap = distance - distance_old;
+                    runningSlowAnalysis();
 
-                        //每5秒读一次距离
-                        float speed = (float)distance_gap / 5;
-
-                        speedSum = speedSum + speed;
-                        fiveSecondCount++;
-
-                        //5秒一次 12次1秒
-                        if(fiveSecondCount == 12)
-                        {
-                            speedSum = speedSum / 12;
-                            fiveSecondCount = 0;
-                            speedPerMin[minuteCount] = (byte)(speedSum * 10); //放大10倍
-                            minuteCount++;
-                            speedSum = 0;
-                        }
-
-                        //用这种方法更新速度 如果地图不动值就是错的
-                        fragmentMap.updateSpeed(speed * 3600);
-                        fragmentHistory.updateSpeed(speed * 3600);
-                        distance_old = distance;
-                        handler.sendEmptyMessageDelayed(5, 5000);
-                        //打印调试信息
-                        com.umeng.socialize.utils.Log.e("speed-------------------"
-                                + speed);
-                    }
+                    handler.sendEmptyMessageDelayed(5, 5000);  //定时5秒
                     break;
                 case 6:
-
                     //fragmentReport.addLineEntry(power_valid);
                     //fragmentReport.addBarEntry(osc, (int) ya, steprate);
                     //
@@ -628,154 +710,45 @@ public class MainMenuActivity extends BaseActivity implements
                     if(isStartRun) {
                         milli_second += 1000;
 
-                        //实时更新运动的总时长
-                        du_sec++;
-                        if(du_sec >= 60)
+                        if(animaCountdown > 0)
                         {
-                            du_min++;
-                            if(du_min >= 60){
-                                du_hour++;
-                                du_min = 0;
+                            if(anino == UtilConstants.eventCadence)
+                            {
+                                handler.sendEmptyMessage(2);
                             }
-                            du_sec = 0;
                         }
 
-                        String str_du = String.format("%02d:%02d:%02d",du_hour,du_min,du_sec);
-                        tv_duration.setText("Duration :  "+str_du);
+                        animaCountdown--;
+
+                        secondsPerKm++;
+
+                        //实时更新运动的总时长
+                        duration_sec++;
+                        if(duration_sec >= 60)
+                        {
+                            duration_min++;
+                            if(duration_min >= 60){
+                                duration_hour++;
+                                duration_min = 0;
+                            }
+                            duration_sec = 0;
+                        }
+
+                        String str_duration = String.format("%02d:%02d:%02d",duration_hour,duration_min,duration_sec);
+                        tv_duration.setText("Duration :  "+str_duration);
 
                         //if (mLastFragment == fragmentHistory)
                         //fragmentHistory.updateTime(milli_second / 1000, blue, yellow, red);
 
                         if (mLastFragment == fragmentMap)
-                            fragmentMap.updateTime(str_du);
+                            fragmentMap.updateTime(str_duration);
 
                         if (mLastFragment == fragmentMapGoogle)
-                            fragmentMapGoogle.updateTime(str_du);
+                            fragmentMapGoogle.updateTime(str_duration);
 
-                        bs[0] = bs[1];
-                        bs[1] = bs[2];
-                        bs[2] = bs[3];
-                        bs[3] = bs[4];
-                        if (updateStep != step_true)
-                            bs[4] = bkstep;
-                        else
-                            bs[4] = step_true;
+                        runningSecondAnalysis();
 
-                        float a = Math.abs(bs[4] - bs[0]);
-                        float b = Math.abs(bs[4] - bs[1]);
-                        float c = Math.abs(bs[4] - bs[2]);
-                        float d = Math.abs(bs[4] - bs[3]);
-                        float pp = (a + b + c + d) * 6;
-                        steprate = (int) pp;
-                        if (milli_second > 5000) {
-
-                            steprate = (95 * steprate + 5 * old_steprate) / 100;
-                        }
-                        steprates[0] = steprates[1];
-                        steprates[1] = steprates[2];
-                        steprates[2] = steprates[3];
-                        steprates[3] = steprates[4];
-                        steprates[4] = steprate;
-
-                        if (milli_second > 5000) {
-                            int totalStep = 0;
-                            for (int i = 0; i < 5; i++) {
-                                if (steprates[i] > 0) {
-                                    totalStep += steprates[i];
-                                    count++;
-                                }
-                            }
-                            steprate = totalStep / 5;
-
-                        }
-
-                        old_steprate = steprate;
-                        if (steprate < 150) {
-                            //if (rw8 != null) {
-                            //步频太低
-                            if (steprate > 0) {
-                                straight_spine++;
-
-                                if (straight_spine < 5) {
-                                    anino = 1;
-                                    //语音
-                                    indiCaseCount[anino]++;
-
-                                    if (indiCaseCount[anino] > 10) {
-                                        updateVoice(R.string.tx_increase_cadence);
-                                        //动画和提示框信息
-                                        handler.sendEmptyMessage(2);
-
-                                        indiCaseCount[anino] = 0;
-                                    }
-                                } else {
-                                    //动画和提示框信息
-                                    anino = 0;
-
-                                    indiCaseCount[anino]++;
-
-                                    if (indiCaseCount[anino] > 10) {
-                                        //语音
-                                        updateVoice(R.string.tx_straight_spine);
-
-                                        handler.sendEmptyMessage(2);
-                                        straight_spine = 0;
-
-                                        indiCaseCount[anino] = 0;
-                                    }
-                                }
-                            }
-                            //}
-                        } else if (steprate == 0) {
-                            //站着没动 显示停止的小人
-                            anino = 12;
-
-                            indiCaseCount[anino]++;
-
-                            if (indiCaseCount[anino] > 5) {
-                                handler.sendEmptyMessage(2);
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        } else if (steprate > 150) {
-                            if (anino != 10) {
-                                indiCountdown--;
-
-                                if (indiCountdown == 0) {
-                                    anino = 10;
-                                    indiCountdown = 100;
-                                }
-                            } else {
-                                anino = 10;
-
-                                indiCaseCount[anino]++;
-
-                                if (indiCaseCount[anino] > 3) {
-                                    handler.sendEmptyMessage(2);
-
-                                    indiCaseCount[anino] = 0;
-                                }
-                            }
-                        }
-
-                        bpi = 0;
-
-
-                        step_history[second] = step_true;
-                        second++; //
-
-                        if (second >= 4)
-                            second = 0;
-
-                        if (power_valid != 10) {
-                            power_record[power_index] = power_valid;
-                            power_index++;
-                        }
-
-                        if (power_index >= 200) {
-                            power_index = 0;
-                            power_flag = true;
-                        }
+                        voiceCoachScheduler();
                     }
                     break;
 
@@ -787,6 +760,9 @@ public class MainMenuActivity extends BaseActivity implements
                     if(sport_type == UtilConstants.sport_squat)
                         st = 3;
 
+                    if(sport_type == UtilConstants.sport_pushup)
+                        st = 4;
+
                     if(sport_type == UtilConstants.sport_pullup)
                         st = 5;
 
@@ -795,6 +771,13 @@ public class MainMenuActivity extends BaseActivity implements
 
                     if(sport_type == UtilConstants.sport_plank)
                         st = 9;
+
+                    if(sport_type == UtilConstants.sport_bicyclesitup)
+                        st = 10;
+
+                    if(sport_type == UtilConstants.sport_closestancesquat)
+                        st = 11;
+
 
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null)
@@ -882,82 +865,32 @@ public class MainMenuActivity extends BaseActivity implements
     }
 
 
-
-
-    int bpi = 0;
-    int bsi = 0;
-    int progress = 0;
-
-    int step = 0, stride = 0, distance = 0, index= 0, steprate = 0, osc = 0, pressure = 0, tgt = 0;
-    int[] bs = new int[5];
-    //List<RunWaring> rws = new ArrayList<RunWaring>();
-    int count;
-    //int jzdfbOne, jzdfbTwo;
-    int second; //
-    int[] step_history = new int[4]; //
-    int[] power_record = new int[200];
-    int power_index;
-    boolean power_flag = false;
-    int power_valid = 0;
-
-    boolean iangle_flag = false;
-
-    int step_true = 0;
-    int old_step = 0;
-    int updateStep = 0;
-    int bkstep = 0;
-    float PI = 3.1415926f;
-
-    int old_steprate = 0;
-
-    int warn_lock = 0;
-
-    //----------------------- inherit alarms
-    int big_stride_count = 0;
-    int bend_kneeNelbow = 0;
-    int straight_spine = 0;
-
     void updateView() {
 
         int z = ByteHelp.ByteArrayToShort(new byte[]{data[1], data[2]});
         int h = ByteHelp.ByteArrayToShort(new byte[]{data[3], data[4]});
         pressure = (int) Math.sqrt(z * z + h * h);
+        pressTimes = (int)((float)pressure / (UtilConstants.Weight * 9.8f));
 
-        int twist = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});    //旋转
-        int flip = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});   //翻转
+        twist = ByteHelp.byteArrayToInt(new byte[]{data[5], data[6]});    //旋转
+        flip = ByteHelp.byteArrayToInt(new byte[]{data[7], data[8]});   //翻转
 
         step = ByteHelp.ByteArrayToShort(new byte[]{data[9], data[10]});    //步数
 
-        int iangle = ByteHelp.byteArrayToInt(new byte[]{data[11], data[12]});   //夹角
+        iangle = ByteHelp.byteArrayToInt(new byte[]{data[11], data[12]});   //夹角
 
-        osc = data[13];
+        osc = (data[13]  & 0xff);
 
-        int stability = data[14];
+        stability = (data[14]  & 0xff);
 
-        int tgt = data[15];
+        tgt = (data[15]  & 0xff);
 
         stride = data[16] & 0xFF;
 
-        int power = data[17] & 0xFF;
+        power = data[17] & 0xFF;
 
-        int strike = data[18] & 0xFF;
+        strike = data[18] & 0xFF;
 
-
-        float Height = 175;
-        if (UtilConstants.user != null
-                && !"".equals(UtilConstants.user.getHeight()))
-            Height = UtilConstants.user.getHeight();
-        float legLen = 0.0f;
-
-        if (UtilConstants.user != null
-                && "0".equals(UtilConstants.user.getGender())) {
-            legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 5) / 3.74);
-        } else {
-            legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 3) / 3.74);
-        }
-
-        //每步的距离
-        int stride_dis = (int) (legLen * Math.sin((stride / 2) * PI / 180));
 
         //步数不能出现负数
         if (step < 0) {
@@ -987,262 +920,8 @@ public class MainMenuActivity extends BaseActivity implements
             power_valid = power;
         }
 
-
-        if (stride > 130 && steprate > 120) {
-            if (step_history[3] != step_history[0]) {
-                warn_lock = 1;
-
-                //步幅太大 达到危险
-                if(stride > 150) {
-                    big_stride_count++;
-                }
-
-                if(big_stride_count < 5) {
-                    anino = 2;
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 30) {
-                        //语音
-                        updateVoice(R.string.tx_decrease_stride_l);
-                        //动画和提示框信息
-                        handler.sendEmptyMessage(2);
-
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-                else
-                {
-                    anino = 8;
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 60) {
-                        //语音
-                        updateVoice(R.string.tx_land_underneath);
-                        //动画和提示框信息
-
-                        handler.sendEmptyMessage(2);
-
-                        big_stride_count = 0;
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-            }
-            else
-            {
-                warn_lock = 0;
-            }
-        }
-
-
-        if (step_history[3] != step_history[0]) {
-            /*
-            if(stability < 6)
-            {
-                anino = 2;
-
-                indiCaseCount[anino]++;
-
-                if(indiCaseCount[anino] > 10) {
-                    //语音
-                    updateVoice(R.string.tx_enhance_stability);
-                    //动画和提示框信息
-
-                    handler.sendEmptyMessage(2);
-
-                    indiCaseCount[anino] = 0;
-                }
-            }
-            */
-
-            if (tgt == 100) {
-                count++;
-
-                if (count >= 10 && steprate > 130) {
-                    if(steprate < 160) {
-                        anino = 6;
-
-                        indiCaseCount[anino]++;
-
-                        if (indiCaseCount[anino] > 15) {
-                            //触地时间过长
-                            updateVoice(R.string.tx_increase_cadence);
-
-                            handler.sendEmptyMessage(2);
-                            indiCaseCount[anino] = 0;
-                        }
-
-                    }
-                }
-
-                /* 暂没有有效得到iangle夹角的方法 不报这个
-                if (iangle > 130 && steprate < 180) {
-                    anino = 7;
-
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 20) {
-                        updateVoice(R.string.tx_flex_knee);
-
-                        handler.sendEmptyMessage(2);
-                        //脚伸太直
-                        iangle_flag = true;
-
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-                */
-
-                if (pressure > UtilConstants.Weight * 9.8f * 6) {
-                    //膝盖压力太大
-                    if (steprate > 130)
-                    {
-                        bend_kneeNelbow++;
-
-                        if( bend_kneeNelbow < 6) {
-                            anino = 3;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_land_softer);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                        else
-                        {
-                            anino = 9;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_bend_knee_n_elbow);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-
-                                bend_kneeNelbow = 0;
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                    }
-                }
-
-                //这两个还没实现
-                //内旋
-                if (twist > 80 && flip < -50) {
-                    //if (steprate > 100)
-                        //rw4 = getWarning(4, rw4);
-                }
-
-                //内旋
-                if (twist < -80 && flip > 50) {
-                    //if (steprate > 100)
-                        //rw5 = getWarning(5, rw5);
-                }
-
-            } else {
-                count = 0;
-            }
-
-            if (true == iangle_flag) {
-                iangle_flag = false;
-
-
-                int power_aver = 0;
-                for (int n = 0; n < 200; n++) {
-                    power_aver += power_record[n];
-                }
-                power_aver = power_aver / 200;
-
-                if (true == power_flag) {
-                    if (power_aver < 60) {
-                        //股四头肌疲劳
-                        if (steprate > 130)
-                        {
-                            anino = 11;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_take_rest);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                            //rw6 = getWarning(6, rw6);
-                    }
-                }
-            }
-        }
-
-        /*
-        if(warn_lock == 0) {
-            if (osc > 25) {
-                //垂直摆动太大
-                if (steprate > 130)
-                {
-                    anino = 11;
-
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 10) {
-                        //语音
-                        updateVoice(R.string.tx_lower_gravity);
-                        //动画和提示框信息
-
-                        handler.sendEmptyMessage(2);
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-            }
-        }
-        */
-
-        bak = System.currentTimeMillis();
-
-        index++;
-
-
-        float mapDistance = 0f;
-        if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
-            mapDistance = fragmentMap.getDistance();
-        else
-            mapDistance = fragmentMapGoogle.getDistance();
-
-        if(mapDistance != 0) {
-            //if (distance >= 5000) {
-                //distance += mapDistance;
-            //} else {
-                if (updateStep != step_true) {
-                    distance += stride_dis;
-                }
-           // }
-        }
-        else
-        {
-            if (updateStep != step_true) {
-                distance += stride_dis;
-            }
-        }
-
-        updateStep = step_true;
-        old_step = step;
-        handler.sendEmptyMessage(6);
-
-    }
-
-    //data接收到蓝牙数据包 在这里发出语音 ken
-    void updateVoice(int no)
-    {
-        tts.speak((String)getText(no),
-                TextToSpeech.QUEUE_FLUSH, null);
+        //判断跑步的姿态正确性
+        runningFormCheck();
     }
 
     static int old_reps = 0;
@@ -1334,9 +1013,9 @@ public class MainMenuActivity extends BaseActivity implements
 
                 commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
 
-                bias = (int)data[6];
-                stability = (int)data[7];
-                muscleDec = (int)data[8];
+                bias = (data[6]  & 0xff);
+                stability = (data[7] & 0xff) ;
+                muscleDec = (data[8] & 0xff);
 
                 //X angle
                 xAngle = (int)data[9];
@@ -1406,13 +1085,29 @@ public class MainMenuActivity extends BaseActivity implements
         } catch (IOException e) {
         }
 
-        commonResult.setDuration(milli_second);
-        commonResult.setMileage(distance);
-        commonResult.setCadence(steprate);
-        commonResult.setStep((long) step_true);
-
+        //跑步的结果数据
+        commonResult.setDuration(milli_second); //时间
+        commonResult.setMileage(distance);      //里程
+        commonResult.setCadence(steprate);      //步频
+        commonResult.setStep((long) step_true); //步数
         commonResult.setSpeedPerMinute(speedPerMin);
         commonResult.setMinuteCount(minuteCount);
+        commonResult.setCadencePerKm(cadencePerKm);         //每公里步频
+        commonResult.setStride(aver_stride);               //平均步幅
+        commonResult.setKneePress(kneePressPerMin);            //膝盖压力
+        commonResult.setVertOsci(vertOsciPerMin);
+        commonResult.setEmgDecrease(emgDecPerKm);
+        commonResult.setCalorie(calorieSum);
+        commonResult.setStability(stabilityPerMin);
+
+        //非跑步的结果数据
+        commonResult.setSet(setSum);  //做了多少组
+        commonResult.setReps(repsPerSet); //做了多少下
+        commonResult.setRep_duration(repsDuration); //每一下的时间长短
+        commonResult.setLoad(load); //负重
+        commonResult.setRM(RM);
+        commonResult.setRestTime(restTime); //休息时间
+
 
         //runResult.setEmgDecrease();
         //runResult.setFileName(file.getAbsolutePath());    //ken
@@ -1575,4 +1270,561 @@ public class MainMenuActivity extends BaseActivity implements
         handler.sendEmptyMessage(3);
         */
     }
+
+    //==================================================================================
+    //每一种事件对应一个警报有不同概率 然后根据贝叶斯定理 把概率最高的一个语音读出来
+    //语音教练调度器 字符串的ID 包含的条件集 按照这个条件集应该说什么
+    //建立一个数组
+    private void runningFormCheck()
+    {
+        float Height = 175;
+        if (UtilConstants.user != null
+                && !"".equals(UtilConstants.user.getHeight()))
+            Height = UtilConstants.user.getHeight();
+        float legLen = 0.0f;
+
+        if (UtilConstants.user != null
+                && "0".equals(UtilConstants.user.getGender())) {
+            legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 5) / 3.74);
+        } else {
+            legLen = (float) (Height / (4.57 + (Height - 180) * 0.01625) + (Height - 3) / 3.74);
+        }
+
+        //每步的距离
+        int stride_dis = (int) (legLen * Math.sin((stride / 2) * PI / 180));
+
+        //步幅大 步频也要达到一定的前提下
+        if (stride > 130 && steprate > 120) {
+            if (step_history[3] != step_history[0]) {
+
+                //步幅太大 达到危险
+                if(stride > 150) {
+                    big_stride_count++;
+                }
+
+                if(big_stride_count < 5) {
+                    //提示步幅
+                    anino = UtilConstants.eventStride;
+
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 30 == 0) {
+                        probabilityCalculator(UtilConstants.eventStride);
+                    }
+                }
+                else    //stride的次数更多 往前伸腿太多
+                {
+                    //提示腿不要向前探
+                    anino = UtilConstants.eventReach;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 30 == 0) {
+                        probabilityCalculator(UtilConstants.eventReach);
+
+                        big_stride_count = 0;
+
+
+                        indiCaseCount[UtilConstants.eventCalf]++;
+                        if(indiCaseCount[UtilConstants.eventCalf] % 10 == 0)
+                        {
+                            probabilityCalculator(UtilConstants.eventCalf);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (step_history[3] != step_history[0]) {
+
+            //在触地的前提下
+            if (tgt == 100) {
+                touchGroundCount++;
+
+                if (touchGroundCount >= 10 && steprate > 130) {
+                    if(steprate < 160) {
+                        anino = UtilConstants.eventFoot;
+
+                        indiCaseCount[anino]++;
+
+                        //提示抬腿快点
+                        if (indiCaseCount[anino] % 15 == 0) {
+                            probabilityCalculator(UtilConstants.eventFoot);
+
+                            //多次出现 给出更具体的建议
+                            indiCaseCount[UtilConstants.eventToe]++;
+                            if(indiCaseCount[UtilConstants.eventToe] % 10 == 0)
+                            {
+                                probabilityCalculator(UtilConstants.eventToe);
+                            }
+                        }
+
+                    }
+                }
+
+                //提示身体的动力要往前
+                if (iangle > 150 && steprate < 180) {
+                    anino = UtilConstants.eventLean;
+
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 20 == 0) {
+                        probabilityCalculator(UtilConstants.eventLean);
+                    }
+                }
+
+            } else {
+                touchGroundCount = 0;
+            }
+
+            //在膝盖压力太大的前提下
+            if (pressTimes > 5) {
+                //步幅太大
+                if (stride > 130 && stride < 150)
+                {
+                    //让他注意一下脚落地重心
+                    anino = UtilConstants.eventGravity;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventGravity);
+                    }
+                }
+
+                //步幅特别大
+                if(stride > 150)
+                {
+                    //直接让他把脚收回来
+                    anino = UtilConstants.eventCog;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventCog);
+                    }
+                }
+
+                //提示稳定性
+                if(stability > 220)
+                {
+                    anino = UtilConstants.eventStability;
+
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventStability);
+
+                    }
+                }
+            }
+
+            //提示落地轻点
+            if (pressTimes > 10) {
+                anino = UtilConstants.eventLand;
+                indiCaseCount[anino]++;
+
+                if(indiCaseCount[anino] % 10 == 0) {
+                    probabilityCalculator(UtilConstants.eventLand);
+
+                }
+            }
+
+        }
+
+        bak = System.currentTimeMillis();
+
+        index++;
+
+
+        float mapDistance = 0f;
+        if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
+            mapDistance = fragmentMap.getDistance();
+        else
+            mapDistance = fragmentMapGoogle.getDistance();
+
+        if(mapDistance != 0) {
+
+            if (updateStep != step_true) {
+                distance += stride_dis;
+            }
+        }
+        else
+        {
+            if (updateStep != step_true) {
+                distance += stride_dis;
+            }
+        }
+
+        //每公里行为 每公里保存一次的参数 每公里播报一次的语音
+        mileage_km = (int)((float)distance / 100000.0f);
+
+        //要用标志控制每整数公里只执行一次以下任务 leave
+        if(mileage_km != 0){
+            if(mileage_km != oldMileageKm){
+
+                emgDecPerKm[km_count] = (byte)power_aver;
+                cadencePerKm[km_count] = (byte) ( stepPerKm /  secondsPerKm);  //一公里内的步数除以时间
+
+                oldMileageKm = mileage_km;
+                km_count++;
+
+                secondsPerKm = 0;
+                stepPerKm = 0;
+            }
+        }
+
+        updateStep = step_true;
+        old_step = step;
+        handler.sendEmptyMessage(6);
+    }
+
+    //每秒一次的跑步姿势分析
+    private void runningSecondAnalysis()
+    {
+        bs[0] = bs[1];
+        bs[1] = bs[2];
+        bs[2] = bs[3];
+        bs[3] = bs[4];
+        if (updateStep != step_true)
+            bs[4] = bkstep;
+        else
+            bs[4] = step_true;
+
+        float a = Math.abs(bs[4] - bs[0]);
+        float b = Math.abs(bs[4] - bs[1]);
+        float c = Math.abs(bs[4] - bs[2]);
+        float d = Math.abs(bs[4] - bs[3]);
+        float pp = (a + b + c + d) * 6;
+        steprate = (int) pp;
+
+        //5秒一次
+        if (milli_second > 5000) {
+
+            steprate = (95 * steprate + 5 * old_steprate) / 100;
+        }
+        steprates[0] = steprates[1];
+        steprates[1] = steprates[2];
+        steprates[2] = steprates[3];
+        steprates[3] = steprates[4];
+        steprates[4] = steprate;
+
+        if (milli_second > 5000) {
+            int totalStep = 0;
+            for (int i = 0; i < 5; i++) {
+                if (steprates[i] > 0) {
+                    totalStep += steprates[i];
+                }
+            }
+            steprate = totalStep / 5;
+        }
+
+        old_steprate = steprate;
+
+        if (steprate == 0)
+        {
+            //站着没动 显示停止的小人
+            anino = UtilConstants.eventStill;
+
+            indiCaseCount[anino]++;
+
+            if (indiCaseCount[anino] % 5 == 0) {
+                probabilityCalculator(UtilConstants.eventStill);
+            }
+
+        }
+
+        step_history[second] = step_true;
+        second++;
+
+        if (second >= 4)
+            second = 0;
+
+        if (power_valid != 10) {
+            power_record[power_index] = power_valid;
+            power_index++;
+        }
+
+        if (power_index >= 200) {
+
+            for (int n = 0; n < 200; n++) {
+                power_aver += power_record[n];
+            }
+            power_aver = power_aver / 200;
+
+            power_index = 0;
+            power_flag = true;
+        }
+    }
+
+    //对于跑步的5秒一次分析
+    private void runningSlowAnalysis()
+    {
+        float runningSpeed;
+        int runningOsc = 0;
+
+        //用这种形式实现自循环
+        if (isStartRun) {
+            int distance_gap = distance - distance_old;
+
+            //每5秒读一次距离 5秒间距离除以时间等于速度
+            speed = (float)distance_gap / 5;
+
+            //速度
+            speedSum = speedSum + speed;
+            fiveSecondCount++;
+
+            //膝盖压力
+            kneepressSum = kneepressSum + pressTimes;
+
+            //垂直摆动
+            vertOscSum = vertOscSum + osc;
+
+            //稳定度
+            stabilitySum = stabilitySum + stability;
+
+            //5秒一次 12次1分钟  --1分钟定时器
+            if(fiveSecondCount == 12)
+            {
+                speedSum = speedSum / 12;
+                fiveSecondCount = 0;
+                speedPerMin[minuteCount] = (byte)(speedSum * 10); //放大10倍
+                minuteCount++;
+                speedSum = 0;
+
+                //每分钟统计的数值
+                //膝盖压力
+                kneepressSum = kneepressSum / 12;
+                kneePressPerMin[minuteCount] = (byte)kneepressSum;
+                kneepressSum = 0;
+
+                //垂直摆动
+                vertOscSum = vertOscSum / 12;
+                runningOsc = vertOscSum;
+                vertOsciPerMin[minuteCount] = (byte)vertOscSum;
+                vertOscSum = 0;
+
+                //稳定度
+                stabilitySum = stabilitySum / 12;
+                stabilityPerMin[minuteCount] = (byte)stabilitySum;
+                stabilitySum = 0;
+            }
+
+            //用这种方法更新速度 如果地图不动值就是错的
+            fragmentMap.updateSpeed(speed * 3600);
+            fragmentHistory.updateSpeed(speed * 3600);
+            distance_old = distance;
+
+            //打印调试信息
+            com.umeng.socialize.utils.Log.e("speed-------------------"
+                    + speed);
+
+            //速度大于6前提下
+            //步频低 让提高步频
+            runningSpeed = speed * 36 / 1000;
+            if(runningSpeed > 3.5){
+                if (steprate < 150) {
+                    anino = UtilConstants.eventCadence;
+                    indiCaseCount[anino]++;
+
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventCadence);
+                    }
+                }
+
+                if(runningOsc >= 22)
+                {
+                    anino = UtilConstants.eventBounce;
+                    indiCaseCount[anino]++;
+
+                    //不要跳着跑
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventBounce);
+
+                        //告诉他具体发出的技巧
+                        indiCaseCount[UtilConstants.eventDrive]++;
+                        if(indiCaseCount[UtilConstants.eventDrive] % 5 == 0)
+                        {
+                            probabilityCalculator(UtilConstants.eventDrive);
+                        }
+                    }
+                }
+
+                if(runningOsc > 16 && runningOsc < 22)
+                {
+                    anino = UtilConstants.eventEnergy;
+                    indiCaseCount[anino]++;
+
+                    //告诉他能量要往前使
+                    if(indiCaseCount[anino] % 10 == 0) {
+                        probabilityCalculator(UtilConstants.eventEnergy);
+                    }
+                }
+            }
+
+            //有速度并且无提示动画就显示跑动的小人
+            if(runningSpeed > 2.0) {
+                anino = UtilConstants.eventNormalRun;
+                handler.sendEmptyMessage(2);
+
+                goodFormCount++;
+                if(goodFormCount > 6)
+                {
+                    tts.speak((String)getText(R.string.tx_encourage_12),
+                            TextToSpeech.QUEUE_FLUSH, null);
+                    goodFormCount = 0;
+                }
+            }
+
+            //显示静步的小人
+            if(runningSpeed == 0.0){
+                anino = UtilConstants.eventStill;
+                handler.sendEmptyMessage(2);
+            }
+
+            //起码跑了2公里
+            if(mileage_km > 2)
+            {
+                if (true == power_flag)
+                {   //有足够肌电数据
+                    if (power_aver < 60)
+                    {
+                        //稳定性很差
+                        if (stability > 30)
+                        {
+                            //股四头肌疲劳
+                            anino = UtilConstants.eventRest;
+                            indiCaseCount[anino]++;
+                            //建议休息一下
+                            if(indiCaseCount[anino] % 10 == 0)
+                            {
+                                probabilityCalculator(UtilConstants.eventRest);
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }//end of isStartRun
+
+    }
+
+    //语音的3个因素 说什么 什么条件说(条件集合)  什么时候说(先后或包含)
+    //事件对提示信息触发的概率影响 首先要确定事件间的关联关系
+    int voiceID = -1;
+    int voiceTimer = 0;
+
+    int[] bkIndiCaseCount = new int[20];
+
+    //每秒调一次这个函数
+    private void voiceCoachScheduler()
+    {
+        int maxEvent = -1;
+        int secondEvent = -1;
+        int maxProbability = -1;
+
+        if(sport_type == UtilConstants.sport_running) {
+            //遍历一次probability
+            for (int n = 0; n <UtilConstants.eventStill; n++)
+            {
+                if(probability[n] > maxProbability)
+                {
+                    //找出最大和第二大的
+                    secondEvent = maxEvent;
+                    maxEvent = n;
+                    maxProbability = probability[n];
+                }
+            }
+        }
+
+        if(maxEvent > 0)
+        {
+            if(maxEvent != lastVoiceEvent)
+            {
+                voiceID = UtilConstants.event2str[maxEvent];
+                lastVoiceEvent = maxEvent;
+                probability[maxEvent] = 0;
+            }
+            else
+            {
+                if(secondEvent > 0)
+                {
+                    voiceID = UtilConstants.event2str[secondEvent];
+                    lastVoiceEvent = secondEvent;
+                    probability[secondEvent] = 0;
+                }
+
+            }
+        }
+
+        //最后还要检查一次事件是否还需报警
+        //找出最大和第二大但时间不到10秒也不报 backup indiCaseCount
+        voiceTimer++;
+
+        //10秒定时
+        if(voiceTimer >= 10)
+        {
+            voiceTimer = 0;
+        }
+        else
+        {
+            return;
+        }
+
+        //过去10秒间这个事件已经没再发生过
+        if(bkIndiCaseCount[lastVoiceEvent] == indiCaseCount[lastVoiceEvent])
+        {
+            //backup indiCaseCount
+            if(sport_type == UtilConstants.sport_running) {
+                //遍历一次probability
+                for (int n = 0; n <UtilConstants.eventStill; n++) {
+                    bkIndiCaseCount[n] = indiCaseCount[n];
+                }
+            }
+            return;
+        }
+
+        //backup indiCaseCount
+        if(sport_type == UtilConstants.sport_running) {
+            //遍历一次probability
+            for (int n = 0; n <UtilConstants.eventStill; n++) {
+                bkIndiCaseCount[n] = indiCaseCount[n];
+            }
+        }
+
+        if(voiceID < 0)
+        {
+            return;
+        }
+
+        goodFormCount = 0;
+
+        tts.speak((String)getText(voiceID),
+                TextToSpeech.QUEUE_FLUSH, null);
+
+        //显示对应动画并持续5秒
+        handler.sendEmptyMessage(2);
+
+        voiceID = -1;
+    }
+
+    //
+    private void probabilityCalculator(int eventID)
+    {
+        //属于跑步运动的eventID
+        if(eventID <= UtilConstants.eventStill)
+        {
+            probability[eventID]++; //事件对应的计数
+
+            //频率控制 同一提示不能太频繁的报
+            //次数控制 多次报过的 要减少再报
+            //优先级控制 高优先级的报了 低优先级的就要过更久才允许再报
+            //顺序控制 两个不同的提示不要挨在一起报
+            //过了没报的 排队到了要看看是否还需要报
+        }
+
+    }
+
+    //动作识别  静止态 运动态
 }

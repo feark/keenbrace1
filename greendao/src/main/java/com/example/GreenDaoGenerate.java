@@ -24,6 +24,7 @@ public class GreenDaoGenerate {
 
         addHistoryRecord(schema);
 
+        addChallenge(schema);
 
 
         new DaoGenerator().generateAll(schema,"/home/ken/workspace/GreenDao_gen");
@@ -118,6 +119,8 @@ public class GreenDaoGenerate {
 
         user.addStringProperty("comment");
         user.addStringProperty("picturePath");
+
+        user.addStringProperty("dataFileName");
 
         //三围体脂等
         user.addIntProperty("weight");
@@ -263,6 +266,26 @@ public class GreenDaoGenerate {
         user.addBooleanProperty("saturdayTrain");
         user.addBooleanProperty("sundayTrain");
 
+    }
+
+    private static void addChallenge(Schema schema)
+    {
+        Entity user = schema.addEntity("Challenge");
+        user.addIdProperty();
+
+        user.addIntProperty("challengeID");
+        user.addIntProperty("rounds");
+        user.addIntProperty("reps");
+        user.addIntProperty("workoutsNumber");
+        user.addByteArrayProperty("workouts");
+
+        user.addIntProperty("distance");
+        user.addIntProperty("section");         //分几次跑
+        user.addByteArrayProperty("content");   //具体内容 是跑还是休息
+        user.addByteArrayProperty("duration");  //内容的时长
+        user.addIntProperty("cadence");         //限定步频
+        user.addIntProperty("speed");
+        user.addIntProperty("totalTime");       //时间限制
     }
 
 

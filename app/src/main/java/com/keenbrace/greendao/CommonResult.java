@@ -43,6 +43,7 @@ public class CommonResult implements Serializable {
     private byte[] notification;
     private String comment;
     private String picturePath;
+    private String dataFileName;
     private Integer weight;
     private Integer bodyFat;
     private Integer waist;
@@ -62,7 +63,7 @@ public class CommonResult implements Serializable {
         this.id = id;
     }
 
-    public CommonResult(Long id, Integer type, Integer set, byte[] reps, byte[] rep_duration, Integer load, Integer RM, Long duration, Long restTime, Long wasteTime, byte[] newRecord, Integer mileage, Integer speed, Integer cadence, byte[] speedPerMinute, Integer minuteCount, byte[] cadencePerKm, Integer stride, byte[] kneePress, Long step, byte[] vertOsci, byte[] emgDecrease, Long calorie, byte[] stability, Long startTime, Long endTime, Double startlatitude, Double startlongitude, Double endlatitude, Double endlongitude, String latLngs, byte[] notification, String comment, String picturePath, Integer weight, Integer bodyFat, Integer waist, Integer chest, Integer arms, Integer forArms, Integer shoulder, Integer hips, Integer thighs, Integer calves, Integer neck) {
+    public CommonResult(Long id, Integer type, Integer set, byte[] reps, byte[] rep_duration, Integer load, Integer RM, Long duration, Long restTime, Long wasteTime, byte[] newRecord, Integer mileage, Integer speed, Integer cadence, byte[] speedPerMinute, Integer minuteCount, byte[] cadencePerKm, Integer stride, byte[] kneePress, Long step, byte[] vertOsci, byte[] emgDecrease, Long calorie, byte[] stability, Long startTime, Long endTime, Double startlatitude, Double startlongitude, Double endlatitude, Double endlongitude, String latLngs, byte[] notification, String comment, String picturePath, String dataFileName, Integer weight, Integer bodyFat, Integer waist, Integer chest, Integer arms, Integer forArms, Integer shoulder, Integer hips, Integer thighs, Integer calves, Integer neck) {
         this.id = id;
         this.type = type;
         this.set = set;
@@ -97,6 +98,7 @@ public class CommonResult implements Serializable {
         this.notification = notification;
         this.comment = comment;
         this.picturePath = picturePath;
+        this.dataFileName = dataFileName;
         this.weight = weight;
         this.bodyFat = bodyFat;
         this.waist = waist;
@@ -380,6 +382,14 @@ public class CommonResult implements Serializable {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    public String getDataFileName() {
+        return dataFileName;
+    }
+
+    public void setDataFileName(String dataFileName) {
+        this.dataFileName = dataFileName;
     }
 
     public Integer getWeight() {

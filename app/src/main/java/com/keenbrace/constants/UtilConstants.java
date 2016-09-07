@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.keenbrace.R;
 import com.keenbrace.greendao.ShortPlan;
 import com.keenbrace.greendao.SportsStructure;
 import com.keenbrace.greendao.User;
@@ -45,6 +46,7 @@ public class UtilConstants {
     public static final String KEY_HAS_LOGIN = "has_login";
     public static final String KEY_ACCOUNT  ="key_account";
     public static final String BLE_NAME = "ble_name";   //上一次连接的设备名称
+    public static final String HAS_CHALLENGE_ADD = "has_challenge";
 
     public static final String KEY_HAS_SHORTPLAN = "has_shortplan"; //是否有单项计划
     public static final String KEY_TRAIN_TODAY  = "train_today"; //今天的单项计划是否已经完成
@@ -64,6 +66,52 @@ public class UtilConstants {
     public static final int sport_bicyclesitup = 10;
     public static final int sport_closestancesquat = 11;
 
+    //从哪里开始
+    public static final int fromChallenge = 1;
+    public static final int fromPlan = 2;
+    public static final int fromMainPage = 3;
+    public static final int fromCustom = 4;
 
+    //每个事件给一个固定ID
+    public static final int eventGeneral = 0;
+    public static final int eventLean = 1;      // tgt iangle steprate iangle由stride衍生
+    public static final int eventCadence = 2;   // speed steprate
+    public static final int eventStride = 3;    // stride steprate
+    public static final int eventLand = 4;      // pressTimes
+    public static final int eventDrive = 5;     // 多次Bounce发生
+    public static final int eventBounce = 6;    // speed osc
+    public static final int eventStability = 7; // 在动 pressTimes stability
+    public static final int eventFoot = 8;      // tgt steprate
+    public static final int eventReach = 9;     // steprate stride
+    public static final int eventCalf = 10;     // 多次reach发生
+    public static final int eventCog = 11;      // 在动 pressTimes stride很大
+    public static final int eventGravity = 12;  // 在动 pressTimes stride中等偏大
+    public static final int eventEnergy = 13;   // speed osc中等偏大
+    public static final int eventRest = 14;     // 2公里 stability power
+    public static final int eventToe = 15;      // 多次eventFoot
+    public static final int eventSprint = 16;
+    public static final int eventStill = 17;    // 站着没动
+    public static final int eventNormalRun = 18;// 一般跑动
 
+    public static final int[] event2str = {
+            R.string.tx_relax_smooth,
+            R.string.tx_forward_lean,
+            R.string.tx_increase_cadence,
+            R.string.tx_decrease_stride,
+            R.string.tx_land_softer,
+            R.string.tx_hip_energy,
+            R.string.tx_avoid_bouncing,
+            R.string.tx_enhance_stability,
+            R.string.tx_lift_faster,
+            R.string.tx_reach_toomuch,
+            R.string.tx_unfold_leg,
+            R.string.tx_strike_closer,
+            R.string.tx_land_underneath,
+            R.string.tx_energy_forward,
+            R.string.tx_take_rest,
+            R.string.tx_spring_toe,
+            R.string.tx_dont_sprint,
+            R.string.tx_stand_still,
+            R.string.tx_goodrunform,
+    };
 }

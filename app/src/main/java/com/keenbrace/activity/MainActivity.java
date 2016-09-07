@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.keenbrace.R;
 import com.keenbrace.adapter.LeDeviceListAdapter;
+import com.keenbrace.bean.ChallengeDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.base.KeenbraceApplication;
 import com.keenbrace.core.slidemenu.lib.SlidingMenu;
@@ -31,6 +32,7 @@ import com.keenbrace.AppContext;
 import com.keenbrace.api.KeenbraceRetrofit;
 import com.keenbrace.fragment.LeftFragment;
 import com.keenbrace.fragment.MainFragment;
+import com.keenbrace.greendao.Challenge;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
 
@@ -101,6 +103,7 @@ public class MainActivity extends SlidingFragmentActivity {
         }
 
         if (!PreferenceHelper.readBoolean(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN)) {
+
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();

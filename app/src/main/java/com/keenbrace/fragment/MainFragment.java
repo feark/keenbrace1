@@ -272,7 +272,7 @@ public class MainFragment extends BaseFragment {
 
         howtowear.setImageResource(R.mipmap.wear_on_thigh);
 
-        sport_type = UtilConstants.sport_pushup;
+        sport_type = UtilConstants.sport_bicyclesitup;
     }
 
     @OnClick(R.id.iv_pushup)
@@ -291,7 +291,7 @@ public class MainFragment extends BaseFragment {
 
         howtowear.setImageResource(R.mipmap.wear_on_arm);
 
-        sport_type = UtilConstants.sport_bicyclesitup;
+        sport_type = UtilConstants.sport_pushup;
     }
 
     @OnClick(R.id.iv_closestandsquat)
@@ -339,32 +339,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        List<CommonResult> datas = CommonResultDBHelper.getInstance(this.getActivity()).queryCommonResult();
-        if(datas==null)
-            return;
-        HashMap<String, String> sumMap = CommonResultDBHelper.getInstance(this.getActivity()).querySumRunResult();
-        int sumDistance = 0;
 
-        //计算总里程
-        for (CommonResult data : datas) {
-            sumDistance += data.getMileage()==null?0:data.getMileage();
-        }
-
-        /*
-        tx_times.setText("" + datas.size());
-//		if (sumMap.get("timelength") != null)
-//			tx_times.setText( DateUitl.getDateFormat4(Integer.parseInt(sumMap.get("timelength"))));
-//		else
-//			tx_times.setText("0");
-        if (sumMap.get("sumwarings") != null)
-            tx_warnings.setText("" + sumMap.get("sumwarings"));
-        else
-            tx_warnings.setText("0");
-        if (sumMap.get("mileage") != null)
-            tx_mileage.setText("" + StringUtil.formatToLC(sumMap.get("mileage")));
-        else
-            tx_mileage.setText("0");
-        */
     }
 
 

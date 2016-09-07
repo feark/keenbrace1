@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_margin="@dimen/space_5"
+        android:background="@drawable/gray_corners_bg">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/challengelogo"
+                android:src="@mipmap/kb_challenge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/space_7"
+                android:layout_marginRight="@dimen/space_7"
+                android:background="#FFFFFF"
+                android:id="@+id/view"
+                android:layout_above="@+id/challengedescription"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Welcome to join the #KeenBraceChallenge, support our campaign and win the awesome prizes"
+                android:id="@+id/challengedescription"
+                android:textSize="15dp"
+                android:layout_below="@+id/challengelogo"
+                android:layout_alignStart="@+id/challengelogo"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Squats   x  10\nBicycle  x  10\nPushUp x  10\nAs many rounds as you can in 5 minutes"
+                android:id="@+id/challengerules"
+                android:layout_alignTop="@+id/challengelogo"
+                android:layout_toEndOf="@+id/challengelogo"
+                android:layout_marginTop="10dp"
+                android:typeface="serif"
+                android:textColor="#363636" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/challenge_go"
+                android:layout_below="@+id/challengedescription"
+                android:layout_alignEnd="@+id/challengerules"
+                android:src="@mipmap/challenge_go"
+                android:layout_marginBottom="5dp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

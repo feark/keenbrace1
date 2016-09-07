@@ -3,17 +3,10 @@ package com.keenbrace.activity;
 //运动结果历史列表 ken
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,7 +20,6 @@ import com.keenbrace.widget.SwipeListView;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
 
 public class RecordActivity extends BaseActivity implements OnClickListener {
     RelativeLayout rl_showlists, rl_showReports;
@@ -38,8 +30,10 @@ public class RecordActivity extends BaseActivity implements OnClickListener {
 
     public void init() {
         datas = CommonResultDBHelper.getInstance(this).queryCommonResult();
-        if(datas==null)
+        if(datas==null) {
             return;
+        }
+
         HashMap<String, String> sumMap = CommonResultDBHelper.getInstance(this).querySumRunResult();
         int sumDistance = 0;
 
@@ -53,6 +47,7 @@ public class RecordActivity extends BaseActivity implements OnClickListener {
         BleDataItemAdapter adapter = new BleDataItemAdapter(RecordActivity.this, R.layout.item_runrecord, datas);
         //设置列表里的数据 ken
         lvdata.setAdapter(adapter);
+
 //        tx_sum.setText("" + datas.size());
 //		if (sumMap.get("timelength") != null)
 //			tx_times.setText( DateUitl.getDateFormat4(Integer.parseInt(sumMap.get("timelength"))));

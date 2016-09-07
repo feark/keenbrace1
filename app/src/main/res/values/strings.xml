@@ -148,45 +148,93 @@
     <string name="tx_dumbbell">Dumbbell</string>
     <string name="tx_plank">Plank</string>
     <string name="tx_pullup">Pullups</string>
+    <string name="tx_pushup">Pushups</string>
+    <string name="tx_bicyclesitup">Bicycle Sit up</string>
+    <string name="tx_dumbbellsquat">Dumbbells Squat</string>
     <string name="tx_train_target">Target</string>
     <string name="tx_indicate_tap">Tap here to see the move</string>
     <string name="tx_run_equipment">None</string>
 
-    <!-- 跑步 -->
+    <!-- running -->
     <string name="tx_running_welcome">Let\'s go!</string>
+    <string name="tx_relax_smooth">Everything relaxed, smooth, quick, and efficient</string>
+    <string name="tx_forward_lean">Slight forward lean from ankles</string>
     <string name="tx_increase_cadence">increase your cadence</string>
-    <string name="tx_decrease_stride_l">decrease your stride length</string>
     <string name="tx_decrease_stride">decrease your stride</string>
     <string name="tx_land_softer">land softer</string>
-    <string name="tx_lower_gravity">lower your center of gravity</string>
+    <string name="tx_hip_energy">Knee drive and back kick come from hip drive and extension</string>
+    <string name="tx_avoid_bouncing">avoid bouncing</string>
     <string name="tx_enhance_stability">enhance your stability</string>
     <string name="tx_lift_faster">lift your foot faster</string>
-    <string name="tx_flex_knee">flex your knee when strike</string>
-    <string name="tx_land_underneath">land your feet underneath knee</string>
-    <string name="tx_bend_knee_n_elbow">decrease your vertical oscillation</string>
-    <string name="tx_straight_spine">face forward</string>
-    <string name="tx_take_rest">take some rest and relax your muscle</string>
+    <string name="tx_reach_toomuch">your legs are reaching forward too much</string>
+    <string name="tx_unfold_leg">let your leg unfold underneath you</string>
+    <string name="tx_strike_closer">bring your foot strikes closer to your body</string>
+    <string name="tx_land_underneath">Foot lands nearly underneath center of gravity</string>
+    <string name="tx_energy_forward">All energy goes towards forward propulsion</string>
+    <string name="tx_take_rest">take some rest and relax</string>
     <string name="tx_spring_toe">spring off the ground with your toes</string>
-    <string name="tx_toomuch_sprint">too much sprint</string>
+    <string name="tx_dont_sprint">too much sprint</string>
     <string name="tx_run_sum_time">you have been running for</string>
     <string name="tx_hour">hour</string>
     <string name="tx_minute">minutes</string>
     <string name="tx_second">seconds</string>
     <string name="tx_kilometer">kilometers</string>
-    <string name="tx_cadence">your cadence is</string>
+    <string name="tx_miles">miles</string>
+    <string name="tx_report_cadence">your cadence is</string>
     <string name="tx_every">every</string>
+    <string name="tx_per">per</string>
+    <string name="tx_report_distance">distance</string>
+    <string name="tx_report_speed">your speed is</string>
+    <string name="tx_report_gforce">your g force is</string>
+    <string name="tx_sprint">sprint at your full speed</string>
+    <string name="tx_stand_still"></string>
+    <string name="tx_goodrunform">Good running form</string>
 
-    <!-- 深蹲 -->
-    <string name="tx_squat_welcome">Stand tall with your feet spread shoulder-width apart</string>
+    <!-- suggestion -->
+    <string name="tx_suggest_1"></string>
+
+    <!-- other -->
+    <string name="tx_next_workout">next workout is</string>
+    <string name="tx_inform_1">prepare for your next session</string>
+
+    <!-- lift -->
+    <string name="tx_dont_swing">don\'t swing</string>
+    <string name="tx_slower">slower</string>
+    <string name="tx_keepstable">keep your motion stable</string>
+    <string name="tx_liftup">lift all the way up</string>
+
+
+    <!-- squats -->
+    <string name="tx_squat_stand">straighten up and pull your head and shoulders back.</string>
+    <string name="tx_kneeback">keep your knees back</string>
+    <string name="tx_deeper">go deeper</string>
+    <string name="tx_chestup">chest up and look forward</string>
+
+    <!-- encourage phase -->
+    <string name="tx_encourage_1">keep it up</string>
+    <string name="tx_encourage_2">you are doing great</string>
+    <string name="tx_encourage_3">don\'t stop</string>
+    <string name="tx_encourage_4">you can do it</string>
+    <string name="tx_encourage_5">push it</string>
+    <string name="tx_encourage_6">faster</string>
+    <string name="tx_encourage_7">you got this</string>
+    <string name="tx_encourage_8">not long now</string>
+    <string name="tx_encourage_9">you can do better</string>
+    <string name="tx_encourage_10">one more!</string>
+    <string name="tx_encourage_11">repeat</string>
+    <string name="tx_encourage_12">nice work.keep at it.</string>
+    <string name="tx_encourage_13">you\'ve got this</string>
+    <string name="tx_encourage_14">good job!</string>
+
+    <string name="tx_humor_0">keen brace is watching you.</string>
+    <string name="tx_humor_1">don\ t try to fool me</string>
+    <string name="tx_humor_2">slow down, young man</string>
+    <string name="tx_humor_3">slow down, young lady</string>
+
     <string name="title_activity_workout_result">WorkoutResult</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-    <!-- 哑铃 -->
-
-    <!-- 平板 -->
-
-    <!-- 引体向上 -->
 </resources>

@@ -2,7 +2,8 @@ package com.keenbrace.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseActivity;
+import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.widget.MyValueFormatter;
 
 import java.util.ArrayList;
@@ -29,10 +31,14 @@ import java.util.ArrayList;
 public class HistoryActivity extends BaseActivity implements View.OnClickListener {
     ImageView his_backhome;
     RelativeLayout rl_activity;
-    RelativeLayout rl_gallery;
+    RelativeLayout rl_progress;
 
     BarChart trainWeekday;
     RadarChart trainRadar;
+
+    int[] muscleMap = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    int wait_times;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +51,30 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
         rl_activity = (RelativeLayout) findViewById(R.id.rl_activity);
         rl_activity.setOnClickListener(this);
 
-        rl_gallery = (RelativeLayout) findViewById(R.id.rl_gallery);
-        rl_gallery.setOnClickListener(this);
+        rl_progress = (RelativeLayout) findViewById(R.id.rl_progress);
+        rl_progress.setOnClickListener(this);
 
         trainRadar = (RadarChart) findViewById(R.id.train_radar);
+        muscleMap[8] = 84;
+        muscleMap[9] = 93;
+        muscleMap[10] = 110;
         initRadarChart(trainRadar);
 
         trainWeekday = (BarChart) findViewById(R.id.train_weekday);
         initBarChart(trainWeekday, "Workout sets of the recent week", Color.rgb(28, 166, 220));
+        trainWeekday.animateY(2000);
 
         //leave
         addBarEntry(10, trainWeekday);
-        addBarEntry(15,trainWeekday);
-        addBarEntry(12,trainWeekday);
-        addBarEntry(10,trainWeekday);
-        addBarEntry(13,trainWeekday);
+        addBarEntry(15, trainWeekday);
+        addBarEntry(8,trainWeekday);
         addBarEntry(0,trainWeekday);
-        addBarEntry(10,trainWeekday);
+        addBarEntry(0,trainWeekday);
+        addBarEntry(0,trainWeekday);
+        addBarEntry(0,trainWeekday);
+
+        wait_times = 153 - muscleMap[9];
+        handler.sendEmptyMessageDelayed(1, 100);
     }
 
     @Override
@@ -104,8 +117,8 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
 
-            case R.id.rl_gallery:
-                intent.setClass(this, PicwallActivity.class);
+            case R.id.rl_progress:
+                intent.setClass(this, ProgressActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -251,9 +264,23 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
+        /*
         for (int i = 0; i < cnt; i++) {
             yVals1.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
         }
+        */
+        yVals1.add(new Entry((float) 85, 0));   //85
+        yVals1.add(new Entry((float) 120, 1));
+        yVals1.add(new Entry((float) 166, 2));
+        yVals1.add(new Entry((float) 141, 3));
+        yVals1.add(new Entry((float) 158, 4));
+        yVals1.add(new Entry((float) 75, 5));
+        yVals1.add(new Entry((float) 97, 6));
+        yVals1.add(new Entry((float) 158, 7));
+        yVals1.add(new Entry((float) muscleMap[8], 8));
+        yVals1.add(new Entry((float) muscleMap[9], 9));
+        yVals1.add(new Entry((float) muscleMap[10], 10));
+
 
         for (int i = 0; i < cnt; i++) {
             yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
@@ -280,7 +307,7 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
 
         ArrayList<RadarDataSet> sets = new ArrayList<RadarDataSet>();
         sets.add(set1);
-        //sets.add(set2);
+        //sets.add(set2); 第二个表不画出来
 
         RadarData data = new RadarData(xVals, sets);
 
@@ -293,5 +320,37 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
 
         mChart.invalidate();
     }
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+
+                case 1:
+                    if (wait_times > 0) {
+                        wait_times--;
+
+                        if(muscleMap[8] < 134)
+                        {
+                            muscleMap[8]++;
+                        }
+
+                        if(muscleMap[9] < 153)
+                        {
+                            muscleMap[9]++;
+                        }
+
+                        if(muscleMap[10] < 120)
+                        {
+                            muscleMap[10]++;
+                        }
+
+                        setData(trainRadar);
+                        handler.sendEmptyMessageDelayed(1, 50);
+                    }
+                    break;
+
+            }
+        }
+    };
 
 }

@@ -108,21 +108,21 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ll_progress"
+            android:id="@+id/ll_custom"
             android:visibility="visible">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/side_medal"
-                android:src="@mipmap/side_medal"
+                android:id="@+id/side_custom"
+                android:src="@mipmap/custom_workout"
                 android:layout_marginBottom="15dp" />
 
             <TextView
                 style="@style/wrap_wrap"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="#747474"
-                android:text="PROGRESS"
+                android:text="CUSTOM"
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ll_challenge"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="50dp"

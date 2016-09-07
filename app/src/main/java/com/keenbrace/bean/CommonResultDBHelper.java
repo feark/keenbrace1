@@ -43,6 +43,7 @@ public class CommonResultDBHelper {
     //插入新的表
     public long insertCommonResult(CommonResult commonResult)
     {
+        //作为ID
         return  commonResultDao.insert(commonResult);
     }
 

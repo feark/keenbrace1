@@ -67,6 +67,7 @@
         <activity android:name=".activity.DiaryActivity" />
         <activity android:name=".activity.InsightActivity" />
         <activity android:name=".activity.PicwallActivity" />
+        <activity android:name=".activity.AddCustomActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -78,7 +79,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="7bac16554e4339cfe0226e7992571c03" />
 
-        <activity android:name=".activity.ProgressActivity"></activity>
+        <activity android:name=".activity.ProgressActivity" />
+        <activity android:name=".activity.ChallengeActivity"></activity>
     </application>
 
 </manifest>

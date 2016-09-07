@@ -37,6 +37,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
     TextView indicate_message;
 
     RelativeLayout rl_countdown;
+    TextView tx_count_title;
     TextView restTime;
     int count_minutes, count_seconds;
 
@@ -45,10 +46,9 @@ public class FragmentRun extends Fragment implements OnClickListener {
     int sport_type = 0;
 
     int delay_times;
-    int wait_times;
 
     //------------------------------------------------------
-    //运动参数相关
+    //运动参数相关public static final
     Boolean isAnyMove = false;
     TextView reps_number;
     //------------------------------------------------------
@@ -77,6 +77,8 @@ public class FragmentRun extends Fragment implements OnClickListener {
         rl_countdown = (RelativeLayout) view.findViewById(R.id.rl_countdown);
         restTime = (TextView) view.findViewById(R.id.restTime);
 
+        tx_count_title = (TextView) view.findViewById(R.id.tx_count_title);
+
         indicate_message = (TextView) view.findViewById(R.id.indicate_message);
         indicate_box = (ImageView) view.findViewById(R.id.indicate_box);
         indicate_box.setOnClickListener(this);
@@ -87,16 +89,12 @@ public class FragmentRun extends Fragment implements OnClickListener {
         gif_anima = (GifView) view.findViewById(R.id.gif_animation);
         sport_type = getArguments().getInt("sport_type");
 
-        //等待10秒 如果用户还没动作 就说点话提示他开始运动 ken
-        wait_times = 10;
-        handler.sendEmptyMessageDelayed(2, 1000);
-
         indicate_message.setText(R.string.tx_indicate_tap);
 
         //不同运动显示不同的GIF和提示框信息
         switch(sport_type) {
             case UtilConstants.sport_running:
-                gif_anima.setMovieResource(R.raw.stand_boy);
+                gif_anima.setMovieResource(R.raw.still_male);
 
                 rl_cadence.setVisibility(View.VISIBLE);
                 rl_stride.setVisibility(View.VISIBLE);
@@ -135,7 +133,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 break;
 
             case UtilConstants.sport_plank:
-                gif_anima.setMovieResource(R.raw.stand_boy);
+                gif_anima.setMovieResource(R.raw.still_male);
                 //gif_anima.setMovieResource(R.raw.plank);
                 //gif_anima.setPaused(true);
 
@@ -158,6 +156,42 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.pull_up);
                 gif_anima.setPaused(true);
 
+                break;
+
+            case UtilConstants.sport_pushup:
+                gif_anima.setMovieResource(R.raw.basicpushup);
+                gif_anima.setPaused(true);
+
+                sport_title.setText("Push Up");
+                train_target.setText("Chest");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+                break;
+
+            case UtilConstants.sport_closestancesquat:
+                gif_anima.setMovieResource(R.raw.closestancefrontsquat);
+                gif_anima.setPaused(true);
+
+                sport_title.setText("Dumbbells Squat");
+                train_target.setText("Quadriceps");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
+                break;
+
+            case UtilConstants.sport_bicyclesitup:
+                gif_anima.setMovieResource(R.raw.bicyclesitup);
+                gif_anima.setPaused(true);
+
+                sport_title.setText("Bicycle Sit Up");
+                train_target.setText("Core");
+
+                tv_speed_t.setText("Muscle Used");
+                tv_distance_t.setText("Duration");
+                tv_calories_t.setText("Stability");
                 break;
 
             default:
@@ -192,7 +226,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
         {
             //点击indicate box去查看演示动作
             case R.id.indicate_box:
-                updateAnimation(0);
+                updateAnimation(0, 1);
                 break;
         }
 
@@ -254,14 +288,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
         reps_number.setText(""+reps);
         tv_speed.setText(""+muscle+" %");
         tv_distance.setText(""+minisec+" sec");
-        tv_calories.setText(""+stability+" %");
+        tv_calories.setText("" + stability + " %");
     }
 
     //gif动画放在这个位置update ken
     //有动作才会进到这个函数 也同时更新indicate_message ken
     //添加一个已经在播放的变量 没播放不播下一次
     static boolean isPlaying = false;
-    public void updateAnimation(int anino){
+
+    public void updateAnimation(int anino, int cadence){
         isAnyMove = true;
 
         //让图片从最开始播放
@@ -269,85 +304,113 @@ public class FragmentRun extends Fragment implements OnClickListener {
 
         switch(sport_type) {
             case UtilConstants.sport_running:
-                if(anino == 0)
-                {
-                    wait_times = 70;
-                    handler.sendEmptyMessageDelayed(2, 100);
 
-                    gif_anima.setMovieResource(R.raw.normalrun_boy);
-                    //indicate_message.setText(R.string.tx_increase_cadence);
+                indicate_message.setText(UtilConstants.event2str[anino]);
+
+                if(anino == UtilConstants.eventCadence)
+                {
+                    //显示当前步频和建议步频 数字
+                    //隐藏动画 显示倒计时元素
+                    rl_countdown.setVisibility(View.VISIBLE);
+                    tx_count_title.setText("Cadence");
+                    restTime.setText(String.format("%d\\min", cadence));
+
+                    gif_anima.setVisibility(View.GONE);
+                }
+                else
+                {
+                    rl_countdown.setVisibility(View.GONE);
+                    gif_anima.setVisibility(View.VISIBLE);
                 }
 
-                if(anino == 1)
+                if(anino == UtilConstants.eventLean)
                 {
-                    gif_anima.setMovieResource(R.raw.male_big_boy);
-                    indicate_message.setText(R.string.tx_increase_cadence);
+                    gif_anima.setMovieResource(R.raw.normalrun_male);
                 }
 
-                if(anino == 2)
+                if(anino == UtilConstants.eventStride)
                 {
-                    gif_anima.setMovieResource(R.raw.big_stride_boy);
-                    indicate_message.setText(R.string.tx_decrease_stride);
+                    gif_anima.setMovieResource(R.raw.big_stride_male);
                 }
 
-                if(anino == 3)
+                if(anino == UtilConstants.eventLand)
                 {
-                    gif_anima.setMovieResource(R.raw.jiaozhang);
-                    indicate_message.setText(R.string.tx_land_softer);
+                    gif_anima.setMovieResource(R.raw.land_softer_male);
                 }
 
-                if(anino == 4)
+                //这项应该是脚太直 现在没有这一项
+                if(anino == UtilConstants.eventDrive)
                 {
-                    gif_anima.setMovieResource(R.raw.zzwlgd_big_boy);
-                    indicate_message.setText(R.string.tx_lower_gravity);
+                    gif_anima.setMovieResource(R.raw.big_bouncing_male);
                 }
 
-                if(anino == 5)
+                if(anino == UtilConstants.eventBounce)
                 {
-                    gif_anima.setMovieResource(R.raw.zzwlgd_smaill_boy);
-                    indicate_message.setText(R.string.tx_enhance_stability);
+                    gif_anima.setMovieResource(R.raw.bouncing_male);
                 }
 
-                if(anino == 6)
+                if(anino == UtilConstants.eventStability)
                 {
-                    gif_anima.setMovieResource(R.raw.jiaozhi);
-                    indicate_message.setText(R.string.tx_lift_faster);
+                    //显示一个瞄准中心的动画
+                    gif_anima.setMovieResource(R.raw.bouncing_male);
                 }
 
-                if(anino == 7)
+                if(anino == UtilConstants.eventFoot)
                 {
-                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
-                    indicate_message.setText(R.string.tx_flex_knee);
+                    gif_anima.setMovieResource(R.raw.lift_faster);
                 }
 
-                if(anino == 8)
+                if(anino == UtilConstants.eventReach)
                 {
-                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
-                    indicate_message.setText(R.string.tx_land_underneath);
+                    gif_anima.setMovieResource(R.raw.big_stride_male);
                 }
 
-                if(anino == 9)
+                if(anino == UtilConstants.eventCalf)
                 {
-                    gif_anima.setMovieResource(R.raw.smaill_stride_boy);
-                    indicate_message.setText(R.string.tx_bend_knee_n_elbow);
+                    gif_anima.setMovieResource(R.raw.small_stride_male);
                 }
 
-                if(anino == 10)
+                if(anino == UtilConstants.eventCog)
                 {
-                    gif_anima.setMovieResource(R.raw.normalrun_boy);
-                    indicate_message.setText(R.string.tx_bend_knee_n_elbow);
+                    gif_anima.setMovieResource(R.raw.small_stride_male);
                 }
 
-                if(anino == 11)
+                if(anino == UtilConstants.eventGravity)
                 {
-                    gif_anima.setMovieResource(R.raw.jrpl_boy);
-                    indicate_message.setText(R.string.tx_take_rest);
+                    gif_anima.setMovieResource(R.raw.small_stride_male);
                 }
 
-                if(anino == 12)
+                if(anino == UtilConstants.eventEnergy)
                 {
-                    gif_anima.setMovieResource(R.raw.stand_boy);
+                    //箭头
+                    gif_anima.setMovieResource(R.raw.small_stride_male);
                 }
+
+                if(anino == UtilConstants.eventRest)
+                {
+                    gif_anima.setMovieResource(R.raw.rest_male);
+                }
+
+                if(anino == UtilConstants.eventToe)
+                {
+                    gif_anima.setMovieResource(R.raw.spring_toe);
+                }
+
+                if(anino == UtilConstants.eventSprint)
+                {
+                    gif_anima.setMovieResource(R.raw.normalrun_male);
+                }
+
+                if(anino == UtilConstants.eventStill)
+                {
+                    gif_anima.setMovieResource(R.raw.still_male);
+                }
+
+                if(anino == UtilConstants.eventNormalRun)
+                {
+                    gif_anima.setMovieResource(R.raw.normalrun_male);
+                }
+
                 break;
 
             case UtilConstants.sport_dumbbell:
@@ -374,6 +437,30 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 if(isPlaying == false) {
                     isPlaying = true;
                     delay_times = 36;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
+                break;
+
+            case UtilConstants.sport_pushup:
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 14;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
+                break;
+
+            case UtilConstants.sport_closestancesquat:
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 39;
+                    handler.sendEmptyMessageDelayed(1, 100);
+                }
+                break;
+
+            case UtilConstants.sport_bicyclesitup:
+                if(isPlaying == false) {
+                    isPlaying = true;
+                    delay_times = 27;
                     handler.sendEmptyMessageDelayed(1, 100);
                 }
                 break;
@@ -448,22 +535,14 @@ public class FragmentRun extends Fragment implements OnClickListener {
                     }
                     break;
 
-                case 2:
-                    if (wait_times > 0) {
-                        wait_times--;
-                        handler.sendEmptyMessageDelayed(2, 100);
-                    }
-                    else
-                    {
-                        if(sport_type == UtilConstants.sport_running)
-                        {
-                            gif_anima.setMovieResource(R.raw.stand_boy);
-                        }
-                    }
-                    break;
-
             }
         }
     };
+
+    //动画显示调度器
+    public void animateScheduler()
+    {
+
+    }
 
 }

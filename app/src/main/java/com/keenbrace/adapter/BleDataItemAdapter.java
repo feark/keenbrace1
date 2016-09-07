@@ -160,6 +160,4 @@ public class BleDataItemAdapter extends ArrayAdapter<CommonResult> {
     }
 
 
-
-
 }
