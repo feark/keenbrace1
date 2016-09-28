@@ -25,17 +25,21 @@ public class ChallengeDao extends AbstractDao<Challenge, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ChallengeID = new Property(1, Integer.class, "challengeID", false, "CHALLENGE_ID");
-        public final static Property Rounds = new Property(2, Integer.class, "rounds", false, "ROUNDS");
-        public final static Property Reps = new Property(3, Integer.class, "reps", false, "REPS");
-        public final static Property WorkoutsNumber = new Property(4, Integer.class, "workoutsNumber", false, "WORKOUTS_NUMBER");
-        public final static Property Workouts = new Property(5, byte[].class, "workouts", false, "WORKOUTS");
-        public final static Property Distance = new Property(6, Integer.class, "distance", false, "DISTANCE");
-        public final static Property Section = new Property(7, Integer.class, "section", false, "SECTION");
-        public final static Property Content = new Property(8, byte[].class, "content", false, "CONTENT");
-        public final static Property Duration = new Property(9, byte[].class, "duration", false, "DURATION");
-        public final static Property Cadence = new Property(10, Integer.class, "cadence", false, "CADENCE");
-        public final static Property Speed = new Property(11, Integer.class, "speed", false, "SPEED");
-        public final static Property TotalTime = new Property(12, Integer.class, "totalTime", false, "TOTAL_TIME");
+        public final static Property ChallengeLogo = new Property(2, Integer.class, "challengeLogo", false, "CHALLENGE_LOGO");
+        public final static Property Title = new Property(3, String.class, "title", false, "TITLE");
+        public final static Property Rules = new Property(4, String.class, "rules", false, "RULES");
+        public final static Property Description = new Property(5, String.class, "description", false, "DESCRIPTION");
+        public final static Property Rounds = new Property(6, Integer.class, "rounds", false, "ROUNDS");
+        public final static Property Reps = new Property(7, Integer.class, "reps", false, "REPS");
+        public final static Property WorkoutsNumber = new Property(8, Integer.class, "workoutsNumber", false, "WORKOUTS_NUMBER");
+        public final static Property Workouts = new Property(9, byte[].class, "workouts", false, "WORKOUTS");
+        public final static Property Distance = new Property(10, Integer.class, "distance", false, "DISTANCE");
+        public final static Property Section = new Property(11, Integer.class, "section", false, "SECTION");
+        public final static Property Content = new Property(12, byte[].class, "content", false, "CONTENT");
+        public final static Property Duration = new Property(13, byte[].class, "duration", false, "DURATION");
+        public final static Property Cadence = new Property(14, Integer.class, "cadence", false, "CADENCE");
+        public final static Property Speed = new Property(15, Integer.class, "speed", false, "SPEED");
+        public final static Property TotalTime = new Property(16, Integer.class, "totalTime", false, "TOTAL_TIME");
     };
 
 
@@ -53,17 +57,21 @@ public class ChallengeDao extends AbstractDao<Challenge, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"CHALLENGE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"CHALLENGE_ID\" INTEGER," + // 1: challengeID
-                "\"ROUNDS\" INTEGER," + // 2: rounds
-                "\"REPS\" INTEGER," + // 3: reps
-                "\"WORKOUTS_NUMBER\" INTEGER," + // 4: workoutsNumber
-                "\"WORKOUTS\" BLOB," + // 5: workouts
-                "\"DISTANCE\" INTEGER," + // 6: distance
-                "\"SECTION\" INTEGER," + // 7: section
-                "\"CONTENT\" BLOB," + // 8: content
-                "\"DURATION\" BLOB," + // 9: duration
-                "\"CADENCE\" INTEGER," + // 10: cadence
-                "\"SPEED\" INTEGER," + // 11: speed
-                "\"TOTAL_TIME\" INTEGER);"); // 12: totalTime
+                "\"CHALLENGE_LOGO\" INTEGER," + // 2: challengeLogo
+                "\"TITLE\" TEXT," + // 3: title
+                "\"RULES\" TEXT," + // 4: rules
+                "\"DESCRIPTION\" TEXT," + // 5: description
+                "\"ROUNDS\" INTEGER," + // 6: rounds
+                "\"REPS\" INTEGER," + // 7: reps
+                "\"WORKOUTS_NUMBER\" INTEGER," + // 8: workoutsNumber
+                "\"WORKOUTS\" BLOB," + // 9: workouts
+                "\"DISTANCE\" INTEGER," + // 10: distance
+                "\"SECTION\" INTEGER," + // 11: section
+                "\"CONTENT\" BLOB," + // 12: content
+                "\"DURATION\" BLOB," + // 13: duration
+                "\"CADENCE\" INTEGER," + // 14: cadence
+                "\"SPEED\" INTEGER," + // 15: speed
+                "\"TOTAL_TIME\" INTEGER);"); // 16: totalTime
     }
 
     /** Drops the underlying database table. */
@@ -87,59 +95,79 @@ public class ChallengeDao extends AbstractDao<Challenge, Long> {
             stmt.bindLong(2, challengeID);
         }
  
+        Integer challengeLogo = entity.getChallengeLogo();
+        if (challengeLogo != null) {
+            stmt.bindLong(3, challengeLogo);
+        }
+ 
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(4, title);
+        }
+ 
+        String rules = entity.getRules();
+        if (rules != null) {
+            stmt.bindString(5, rules);
+        }
+ 
+        String description = entity.getDescription();
+        if (description != null) {
+            stmt.bindString(6, description);
+        }
+ 
         Integer rounds = entity.getRounds();
         if (rounds != null) {
-            stmt.bindLong(3, rounds);
+            stmt.bindLong(7, rounds);
         }
  
         Integer reps = entity.getReps();
         if (reps != null) {
-            stmt.bindLong(4, reps);
+            stmt.bindLong(8, reps);
         }
  
         Integer workoutsNumber = entity.getWorkoutsNumber();
         if (workoutsNumber != null) {
-            stmt.bindLong(5, workoutsNumber);
+            stmt.bindLong(9, workoutsNumber);
         }
  
         byte[] workouts = entity.getWorkouts();
         if (workouts != null) {
-            stmt.bindBlob(6, workouts);
+            stmt.bindBlob(10, workouts);
         }
  
         Integer distance = entity.getDistance();
         if (distance != null) {
-            stmt.bindLong(7, distance);
+            stmt.bindLong(11, distance);
         }
  
         Integer section = entity.getSection();
         if (section != null) {
-            stmt.bindLong(8, section);
+            stmt.bindLong(12, section);
         }
  
         byte[] content = entity.getContent();
         if (content != null) {
-            stmt.bindBlob(9, content);
+            stmt.bindBlob(13, content);
         }
  
         byte[] duration = entity.getDuration();
         if (duration != null) {
-            stmt.bindBlob(10, duration);
+            stmt.bindBlob(14, duration);
         }
  
         Integer cadence = entity.getCadence();
         if (cadence != null) {
-            stmt.bindLong(11, cadence);
+            stmt.bindLong(15, cadence);
         }
  
         Integer speed = entity.getSpeed();
         if (speed != null) {
-            stmt.bindLong(12, speed);
+            stmt.bindLong(16, speed);
         }
  
         Integer totalTime = entity.getTotalTime();
         if (totalTime != null) {
-            stmt.bindLong(13, totalTime);
+            stmt.bindLong(17, totalTime);
         }
     }
 
@@ -155,17 +183,21 @@ public class ChallengeDao extends AbstractDao<Challenge, Long> {
         Challenge entity = new Challenge( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // challengeID
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // rounds
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // reps
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // workoutsNumber
-            cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5), // workouts
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // distance
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // section
-            cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8), // content
-            cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9), // duration
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // cadence
-            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // speed
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12) // totalTime
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // challengeLogo
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // title
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // rules
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // description
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // rounds
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // reps
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // workoutsNumber
+            cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9), // workouts
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // distance
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // section
+            cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12), // content
+            cursor.isNull(offset + 13) ? null : cursor.getBlob(offset + 13), // duration
+            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // cadence
+            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // speed
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16) // totalTime
         );
         return entity;
     }
@@ -175,17 +207,21 @@ public class ChallengeDao extends AbstractDao<Challenge, Long> {
     public void readEntity(Cursor cursor, Challenge entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setChallengeID(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setRounds(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setReps(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setWorkoutsNumber(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setWorkouts(cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5));
-        entity.setDistance(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setSection(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setContent(cursor.isNull(offset + 8) ? null : cursor.getBlob(offset + 8));
-        entity.setDuration(cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9));
-        entity.setCadence(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setSpeed(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
-        entity.setTotalTime(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
+        entity.setChallengeLogo(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setTitle(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setRules(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setDescription(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setRounds(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setReps(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setWorkoutsNumber(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setWorkouts(cursor.isNull(offset + 9) ? null : cursor.getBlob(offset + 9));
+        entity.setDistance(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setSection(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setContent(cursor.isNull(offset + 12) ? null : cursor.getBlob(offset + 12));
+        entity.setDuration(cursor.isNull(offset + 13) ? null : cursor.getBlob(offset + 13));
+        entity.setCadence(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
+        entity.setSpeed(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
+        entity.setTotalTime(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
      }
     
     /** @inheritdoc */

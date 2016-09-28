@@ -157,7 +157,7 @@
 
     <!-- running -->
     <string name="tx_running_welcome">Let\'s go!</string>
-    <string name="tx_relax_smooth">Everything relaxed, smooth, quick, and efficient</string>
+    <string name="tx_relax_smooth">Relaxed, smooth, quick, and efficient</string>
     <string name="tx_forward_lean">Slight forward lean from ankles</string>
     <string name="tx_increase_cadence">increase your cadence</string>
     <string name="tx_decrease_stride">decrease your stride</string>
@@ -169,7 +169,7 @@
     <string name="tx_reach_toomuch">your legs are reaching forward too much</string>
     <string name="tx_unfold_leg">let your leg unfold underneath you</string>
     <string name="tx_strike_closer">bring your foot strikes closer to your body</string>
-    <string name="tx_land_underneath">Foot lands nearly underneath center of gravity</string>
+    <string name="tx_land_underneath">Foot lands underneath center of gravity</string>
     <string name="tx_energy_forward">All energy goes towards forward propulsion</string>
     <string name="tx_take_rest">take some rest and relax</string>
     <string name="tx_spring_toe">spring off the ground with your toes</string>
@@ -189,9 +189,15 @@
     <string name="tx_sprint">sprint at your full speed</string>
     <string name="tx_stand_still"></string>
     <string name="tx_goodrunform">Good running form</string>
+    <string name="tx_arm_swing">Strong arms swinging waist to nipple</string>
+    <string name="tx_walking">Walking</string>
 
     <!-- suggestion -->
-    <string name="tx_suggest_1"></string>
+    <string name="tx_suggest_1">start running</string>
+    <string name="tx_suggest_2">I found your are walking</string>
+    <string name="tx_suggest_3">Move</string>
+    <string name="tx_suggest_4">Run, Forest Run</string>
+    <string name="tx_suggest_5">You can do better than this</string>
 
     <!-- other -->
     <string name="tx_next_workout">next workout is</string>
@@ -222,7 +228,7 @@
     <string name="tx_encourage_9">you can do better</string>
     <string name="tx_encourage_10">one more!</string>
     <string name="tx_encourage_11">repeat</string>
-    <string name="tx_encourage_12">nice work.keep at it.</string>
+    <string name="tx_encourage_12">nice work</string>
     <string name="tx_encourage_13">you\'ve got this</string>
     <string name="tx_encourage_14">good job!</string>
 
@@ -232,6 +238,14 @@
     <string name="tx_humor_3">slow down, young lady</string>
 
     <string name="title_activity_workout_result">WorkoutResult</string>
+
+    <!-- the Fartlek speed game -->
+    <string name="tx_fartlek_description">Fartlek training is simply defined as periods of\nfast running intermixed with periods of slower running.</string>
+    <string name="tx_fartlek_rules">Fast running     x 1 minute\nSlower running   x 1 minute</string>
+
+    <!-- KeenBrace Challenge -->
+    <string name="tx_kbchallenge_description">Welcome to join the #KeenBraceChallenge, support our campaign and win the awesome prizes</string>
+    <string name="tx_kbchallenge_rules">Squats   x  10\nBicycle  x  10\nPushUp x  10\nAs many rounds as you can in 5 minutes</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

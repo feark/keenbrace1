@@ -83,6 +83,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     CommonResult commonResult;
     TextView tv_runDuration, tv_runDistance, tv_runStep, tv_runCadence, tv_runEmg, tv_runCalories;
 
+    float speedTrue = 0.0f;
     LineChart lc_speed;
 
     //横向柱状图用来做新纪录
@@ -190,15 +191,24 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         addRepsBarEntry(20);
         addRepsBarEntry(15);
 
-        //得到数据
+        //得到数据 如果是从history进入 这个就成了问题
         commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
 
         int minuteCount = commonResult.getMinuteCount();
+
         byte speedPerMinute[];
         speedPerMinute = commonResult.getSpeedPerMinute();
 
+        if(minuteCount == 0)
+        {
+            addSpeedLineEntry(0.0f);
+        }
+
+
         for(int n=0; n<minuteCount; n++){
-            addSpeedLineEntry(speedPerMinute[n]);
+            //speed变回真实值
+            speedTrue = (float)speedPerMinute[n]/10;
+            addSpeedLineEntry(speedTrue);
         }
 
         //得到运动种类
@@ -217,8 +227,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             btn_loads.setImageResource(R.mipmap.insight);
 
             //将值显示出来
-            tv_runCadence.setText(""+ commonResult.getCadence() + "/min");
-            float calories = UtilConstants.Weight * commonResult.getMileage() * 1.306f;
+            float calories = UtilConstants.Weight * commonResult.getMileage() * 1.306f / 100.0f;
             tv_runCalories.setText("" + DateUitl.formatToM(calories / 1000.0f) + "kcal");
 
             float distance = commonResult.getMileage();
@@ -233,6 +242,16 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             tv_runStep.setText("" + commonResult.getStep());
 
             tv_runDuration.setText("" + commonResult.getDuration()/60000 + "min");
+
+            int minutes = (int)(commonResult.getDuration()/60000);
+            if(minutes > 0) {
+                int cadence = (int)(commonResult.getStep() / (long)minutes);
+                tv_runCadence.setText("" + cadence + "/min");
+            }
+            else
+            {
+                tv_runCadence.setText("" + commonResult.getCadence() + "/min");
+            }
 
             //还有emg没显示 leave
 
@@ -341,6 +360,8 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
                     break;
 
                 case R.id.btn_load:
+                    intent.putExtra("CommonResult", commonResult);
+                    intent.putExtra("sport_type", sport_type);
                     intent.setClass(this, InsightActivity.class);
                     startActivity(intent);
                     break;
@@ -640,7 +661,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         xAxis.setSpaceBetweenLabels(2);
         YAxis leftAxis = lc_speed.getAxisLeft();
         leftAxis.setLabelCount(5, false);
-        leftAxis.setAxisMaxValue(255);
+        leftAxis.setAxisMaxValue(12.0f);
         leftAxis.setAxisMinValue(0);
         leftAxis.setValueFormatter(new MyValueFormatter());
         leftAxis.setTextColor(Color.GRAY);
@@ -657,16 +678,8 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         mLegend.setTextSize(12f);
     }
 
-    int linValue = -1;
 
-    public void addSpeedLineEntry(int speed) {
-        float speed_valid;
-
-        if (linValue == speed)
-            return;
-
-        speed_valid = (float)(speed / 10);
-        linValue = (int) speed_valid;
+    public void addSpeedLineEntry(float speed) {
 
         LineData data = lc_speed.getData();
         if (data != null) {
@@ -677,9 +690,9 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
                 data.addDataSet(set);
             }
             data.addXValue("");
-            data.addEntry(new Entry(speed_valid, set.getEntryCount()), 0);
+            data.addEntry(new Entry(speed, set.getEntryCount()), 0);
             lc_speed.notifyDataSetChanged();
-            lc_speed.setVisibleXRangeMaximum(50);
+            lc_speed.setVisibleXRangeMaximum(30);
             lc_speed.moveViewTo(data.getXValCount() - 50, 0.0f,
                     AxisDependency.LEFT);
             lc_speed.invalidate();

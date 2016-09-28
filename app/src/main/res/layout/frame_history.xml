@@ -457,6 +457,30 @@
                         android:textColor="#94cf7e" />
                 </RelativeLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Title"
+                    android:id="@+id/tv_plantitle"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:textColor="#FFDD12"
+                    android:layout_below="@+id/gif_animation"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="23dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Here is the rules of different plan or challenge"
+                    android:id="@+id/tv_planrules"
+                    android:textSize="14dp"
+                    android:layout_below="@+id/tv_plantitle"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp" />
+
             </RelativeLayout>
 
         </RelativeLayout>

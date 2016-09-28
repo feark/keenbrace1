@@ -59,14 +59,21 @@
                 android:typeface="serif"
                 android:textColor="#363636" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/challenge_go"
-                android:layout_below="@+id/challengedescription"
-                android:layout_alignEnd="@+id/challengerules"
-                android:src="@mipmap/challenge_go"
-                android:layout_marginBottom="5dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/challengedescription">
+
+                <ImageView
+                    android:layout_width="78dp"
+                    android:layout_height="78dp"
+                    android:id="@+id/challenge_go"
+                    android:src="@mipmap/challenge_go"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="3dp" />
+            </RelativeLayout>
 
         </RelativeLayout>
     </LinearLayout>

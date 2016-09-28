@@ -89,9 +89,11 @@ public class UtilConstants {
     public static final int eventEnergy = 13;   // speed osc中等偏大
     public static final int eventRest = 14;     // 2公里 stability power
     public static final int eventToe = 15;      // 多次eventFoot
-    public static final int eventSprint = 16;
-    public static final int eventStill = 17;    // 站着没动
-    public static final int eventNormalRun = 18;// 一般跑动
+    public static final int eventSprint = 16;   //
+    public static final int eventSwingArm = 17;
+    public static final int eventStill = 18;    // 站着没动
+    public static final int eventNormalRun = 19;// 一般跑动
+    public static final int eventWalk = 20;
 
     public static final int[] event2str = {
             R.string.tx_relax_smooth,
@@ -111,7 +113,9 @@ public class UtilConstants {
             R.string.tx_take_rest,
             R.string.tx_spring_toe,
             R.string.tx_dont_sprint,
+            R.string.tx_arm_swing,
             R.string.tx_stand_still,
             R.string.tx_goodrunform,
+            R.string.tx_walking,
     };
 }

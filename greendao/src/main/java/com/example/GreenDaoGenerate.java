@@ -274,6 +274,12 @@ public class GreenDaoGenerate {
         user.addIdProperty();
 
         user.addIntProperty("challengeID");
+        user.addIntProperty("challengeLogo");
+
+        user.addStringProperty("title");
+        user.addStringProperty("rules");
+        user.addStringProperty("description");
+
         user.addIntProperty("rounds");
         user.addIntProperty("reps");
         user.addIntProperty("workoutsNumber");

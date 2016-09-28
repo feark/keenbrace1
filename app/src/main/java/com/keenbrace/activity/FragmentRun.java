@@ -44,6 +44,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
     //不同的运动种类显示不同动画
     GifView gif_anima;
     int sport_type = 0;
+    int start_from = 0;
 
     int delay_times;
 
@@ -57,6 +58,13 @@ public class FragmentRun extends Fragment implements OnClickListener {
     TextView sport_title;
     TextView train_target;
     TextView tv_speed_t, tv_distance_t, tv_calories_t;
+
+    TextView tv_plantitle, tv_planrules;
+
+    //------------------------------------------------------
+    //挑战或计划的界同调度
+    boolean isStartRun = false;
+    //------------------------------------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +96,14 @@ public class FragmentRun extends Fragment implements OnClickListener {
         //关于如何显示gif ken
         gif_anima = (GifView) view.findViewById(R.id.gif_animation);
         sport_type = getArguments().getInt("sport_type");
+
+        start_from = getArguments().getInt("StartFrom");
+
+        //plan或challenge的标题 一开始并不显示
+        tv_planrules = (TextView) view.findViewById(R.id.tv_planrules);
+        tv_plantitle = (TextView) view.findViewById(R.id.tv_plantitle);
+        tv_planrules.setVisibility(View.GONE);
+        tv_plantitle.setVisibility(View.GONE);
 
         indicate_message.setText(R.string.tx_indicate_tap);
 
@@ -198,6 +214,12 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 break;
         }
 
+        if(start_from == UtilConstants.fromChallenge)
+        {
+            gif_anima.setVisibility(View.GONE);
+            tv_planrules.setVisibility(View.VISIBLE);
+            tv_plantitle.setVisibility(View.VISIBLE);
+        }
 
         //pd_circle1 = (CircularProgressBar) view.findViewById(R.id.pd_circle_red);
         //pd_circle2 = (CircularProgressBar) view.findViewById(R.id.pd_circle_yellow);
@@ -262,16 +284,21 @@ public class FragmentRun extends Fragment implements OnClickListener {
 
         }
         tv_step.setText("" + step);
+
+        float calories;
         String ss = "m";
         String kk = "kcal";
         if (distance > 100000) {
+            calories = UtilConstants.Weight * distance * 1.306f / 100.0f;
             distance = distance / 100000.0f;
             ss = "km";
             kk = "kcal";
-        } else
+        }
+        else
+        {
             distance = distance / 100.0f;
-
-        float calories = UtilConstants.Weight * distance * 1.306f;
+            calories = UtilConstants.Weight * distance * 1.306f;
+        }
 
         tv_distance.setText("" + DateUitl.formatToM(distance) + ss);
         tv_calories.setText("" + DateUitl.formatToM(calories / 1000.0f) + kk);
@@ -287,7 +314,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
         minisec = duration/1000;
         reps_number.setText(""+reps);
         tv_speed.setText(""+muscle+" %");
-        tv_distance.setText(""+minisec+" sec");
+        tv_distance.setText("" + minisec + " sec");
         tv_calories.setText("" + stability + " %");
     }
 
@@ -306,6 +333,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
             case UtilConstants.sport_running:
 
                 indicate_message.setText(UtilConstants.event2str[anino]);
+
+                if(anino == UtilConstants.eventGeneral)
+                {
+                    gif_anima.setMovieResource(R.raw.normalrun_male);
+                }
 
                 if(anino == UtilConstants.eventCadence)
                 {
@@ -401,6 +433,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
                     gif_anima.setMovieResource(R.raw.normalrun_male);
                 }
 
+                if(anino == UtilConstants.eventSwingArm)
+                {
+                    gif_anima.setMovieResource(R.raw.bouncing_male);
+                }
+
                 if(anino == UtilConstants.eventStill)
                 {
                     gif_anima.setMovieResource(R.raw.still_male);
@@ -409,6 +446,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 if(anino == UtilConstants.eventNormalRun)
                 {
                     gif_anima.setMovieResource(R.raw.normalrun_male);
+                }
+
+                if(anino == UtilConstants.eventWalk)
+                {
+                    gif_anima.setMovieResource(R.raw.walking);
                 }
 
                 break;
@@ -495,8 +537,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
     }
 
     //倒计时中刷新界面
-    public void DuringCountDown(int minutes, int seconds)
-    {
+    public void DuringCountDown(int minutes, int seconds) {
         restTime.setText(String.format("%02d:%02d", minutes, seconds));
         updateTime(60, seconds, 0, 0);
     }
@@ -539,10 +580,14 @@ public class FragmentRun extends Fragment implements OnClickListener {
         }
     };
 
-    //动画显示调度器
-    public void animateScheduler()
+    public void setIsStartRun(boolean v)
     {
+        isStartRun = v;
 
+        //重新显示出动画
+        gif_anima.setVisibility(View.VISIBLE);
+        tv_planrules.setVisibility(View.GONE);
+        tv_plantitle.setVisibility(View.GONE);
     }
 
 }

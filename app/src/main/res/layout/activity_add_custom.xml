@@ -11,4 +11,17 @@
 
         layout="@layout/toolbar" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="COMING SOON"
+        android:id="@+id/textView10"
+        android:layout_marginTop="161dp"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:textColor="#f7e477"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

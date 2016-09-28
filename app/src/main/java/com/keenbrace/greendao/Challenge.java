@@ -11,6 +11,10 @@ public class Challenge implements Serializable {
 
     private Long id;
     private Integer challengeID;
+    private Integer challengeLogo;
+    private String title;
+    private String rules;
+    private String description;
     private Integer rounds;
     private Integer reps;
     private Integer workoutsNumber;
@@ -30,9 +34,13 @@ public class Challenge implements Serializable {
         this.id = id;
     }
 
-    public Challenge(Long id, Integer challengeID, Integer rounds, Integer reps, Integer workoutsNumber, byte[] workouts, Integer distance, Integer section, byte[] content, byte[] duration, Integer cadence, Integer speed, Integer totalTime) {
+    public Challenge(Long id, Integer challengeID, Integer challengeLogo, String title, String rules, String description, Integer rounds, Integer reps, Integer workoutsNumber, byte[] workouts, Integer distance, Integer section, byte[] content, byte[] duration, Integer cadence, Integer speed, Integer totalTime) {
         this.id = id;
         this.challengeID = challengeID;
+        this.challengeLogo = challengeLogo;
+        this.title = title;
+        this.rules = rules;
+        this.description = description;
         this.rounds = rounds;
         this.reps = reps;
         this.workoutsNumber = workoutsNumber;
@@ -60,6 +68,38 @@ public class Challenge implements Serializable {
 
     public void setChallengeID(Integer challengeID) {
         this.challengeID = challengeID;
+    }
+
+    public Integer getChallengeLogo() {
+        return challengeLogo;
+    }
+
+    public void setChallengeLogo(Integer challengeLogo) {
+        this.challengeLogo = challengeLogo;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getRounds() {

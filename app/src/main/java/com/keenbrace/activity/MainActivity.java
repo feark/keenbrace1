@@ -97,10 +97,12 @@ public class MainActivity extends SlidingFragmentActivity {
             leDeviceListAdapter.addDevice(BluetoothConstant.mdevice);
         }
 
+        /*
         if (BluetoothConstant.mConnected){
             //如果有连接 先发一个停止运动
             BluetoothConstant.mBluetoothLeService.startRun(0, (byte)0, new Date());
         }
+        */
 
         if (!PreferenceHelper.readBoolean(AppContext.getInstance(), UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN)) {
 
@@ -114,7 +116,7 @@ public class MainActivity extends SlidingFragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        unregisterReceiver(mGattUpdateReceiver);
+        //unregisterReceiver(mGattUpdateReceiver);
     }
 
     private void initSlidingMenu(Bundle savedInstanceState) {
@@ -244,6 +246,13 @@ public class MainActivity extends SlidingFragmentActivity {
                 Toast.makeText(MainActivity.this, "services disovered",
                         Toast.LENGTH_SHORT).show();
 
+                if (BluetoothConstant.mConnected) {
+                    if (application.getIsStartWorkout()) {
+                        //断线重连 如果是正在运动的 再重新发送开始运动
+                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte) 0, new Date());
+                    }
+
+                }
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 //在这个位置接收蓝牙数据 ken
                 data = intent

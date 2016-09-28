@@ -147,11 +147,10 @@ public class FragmentMapGoogle extends Fragment implements
      *
      */
     private void setUpMap() {
-
-
         aMap.setLocationSource(this);//
         aMap.moveCamera(CameraUpdateFactory.zoomTo(16.1f));
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//
+
         if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -307,6 +306,7 @@ public class FragmentMapGoogle extends Fragment implements
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
+
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     2000,

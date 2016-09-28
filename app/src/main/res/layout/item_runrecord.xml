@@ -42,7 +42,7 @@
                     android:textSize="@dimen/text_size_14"
                     android:textColor="#FFFFFF"
                     android:textStyle="italic"
-                    android:text="2015-01-01 15:00:00"
+                    android:text="2016-08-23 18:25:01"
                     android:layout_width="match_parent"
                     android:textAlignment="center"
                     android:layout_alignParentEnd="true" />
@@ -61,8 +61,8 @@
                     android:padding="@dimen/space_3"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#FFFFFF"
-                    android:text="@string/time_template"
-                    android:layout_below="@+id/view"
+                    android:text="Duration:"
+                    android:layout_alignTop="@+id/img_upload"
                     android:layout_toEndOf="@+id/imageView6" />
                 <TextView
                     android:id="@+id/tv_format"
@@ -70,8 +70,8 @@
                     android:padding="@dimen/space_3"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#FFFFFF"
-                    android:text="23:52:11"
-                    android:layout_below="@+id/tv_collection_time"
+                    android:text="32:39"
+                    android:layout_alignTop="@+id/tv_format_pre"
                     android:layout_toEndOf="@+id/tv_format_pre" />
                 <TextView
                     android:id="@+id/tv_event_pre"
@@ -79,28 +79,19 @@
                     android:padding="@dimen/space_3"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#FFFFFF"
-                    android:text="@string/bp_template"
-                    android:layout_below="@+id/tv_waring_pre"
+                    android:text="Cadence: 175/min"
+                    android:layout_below="@+id/img_upload"
                     android:layout_toEndOf="@+id/imageView6" />
-                <TextView
-                    android:id="@+id/tv_bp"
-                    style="@style/wrap_wrap"
-                    android:padding="@dimen/space_5"
-                    android:layout_toRightOf="@id/tv_event_pre"
-                    android:layout_alignBottom="@id/tv_event_pre"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="#FFFFFF"
-                    android:text="1次"
-                    />
+
                 <TextView
                     android:id="@+id/tv_status_pre"
                     style="@style/wrap_wrap"
                     android:padding="@dimen/space_3"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#FFFFFF"
-                    android:text="@string/jl_template"
-                    android:layout_alignBottom="@+id/tv_bp"
-                    android:layout_alignStart="@+id/tv_waring_pre" />
+                    android:text="Distance: 5.3km"
+                    android:layout_alignTop="@+id/tv_event_pre"
+                    android:layout_toEndOf="@+id/tv_event_pre" />
 
                 <TextView
                     android:id="@+id/tv_jl"
@@ -118,10 +109,8 @@
                     android:padding="@dimen/space_3"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#FFFFFF"
-                    android:text="Warings"
-                    android:layout_marginStart="13dp"
-                    android:layout_alignBaseline="@+id/tv_format_pre"
-                    android:layout_alignBottom="@+id/tv_format_pre"
+                    android:text="Speed: 06:15/km"
+                    android:layout_alignTop="@+id/img_upload"
                     android:layout_toEndOf="@+id/tv_format" />
 
                 <TextView

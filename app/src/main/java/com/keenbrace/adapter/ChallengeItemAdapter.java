@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.keenbrace.R;
 import com.keenbrace.core.utils.DensityUtils;
 import com.keenbrace.greendao.Challenge;
+import com.keenbrace.util.DateUitl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class ChallengeItemAdapter extends ArrayAdapter<Challenge> {
         }
 
         holder.setItemData(getItem(position));
+        setData(holder, position);
 
         return convertView;
     }
@@ -82,6 +84,24 @@ public class ChallengeItemAdapter extends ArrayAdapter<Challenge> {
         public void setItemData(Challenge itemData) {
             this.itemData = itemData;
         }
+    }
+
+    public void setData(final ViewHolder challenge, int position){
+        final Challenge item = challenge.getItemData();
+        challenge.challengeLogo.setImageResource(item.getChallengeLogo() == null ? R.mipmap.kb_challenge : item.getChallengeLogo());
+        challenge.challengeDescription.setText(item.getDescription()==null?"0":item.getDescription()+"");
+        challenge.challengeRules.setText(item.getRules() == null ? "0" : item.getRules()+"");
+
+        /*
+        keenBrace.ll_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onKeenBraceFunc(keenBrace.getItemData());
+                }
+            }
+        });
+        */
     }
 
 

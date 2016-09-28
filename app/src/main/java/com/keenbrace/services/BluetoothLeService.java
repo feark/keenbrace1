@@ -578,6 +578,30 @@ public class BluetoothLeService extends Service {
         }
     }
 
+    public void emgSwitch(int v)
+    {
+        byte[] sends = new byte[2];
+
+        sends[0] = 0x5C;
+        if (v == 1) {
+            sends[1] = 0x01;    //开
+        }
+        else {
+            sends[1] = 0x00;
+        }
+
+        BluetoothConstant.mwriteCharacteristic.setValue(sends);
+        writeCharacteristic(BluetoothConstant.mwriteCharacteristic);
+        BluetoothGattDescriptor descriptor = BluetoothConstant.mreadCharacteristic
+                .getDescriptor(BluetoothConstant.CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID);
+        if (null != descriptor) {
+            if (descriptor
+                    .setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)) {
+                writeDescriptor(descriptor);
+            }
+        }
+    }
+
     public void RequestHistoryData(long times) {
         byte[] sends = new byte[8];
 

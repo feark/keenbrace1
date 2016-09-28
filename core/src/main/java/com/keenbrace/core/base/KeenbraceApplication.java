@@ -24,6 +24,7 @@ public class KeenbraceApplication extends Application{
 
 	byte[] bleData;
 	boolean isSendBleEnd = false;
+	boolean isStartWorkout = false;
 	
     private static boolean sIsAtLeastGB;
 
@@ -161,4 +162,13 @@ public class KeenbraceApplication extends Application{
 		return this.isSendBleEnd;
 	}
 
+	public void setIsStartWorkout(boolean v)
+	{
+		this.isStartWorkout = v;
+	}
+
+	public boolean getIsStartWorkout()
+	{
+		return this.isStartWorkout;
+	}
 }

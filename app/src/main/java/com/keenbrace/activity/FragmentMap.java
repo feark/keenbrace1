@@ -117,16 +117,21 @@ public class FragmentMap extends Fragment implements OnClickListener,
 			distance = (int) (step * 74);// 里程算法还未实现 **
 
 		}
+
+		float calories;
 		String ss = "m";
-		String kk="cal";
+		String kk = "kcal";
 		if (distance > 100000) {
+			calories = UtilConstants.Weight * distance * 1.306f / 100.0f;
 			distance = distance / 100000.0f;
 			ss = "km";
-			kk="kcal";
-		} else
+			kk = "kcal";
+		}
+		else
+		{
 			distance = distance / 100.0f;
-
-		float calories = UtilConstants.Weight * distance * 1.306f;
+			calories = UtilConstants.Weight * distance * 1.306f;
+		}
 
 		tv_distance.setText("" + DateUitl.formatToM(distance) + ss);
 		tv_calories.setText("" + DateUitl.formatToM(calories / 1000.0f)+kk);
