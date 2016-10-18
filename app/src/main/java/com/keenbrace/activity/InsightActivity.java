@@ -21,6 +21,8 @@ import com.keenbrace.widget.MyValueFormatter;
 
 //
 
+//
+
 public class InsightActivity extends BaseActivity implements View.OnClickListener {
 
     LineChart lcCadence, lcPress, lcVertical, lcStability, lcEmg;

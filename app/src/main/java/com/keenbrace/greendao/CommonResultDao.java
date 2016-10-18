@@ -57,6 +57,7 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         public final static Property Notification = new Property(31, byte[].class, "notification", false, "NOTIFICATION");
         public final static Property Comment = new Property(32, String.class, "comment", false, "COMMENT");
         public final static Property PicturePath = new Property(33, String.class, "picturePath", false, "PICTURE_PATH");
+<<<<<<< HEAD
         public final static Property DataFileName = new Property(34, String.class, "dataFileName", false, "DATA_FILE_NAME");
         public final static Property Weight = new Property(35, Integer.class, "weight", false, "WEIGHT");
         public final static Property BodyFat = new Property(36, Integer.class, "bodyFat", false, "BODY_FAT");
@@ -69,6 +70,19 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         public final static Property Thighs = new Property(43, Integer.class, "thighs", false, "THIGHS");
         public final static Property Calves = new Property(44, Integer.class, "calves", false, "CALVES");
         public final static Property Neck = new Property(45, Integer.class, "neck", false, "NECK");
+=======
+        public final static Property Weight = new Property(34, Integer.class, "weight", false, "WEIGHT");
+        public final static Property BodyFat = new Property(35, Integer.class, "bodyFat", false, "BODY_FAT");
+        public final static Property Waist = new Property(36, Integer.class, "waist", false, "WAIST");
+        public final static Property Chest = new Property(37, Integer.class, "chest", false, "CHEST");
+        public final static Property Arms = new Property(38, Integer.class, "arms", false, "ARMS");
+        public final static Property ForArms = new Property(39, Integer.class, "forArms", false, "FOR_ARMS");
+        public final static Property Shoulder = new Property(40, Integer.class, "shoulder", false, "SHOULDER");
+        public final static Property Hips = new Property(41, Integer.class, "hips", false, "HIPS");
+        public final static Property Thighs = new Property(42, Integer.class, "thighs", false, "THIGHS");
+        public final static Property Calves = new Property(43, Integer.class, "calves", false, "CALVES");
+        public final static Property Neck = new Property(44, Integer.class, "neck", false, "NECK");
+>>>>>>> KeenBrace_Android/master
     };
 
 
@@ -118,6 +132,7 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
                 "\"NOTIFICATION\" BLOB," + // 31: notification
                 "\"COMMENT\" TEXT," + // 32: comment
                 "\"PICTURE_PATH\" TEXT," + // 33: picturePath
+<<<<<<< HEAD
                 "\"DATA_FILE_NAME\" TEXT," + // 34: dataFileName
                 "\"WEIGHT\" INTEGER," + // 35: weight
                 "\"BODY_FAT\" INTEGER," + // 36: bodyFat
@@ -130,6 +145,19 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
                 "\"THIGHS\" INTEGER," + // 43: thighs
                 "\"CALVES\" INTEGER," + // 44: calves
                 "\"NECK\" INTEGER);"); // 45: neck
+=======
+                "\"WEIGHT\" INTEGER," + // 34: weight
+                "\"BODY_FAT\" INTEGER," + // 35: bodyFat
+                "\"WAIST\" INTEGER," + // 36: waist
+                "\"CHEST\" INTEGER," + // 37: chest
+                "\"ARMS\" INTEGER," + // 38: arms
+                "\"FOR_ARMS\" INTEGER," + // 39: forArms
+                "\"SHOULDER\" INTEGER," + // 40: shoulder
+                "\"HIPS\" INTEGER," + // 41: hips
+                "\"THIGHS\" INTEGER," + // 42: thighs
+                "\"CALVES\" INTEGER," + // 43: calves
+                "\"NECK\" INTEGER);"); // 44: neck
+>>>>>>> KeenBrace_Android/master
     }
 
     /** Drops the underlying database table. */
@@ -313,6 +341,7 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
             stmt.bindString(34, picturePath);
         }
  
+<<<<<<< HEAD
         String dataFileName = entity.getDataFileName();
         if (dataFileName != null) {
             stmt.bindString(35, dataFileName);
@@ -321,56 +350,101 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         Integer weight = entity.getWeight();
         if (weight != null) {
             stmt.bindLong(36, weight);
+=======
+        Integer weight = entity.getWeight();
+        if (weight != null) {
+            stmt.bindLong(35, weight);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer bodyFat = entity.getBodyFat();
         if (bodyFat != null) {
+<<<<<<< HEAD
             stmt.bindLong(37, bodyFat);
+=======
+            stmt.bindLong(36, bodyFat);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer waist = entity.getWaist();
         if (waist != null) {
+<<<<<<< HEAD
             stmt.bindLong(38, waist);
+=======
+            stmt.bindLong(37, waist);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer chest = entity.getChest();
         if (chest != null) {
+<<<<<<< HEAD
             stmt.bindLong(39, chest);
+=======
+            stmt.bindLong(38, chest);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer arms = entity.getArms();
         if (arms != null) {
+<<<<<<< HEAD
             stmt.bindLong(40, arms);
+=======
+            stmt.bindLong(39, arms);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer forArms = entity.getForArms();
         if (forArms != null) {
+<<<<<<< HEAD
             stmt.bindLong(41, forArms);
+=======
+            stmt.bindLong(40, forArms);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer shoulder = entity.getShoulder();
         if (shoulder != null) {
+<<<<<<< HEAD
             stmt.bindLong(42, shoulder);
+=======
+            stmt.bindLong(41, shoulder);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer hips = entity.getHips();
         if (hips != null) {
+<<<<<<< HEAD
             stmt.bindLong(43, hips);
+=======
+            stmt.bindLong(42, hips);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer thighs = entity.getThighs();
         if (thighs != null) {
+<<<<<<< HEAD
             stmt.bindLong(44, thighs);
+=======
+            stmt.bindLong(43, thighs);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer calves = entity.getCalves();
         if (calves != null) {
+<<<<<<< HEAD
             stmt.bindLong(45, calves);
+=======
+            stmt.bindLong(44, calves);
+>>>>>>> KeenBrace_Android/master
         }
  
         Integer neck = entity.getNeck();
         if (neck != null) {
+<<<<<<< HEAD
             stmt.bindLong(46, neck);
+=======
+            stmt.bindLong(45, neck);
+>>>>>>> KeenBrace_Android/master
         }
     }
 
@@ -418,6 +492,7 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
             cursor.isNull(offset + 31) ? null : cursor.getBlob(offset + 31), // notification
             cursor.isNull(offset + 32) ? null : cursor.getString(offset + 32), // comment
             cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33), // picturePath
+<<<<<<< HEAD
             cursor.isNull(offset + 34) ? null : cursor.getString(offset + 34), // dataFileName
             cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35), // weight
             cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36), // bodyFat
@@ -430,6 +505,19 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
             cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43), // thighs
             cursor.isNull(offset + 44) ? null : cursor.getInt(offset + 44), // calves
             cursor.isNull(offset + 45) ? null : cursor.getInt(offset + 45) // neck
+=======
+            cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34), // weight
+            cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35), // bodyFat
+            cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36), // waist
+            cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37), // chest
+            cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38), // arms
+            cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39), // forArms
+            cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40), // shoulder
+            cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41), // hips
+            cursor.isNull(offset + 42) ? null : cursor.getInt(offset + 42), // thighs
+            cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43), // calves
+            cursor.isNull(offset + 44) ? null : cursor.getInt(offset + 44) // neck
+>>>>>>> KeenBrace_Android/master
         );
         return entity;
     }
@@ -471,6 +559,7 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         entity.setNotification(cursor.isNull(offset + 31) ? null : cursor.getBlob(offset + 31));
         entity.setComment(cursor.isNull(offset + 32) ? null : cursor.getString(offset + 32));
         entity.setPicturePath(cursor.isNull(offset + 33) ? null : cursor.getString(offset + 33));
+<<<<<<< HEAD
         entity.setDataFileName(cursor.isNull(offset + 34) ? null : cursor.getString(offset + 34));
         entity.setWeight(cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35));
         entity.setBodyFat(cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36));
@@ -483,6 +572,19 @@ public class CommonResultDao extends AbstractDao<CommonResult, Long> {
         entity.setThighs(cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43));
         entity.setCalves(cursor.isNull(offset + 44) ? null : cursor.getInt(offset + 44));
         entity.setNeck(cursor.isNull(offset + 45) ? null : cursor.getInt(offset + 45));
+=======
+        entity.setWeight(cursor.isNull(offset + 34) ? null : cursor.getInt(offset + 34));
+        entity.setBodyFat(cursor.isNull(offset + 35) ? null : cursor.getInt(offset + 35));
+        entity.setWaist(cursor.isNull(offset + 36) ? null : cursor.getInt(offset + 36));
+        entity.setChest(cursor.isNull(offset + 37) ? null : cursor.getInt(offset + 37));
+        entity.setArms(cursor.isNull(offset + 38) ? null : cursor.getInt(offset + 38));
+        entity.setForArms(cursor.isNull(offset + 39) ? null : cursor.getInt(offset + 39));
+        entity.setShoulder(cursor.isNull(offset + 40) ? null : cursor.getInt(offset + 40));
+        entity.setHips(cursor.isNull(offset + 41) ? null : cursor.getInt(offset + 41));
+        entity.setThighs(cursor.isNull(offset + 42) ? null : cursor.getInt(offset + 42));
+        entity.setCalves(cursor.isNull(offset + 43) ? null : cursor.getInt(offset + 43));
+        entity.setNeck(cursor.isNull(offset + 44) ? null : cursor.getInt(offset + 44));
+>>>>>>> KeenBrace_Android/master
      }
     
     /** @inheritdoc */

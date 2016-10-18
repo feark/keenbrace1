@@ -66,6 +66,7 @@ public class UtilConstants {
     public static final int sport_bicyclesitup = 10;
     public static final int sport_closestancesquat = 11;
 
+<<<<<<< HEAD
     //从哪里开始
     public static final int fromChallenge = 1;
     public static final int fromPlan = 2;
@@ -118,4 +119,8 @@ public class UtilConstants {
             R.string.tx_goodrunform,
             R.string.tx_walking,
     };
+=======
+
+
+>>>>>>> KeenBrace_Android/master
 }

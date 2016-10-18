@@ -272,7 +272,11 @@ public class MainFragment extends BaseFragment {
 
         howtowear.setImageResource(R.mipmap.wear_on_thigh);
 
+<<<<<<< HEAD
         sport_type = UtilConstants.sport_bicyclesitup;
+=======
+        sport_type = UtilConstants.sport_pushup;
+>>>>>>> KeenBrace_Android/master
     }
 
     @OnClick(R.id.iv_pushup)
@@ -291,7 +295,11 @@ public class MainFragment extends BaseFragment {
 
         howtowear.setImageResource(R.mipmap.wear_on_arm);
 
+<<<<<<< HEAD
         sport_type = UtilConstants.sport_pushup;
+=======
+        sport_type = UtilConstants.sport_bicyclesitup;
+>>>>>>> KeenBrace_Android/master
     }
 
     @OnClick(R.id.iv_closestandsquat)

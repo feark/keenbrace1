@@ -44,8 +44,12 @@
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
                     android:gravity="center_vertical"
+<<<<<<< HEAD
                     android:textSize="12dp"
                     android:layout_marginTop="-15dp" />
+=======
+                    android:textSize="12dp" />
+>>>>>>> KeenBrace_Android/master
             </RelativeLayout>
 
             <com.github.mikephil.charting.charts.LineChart
@@ -66,14 +70,22 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+<<<<<<< HEAD
                     android:text="Keep your press as low as possible"
+=======
+                    android:text=""
+>>>>>>> KeenBrace_Android/master
                     android:id="@+id/pressPrompt"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
                     android:gravity="center_vertical"
+<<<<<<< HEAD
                     android:textSize="12dp"
                     android:layout_marginTop="-15dp"/>
+=======
+                    android:textSize="12dp" />
+>>>>>>> KeenBrace_Android/master
             </RelativeLayout>
 
             <com.github.mikephil.charting.charts.LineChart
@@ -94,14 +106,22 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+<<<<<<< HEAD
                     android:text="the amount you bounce up and down"
+=======
+                    android:text="average vertical oscillation"
+>>>>>>> KeenBrace_Android/master
                     android:id="@+id/verticalPrompt"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
                     android:gravity="center_vertical"
+<<<<<<< HEAD
                     android:textSize="12dp"
                     android:layout_marginTop="-15dp"/>
+=======
+                    android:textSize="12dp" />
+>>>>>>> KeenBrace_Android/master
             </RelativeLayout>
 
 
@@ -123,14 +143,22 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+<<<<<<< HEAD
                     android:text="the amount of energy your muscle decrease"
+=======
+                    android:text="average sEMG decrease"
+>>>>>>> KeenBrace_Android/master
                     android:id="@+id/emgPrompt"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
                     android:gravity="center_vertical"
+<<<<<<< HEAD
                     android:textSize="12dp"
                     android:layout_marginTop="-15dp"/>
+=======
+                    android:textSize="12dp" />
+>>>>>>> KeenBrace_Android/master
             </RelativeLayout>
 
 
@@ -152,14 +180,22 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+<<<<<<< HEAD
                     android:text="running stably to keep this low"
+=======
+                    android:text="average sEMG decrease"
+>>>>>>> KeenBrace_Android/master
                     android:id="@+id/stabilityPrompt"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:textAlignment="center"
                     android:gravity="center_vertical"
+<<<<<<< HEAD
                     android:textSize="12dp"
                     android:layout_marginTop="-15dp"/>
+=======
+                    android:textSize="12dp" />
+>>>>>>> KeenBrace_Android/master
             </RelativeLayout>
 
         </LinearLayout>

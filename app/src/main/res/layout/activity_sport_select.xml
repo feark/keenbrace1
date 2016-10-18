@@ -325,6 +325,33 @@
                 android:src="@mipmap/main_closestandsquat_w"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_pushup"
+                android:src="@mipmap/main_pushup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_bicyclesitup"
+                android:src="@mipmap/main_bicyclesitup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_closestandsquat"
+                android:src="@mipmap/main_closestandsquat_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 />
 
         </LinearLayout>
