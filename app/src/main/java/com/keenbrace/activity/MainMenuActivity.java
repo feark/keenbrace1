@@ -100,7 +100,7 @@ public class MainMenuActivity extends BaseActivity implements
                         R.string.tx_humor_0,};
     int walkTalkSwitch = 0;
 
-    int emgSwitch = 0;
+    int runSwitch = 0;
     //------------------------------------------------------
 
     //根据不同种类的运动显示不同的动画或图片 ken
@@ -129,7 +129,6 @@ public class MainMenuActivity extends BaseActivity implements
 
     CommonResult commonResult;
 
-<<<<<<< HEAD
     //---------------------------------------------------
     //  algorithm data-structure
 
@@ -221,8 +220,6 @@ public class MainMenuActivity extends BaseActivity implements
 
     int duration_hour = 0, duration_min = 0, duration_sec = 0;
 
-=======
->>>>>>> KeenBrace_Android/master
     @Override
     protected boolean hasBackButton() {
         return true;
@@ -535,24 +532,18 @@ public class MainMenuActivity extends BaseActivity implements
                 }
 
                 isStartRun = true;
-<<<<<<< HEAD
                 application.setIsStartWorkout(isStartRun);
 
                 //告诉fragment已经开始运动
                 fragmentHistory.setIsStartRun(isStartRun);
-=======
->>>>>>> KeenBrace_Android/master
 
                 Date d = new Date();
 
                 commonResult.setStartTime(d.getTime());
                 commonResult.setDuration(new Long(0L));
                 commonResult.setType(sport_type);
-<<<<<<< HEAD
                 //把数据文件名保存进数据库
                 commonResult.setDataFileName(fname);
-=======
->>>>>>> KeenBrace_Android/master
 
                 if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
                     commonResult.setStartlatitude(fragmentMap.getLatitude());
@@ -615,29 +606,6 @@ public class MainMenuActivity extends BaseActivity implements
 
     };
 
-<<<<<<< HEAD
-=======
-
-    long milli_second = 0;
-    int[] steprates = new int[]{0, 0, 0, 0, 0};
-
-    int delay_times;
-
-    int anino;  //动画的编号
-
-    int countdown_times;
-    String countdown_str;
-    //int test_reps = 1;
-    int indiCountdown = 100;
-
-    byte speedPerMin[] = new byte[600];
-    int fiveSecondCount = 0;
-    int minuteCount = 0;
-    float speedSum = 0.0f;
-
-    int du_hour = 0, du_min = 0, du_sec = 0;
-
->>>>>>> KeenBrace_Android/master
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -719,41 +687,9 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 5:
-<<<<<<< HEAD
                     runningSlowAnalysis();
 
                     handler.sendEmptyMessageDelayed(5, 5000);  //定时5秒
-=======
-                    //用这种形式实现自循环
-                    if (isStartRun) {
-                        int distance_gap = distance - distance_old;
-
-                        //每5秒读一次距离
-                        float speed = (float)distance_gap / 5;
-
-                        speedSum = speedSum + speed;
-                        fiveSecondCount++;
-
-                        //5秒一次 12次1秒
-                        if(fiveSecondCount == 12)
-                        {
-                            speedSum = speedSum / 12;
-                            fiveSecondCount = 0;
-                            speedPerMin[minuteCount] = (byte)(speedSum * 10); //放大10倍
-                            minuteCount++;
-                            speedSum = 0;
-                        }
-
-                        //用这种方法更新速度 如果地图不动值就是错的
-                        fragmentMap.updateSpeed(speed * 3600);
-                        fragmentHistory.updateSpeed(speed * 3600);
-                        distance_old = distance;
-                        handler.sendEmptyMessageDelayed(5, 5000);
-                        //打印调试信息
-                        com.umeng.socialize.utils.Log.e("speed-------------------"
-                                + speed);
-                    }
->>>>>>> KeenBrace_Android/master
                     break;
                 case 6:
                     //fragmentReport.addLineEntry(power_valid);
@@ -781,7 +717,7 @@ public class MainMenuActivity extends BaseActivity implements
                 case 7:
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null) {
-                        BluetoothConstant.mBluetoothLeService.emgSwitch(emgSwitch);
+                        BluetoothConstant.mBluetoothLeService.startRun(runSwitch, (byte) sport_type, new Date());
                     }
                     break;
 
@@ -792,7 +728,6 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                     break;
 
-<<<<<<< HEAD
                 case 9:
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null) {
@@ -837,10 +772,9 @@ public class MainMenuActivity extends BaseActivity implements
                             {
                                 if (BluetoothConstant.mBluetoothLeService != null
                                         && BluetoothConstant.mwriteCharacteristic != null) {
-                                    BluetoothConstant.mBluetoothLeService.startRun(0, (byte)0,
-                                            new Date());
+                                    BluetoothConstant.mBluetoothLeService.emgSwitch(0);
 
-                                    emgSwitch = 0;
+                                    runSwitch = 0;
                                     handler.sendEmptyMessageDelayed(7, 300);
                                 }
                             }
@@ -848,15 +782,12 @@ public class MainMenuActivity extends BaseActivity implements
 
                         if(duration_sec == 4)
                         {
-                            if(step_true == 0) {
-                                if (BluetoothConstant.mBluetoothLeService != null
-                                        && BluetoothConstant.mwriteCharacteristic != null) {
-                                    BluetoothConstant.mBluetoothLeService.startRun(1, (byte) sport_type,
-                                            new Date());
-                                }
+                            if (BluetoothConstant.mBluetoothLeService != null
+                                    && BluetoothConstant.mwriteCharacteristic != null) {
+                                BluetoothConstant.mBluetoothLeService.emgSwitch(1);
                             }
 
-                            emgSwitch = 1;
+                            runSwitch = 1;
                             handler.sendEmptyMessageDelayed(7, 300);
 
                             application.setIsSendBleEnd(false);
@@ -864,150 +795,10 @@ public class MainMenuActivity extends BaseActivity implements
 
                         String str_duration = String.format("%02d:%02d:%02d",duration_hour,duration_min,duration_sec);
                         tv_duration.setText("Duration :  "+str_duration);
-=======
-                case 19:    //每秒一次循环
-                    tv_nowtime.setText(new Date().toGMTString());
-
-                    if(isStartRun) {
-                        milli_second += 1000;
-
-                        //实时更新运动的总时长
-                        du_sec++;
-                        if(du_sec >= 60)
-                        {
-                            du_min++;
-                            if(du_min >= 60){
-                                du_hour++;
-                                du_min = 0;
-                            }
-                            du_sec = 0;
-                        }
-
-                        String str_du = String.format("%02d:%02d:%02d",du_hour,du_min,du_sec);
-                        tv_duration.setText("Duration :  "+str_du);
 
                         //if (mLastFragment == fragmentHistory)
                         //fragmentHistory.updateTime(milli_second / 1000, blue, yellow, red);
 
-                        if (mLastFragment == fragmentMap)
-                            fragmentMap.updateTime(str_du);
-
-                        if (mLastFragment == fragmentMapGoogle)
-                            fragmentMapGoogle.updateTime(str_du);
-
-                        bs[0] = bs[1];
-                        bs[1] = bs[2];
-                        bs[2] = bs[3];
-                        bs[3] = bs[4];
-                        if (updateStep != step_true)
-                            bs[4] = bkstep;
-                        else
-                            bs[4] = step_true;
-
-                        float a = Math.abs(bs[4] - bs[0]);
-                        float b = Math.abs(bs[4] - bs[1]);
-                        float c = Math.abs(bs[4] - bs[2]);
-                        float d = Math.abs(bs[4] - bs[3]);
-                        float pp = (a + b + c + d) * 6;
-                        steprate = (int) pp;
-                        if (milli_second > 5000) {
-
-                            steprate = (95 * steprate + 5 * old_steprate) / 100;
-                        }
-                        steprates[0] = steprates[1];
-                        steprates[1] = steprates[2];
-                        steprates[2] = steprates[3];
-                        steprates[3] = steprates[4];
-                        steprates[4] = steprate;
-
-                        if (milli_second > 5000) {
-                            int totalStep = 0;
-                            for (int i = 0; i < 5; i++) {
-                                if (steprates[i] > 0) {
-                                    totalStep += steprates[i];
-                                    count++;
-                                }
-                            }
-                            steprate = totalStep / 5;
-
-                        }
-
-                        old_steprate = steprate;
-                        if (steprate < 150) {
-                            //if (rw8 != null) {
-                            //步频太低
-                            if (steprate > 0) {
-                                straight_spine++;
-
-                                if (straight_spine < 5) {
-                                    anino = 1;
-                                    //语音
-                                    indiCaseCount[anino]++;
-
-                                    if (indiCaseCount[anino] > 10) {
-                                        updateVoice(R.string.tx_increase_cadence);
-                                        //动画和提示框信息
-                                        handler.sendEmptyMessage(2);
-
-                                        indiCaseCount[anino] = 0;
-                                    }
-                                } else {
-                                    //动画和提示框信息
-                                    anino = 0;
-
-                                    indiCaseCount[anino]++;
-
-                                    if (indiCaseCount[anino] > 10) {
-                                        //语音
-                                        updateVoice(R.string.tx_straight_spine);
-
-                                        handler.sendEmptyMessage(2);
-                                        straight_spine = 0;
-
-                                        indiCaseCount[anino] = 0;
-                                    }
-                                }
-                            }
-                            //}
-                        } else if (steprate == 0) {
-                            //站着没动 显示停止的小人
-                            anino = 12;
-
-                            indiCaseCount[anino]++;
-
-                            if (indiCaseCount[anino] > 5) {
-                                handler.sendEmptyMessage(2);
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        } else if (steprate > 150) {
-                            if (anino != 10) {
-                                indiCountdown--;
-
-                                if (indiCountdown == 0) {
-                                    anino = 10;
-                                    indiCountdown = 100;
-                                }
-                            } else {
-                                anino = 10;
-
-                                indiCaseCount[anino]++;
-
-                                if (indiCaseCount[anino] > 3) {
-                                    handler.sendEmptyMessage(2);
-
-                                    indiCaseCount[anino] = 0;
-                                }
-                            }
-                        }
-
-                        bpi = 0;
->>>>>>> KeenBrace_Android/master
-
-                        //if (mLastFragment == fragmentHistory)
-                        //fragmentHistory.updateTime(milli_second / 1000, blue, yellow, red);
-
-<<<<<<< HEAD
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateTime(str_duration);
 
@@ -1017,23 +808,6 @@ public class MainMenuActivity extends BaseActivity implements
                         runningSecondAnalysis();
 
                         voiceCoachScheduler();
-=======
-                        step_history[second] = step_true;
-                        second++; //
-
-                        if (second >= 4)
-                            second = 0;
-
-                        if (power_valid != 10) {
-                            power_record[power_index] = power_valid;
-                            power_index++;
-                        }
-
-                        if (power_index >= 200) {
-                            power_index = 0;
-                            power_flag = true;
-                        }
->>>>>>> KeenBrace_Android/master
                     }
                     break;
 
@@ -1130,8 +904,6 @@ public class MainMenuActivity extends BaseActivity implements
 
         }
     }
-
-    ;
 
     @Override
     public void onResume() {
@@ -1252,236 +1024,6 @@ public class MainMenuActivity extends BaseActivity implements
                 {
                     break;
                 }
-
-<<<<<<< HEAD
-                try{
-                    if(fos != null) {
-                        fos.write(data, 0, 16);
-                    }
-                }catch (IOException e) {
-                }
-=======
-                        if (indiCaseCount[anino] > 15) {
-                            //触地时间过长
-                            updateVoice(R.string.tx_increase_cadence);
-
-                            handler.sendEmptyMessage(2);
-                            indiCaseCount[anino] = 0;
-                        }
-
-                    }
-                }
-
-                /* 暂没有有效得到iangle夹角的方法 不报这个
-                if (iangle > 130 && steprate < 180) {
-                    anino = 7;
-
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 20) {
-                        updateVoice(R.string.tx_flex_knee);
-
-                        handler.sendEmptyMessage(2);
-                        //脚伸太直
-                        iangle_flag = true;
-
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-                */
-
-                if (pressure > UtilConstants.Weight * 9.8f * 6) {
-                    //膝盖压力太大
-                    if (steprate > 130)
-                    {
-                        bend_kneeNelbow++;
-
-                        if( bend_kneeNelbow < 6) {
-                            anino = 3;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_land_softer);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                        else
-                        {
-                            anino = 9;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_bend_knee_n_elbow);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-
-                                bend_kneeNelbow = 0;
-
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                    }
-                }
-
-                //这两个还没实现
-                //内旋
-                if (twist > 80 && flip < -50) {
-                    //if (steprate > 100)
-                        //rw4 = getWarning(4, rw4);
-                }
-
-                //内旋
-                if (twist < -80 && flip > 50) {
-                    //if (steprate > 100)
-                        //rw5 = getWarning(5, rw5);
-                }
-
-            } else {
-                count = 0;
-            }
-
-            if (true == iangle_flag) {
-                iangle_flag = false;
-
-
-                int power_aver = 0;
-                for (int n = 0; n < 200; n++) {
-                    power_aver += power_record[n];
-                }
-                power_aver = power_aver / 200;
-
-                if (true == power_flag) {
-                    if (power_aver < 60) {
-                        //股四头肌疲劳
-                        if (steprate > 130)
-                        {
-                            anino = 11;
-                            indiCaseCount[anino]++;
-
-                            if(indiCaseCount[anino] > 10) {
-                                //语音
-                                updateVoice(R.string.tx_take_rest);
-                                //动画和提示框信息
-
-                                handler.sendEmptyMessage(2);
-                                indiCaseCount[anino] = 0;
-                            }
-                        }
-                            //rw6 = getWarning(6, rw6);
-                    }
-                }
-            }
-        }
-
-        /*
-        if(warn_lock == 0) {
-            if (osc > 25) {
-                //垂直摆动太大
-                if (steprate > 130)
-                {
-                    anino = 11;
-
-                    indiCaseCount[anino]++;
-
-                    if(indiCaseCount[anino] > 10) {
-                        //语音
-                        updateVoice(R.string.tx_lower_gravity);
-                        //动画和提示框信息
-
-                        handler.sendEmptyMessage(2);
-                        indiCaseCount[anino] = 0;
-                    }
-                }
-            }
-        }
-        */
-
-        bak = System.currentTimeMillis();
-
-        index++;
-
-
-        float mapDistance = 0f;
-        if(UtilConstants.MapType==UtilConstants.MAP_GAODE)
-            mapDistance = fragmentMap.getDistance();
-        else
-            mapDistance = fragmentMapGoogle.getDistance();
-
-        if(mapDistance != 0) {
-            //if (distance >= 5000) {
-                //distance += mapDistance;
-            //} else {
-                if (updateStep != step_true) {
-                    distance += stride_dis;
-                }
-           // }
-        }
-        else
-        {
-            if (updateStep != step_true) {
-                distance += stride_dis;
-            }
-        }
-
-        updateStep = step_true;
-        old_step = step;
-        handler.sendEmptyMessage(6);
-
-    }
-
-    //data接收到蓝牙数据包 在这里发出语音 ken
-    void updateVoice(int no)
-    {
-        tts.speak((String)getText(no),
-                TextToSpeech.QUEUE_FLUSH, null);
-    }
-
-    static int old_reps = 0;
-    static int reps = 0;
-    int commDuration;
-    int bias;
-    int stability;
-    int muscleDec;
-    String strCommResult;
-    int xAngle, yAngle, zAngle, xAcc, yAcc, zAcc;
-
-    void CheckPacket() {
-
-        switch (data[0])
-        {
-            //实时数据包
-            case (byte)0xa5:
-
-                if(data[19] != 0x03)
-                {
-                    break;
-                }
-
-                try{
-                    if(fos != null) {
-                        fos.write(data, 0, 20);
-                    }
-                }catch (IOException e) {
-                }
-
-                updateView();
-            break;
-
-            //跑步以外的其他运动参数及提示
-            case (byte)0xab:
-
-                if(data[15] != 0x03)
-                {
-                    break;
-                }
->>>>>>> KeenBrace_Android/master
 
                 try{
                     if(fos != null) {
@@ -1614,7 +1156,6 @@ public class MainMenuActivity extends BaseActivity implements
         } catch (IOException e) {
         }
 
-<<<<<<< HEAD
         //跑步的结果数据
         commonResult.setDuration(milli_second); //时间
         commonResult.setMileage(distance);      //里程
@@ -1638,15 +1179,6 @@ public class MainMenuActivity extends BaseActivity implements
         commonResult.setRM(RM);
         commonResult.setRestTime(restTime); //休息时间
 
-=======
-        commonResult.setDuration(milli_second);
-        commonResult.setMileage(distance);
-        commonResult.setCadence(steprate);
-        commonResult.setStep((long) step_true);
-
-        commonResult.setSpeedPerMinute(speedPerMin);
-        commonResult.setMinuteCount(minuteCount);
->>>>>>> KeenBrace_Android/master
 
         //runResult.setEmgDecrease();
         //runResult.setFileName(file.getAbsolutePath());    //ken
@@ -1805,10 +1337,11 @@ public class MainMenuActivity extends BaseActivity implements
         if(isStartRun)
         {
             if (BluetoothConstant.mBluetoothLeService != null
-                    && BluetoothConstant.mwriteCharacteristic != null)
-                BluetoothConstant.mBluetoothLeService.startRun(1, (byte)sport_type, new Date());
+                    && BluetoothConstant.mwriteCharacteristic != null) {
+                BluetoothConstant.mBluetoothLeService.emgSwitch(1);
+            }
 
-            emgSwitch = 1;
+            runSwitch = 1;
             handler.sendEmptyMessageDelayed(7, 300);
         }
 

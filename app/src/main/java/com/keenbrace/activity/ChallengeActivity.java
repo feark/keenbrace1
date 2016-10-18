@@ -42,6 +42,11 @@ public class ChallengeActivity extends BaseActivity implements OnClickListener, 
             kbChallenge.setDescription((String) getText(R.string.tx_kbchallenge_description));
             kbChallenge.setRules((String) getText(R.string.tx_kbchallenge_rules));
 
+            //挑战的运动
+            byte[] kbcWorkouts = new byte[1];
+            kbcWorkouts[0] = UtilConstants.sport_running;
+            kbChallenge.setWorkouts(kbcWorkouts);
+
             //将本次的运动结果更新数据库 ken
             ChallengeDBHelper.getInstance(this).updateChallenge(kbChallenge);
 
@@ -55,6 +60,14 @@ public class ChallengeActivity extends BaseActivity implements OnClickListener, 
             fartlekChallenge.setChallengeLogo(R.mipmap.fartlek);
             fartlekChallenge.setDescription((String) getText(R.string.tx_fartlek_description));
             fartlekChallenge.setRules((String) getText(R.string.tx_fartlek_rules));
+
+            //挑战的运动
+            byte[] flWorkouts = new byte[1];
+            //跑步
+            flWorkouts[0] = UtilConstants.sport_running;
+            fartlekChallenge.setWorkouts(flWorkouts);
+            //10次循环
+            fartlekChallenge.setRounds(10);
 
             //将本次的运动结果更新数据库 ken
             ChallengeDBHelper.getInstance(this).updateChallenge(fartlekChallenge);

@@ -19,7 +19,7 @@
         android:layout_height="50dp"
         android:id="@+id/sys_plan"
         android:src="@mipmap/build_plan"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/tx_sysplan"
@@ -30,7 +30,7 @@
         android:layout_height="50dp"
         android:id="@+id/own_plan"
         android:src="@mipmap/customize_plan"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/tx_ownplan"
@@ -44,7 +44,7 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="40dp"
         android:layout_below="@+id/sys_plan"
@@ -58,7 +58,7 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal|top"
         android:layout_below="@+id/plan_content_frame"
         android:layout_centerHorizontal="true"
@@ -70,7 +70,8 @@
         android:layout_below="@+id/own_plan"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="41dp"
-        android:id="@+id/rl_target">
+        android:id="@+id/rl_target"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="50dp"
@@ -107,5 +108,14 @@
             android:textColor="#FFFFFF"
             android:layout_marginBottom="20dp" />
     </RelativeLayout>
+
+    <ViewFlipper
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewFlipper"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/plan_content_frame"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

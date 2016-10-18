@@ -600,6 +600,7 @@ public class BluetoothLeService extends Service {
                 writeDescriptor(descriptor);
             }
         }
+
     }
 
     public void RequestHistoryData(long times) {

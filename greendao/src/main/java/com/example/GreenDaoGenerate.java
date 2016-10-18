@@ -120,11 +120,8 @@ public class GreenDaoGenerate {
         user.addStringProperty("comment");
         user.addStringProperty("picturePath");
 
-<<<<<<< HEAD
         user.addStringProperty("dataFileName");
 
-=======
->>>>>>> KeenBrace_Android/master
         //三围体脂等
         user.addIntProperty("weight");
         user.addIntProperty("bodyFat");
@@ -271,7 +268,6 @@ public class GreenDaoGenerate {
 
     }
 
-<<<<<<< HEAD
     private static void addChallenge(Schema schema)
     {
         Entity user = schema.addEntity("Challenge");
@@ -298,7 +294,5 @@ public class GreenDaoGenerate {
         user.addIntProperty("totalTime");       //时间限制
     }
 
-=======
->>>>>>> KeenBrace_Android/master
 
 }

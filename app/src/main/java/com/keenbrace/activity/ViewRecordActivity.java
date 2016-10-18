@@ -191,7 +191,6 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         addRepsBarEntry(20);
         addRepsBarEntry(15);
 
-<<<<<<< HEAD
         //得到数据 如果是从history进入 这个就成了问题
         commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
 
@@ -210,18 +209,6 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             //speed变回真实值
             speedTrue = (float)speedPerMinute[n]/10;
             addSpeedLineEntry(speedTrue);
-        }
-=======
-        //得到数据
-        commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
->>>>>>> KeenBrace_Android/master
-
-        int minuteCount = commonResult.getMinuteCount();
-        byte speedPerMinute[];
-        speedPerMinute = commonResult.getSpeedPerMinute();
-
-        for(int n=0; n<minuteCount; n++){
-            addSpeedLineEntry(speedPerMinute[n]);
         }
 
         //得到运动种类
@@ -255,7 +242,6 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             tv_runStep.setText("" + commonResult.getStep());
 
             tv_runDuration.setText("" + commonResult.getDuration()/60000 + "min");
-<<<<<<< HEAD
 
             int minutes = (int)(commonResult.getDuration()/60000);
             if(minutes > 0) {
@@ -266,8 +252,6 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             {
                 tv_runCadence.setText("" + commonResult.getCadence() + "/min");
             }
-=======
->>>>>>> KeenBrace_Android/master
 
             //还有emg没显示 leave
 
@@ -695,18 +679,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     }
 
 
-<<<<<<< HEAD
     public void addSpeedLineEntry(float speed) {
-=======
-    public void addSpeedLineEntry(int speed) {
-        float speed_valid;
-
-        if (linValue == speed)
-            return;
-
-        speed_valid = (float)(speed / 10);
-        linValue = (int) speed_valid;
->>>>>>> KeenBrace_Android/master
 
         LineData data = lc_speed.getData();
         if (data != null) {
@@ -717,7 +690,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
                 data.addDataSet(set);
             }
             data.addXValue("");
-            data.addEntry(new Entry(speed_valid, set.getEntryCount()), 0);
+            data.addEntry(new Entry(speed, set.getEntryCount()), 0);
             lc_speed.notifyDataSetChanged();
             lc_speed.setVisibleXRangeMaximum(30);
             lc_speed.moveViewTo(data.getXValCount() - 50, 0.0f,

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +38,14 @@ import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
 
 import java.util.Date;
+import java.util.Locale;
+
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,12 +53,14 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
-public class MainActivity extends SlidingFragmentActivity {
+public class MainActivity extends SlidingFragmentActivity implements TextToSpeech.OnInitListener {
 
     private long firstTime = 0;
     private Fragment mContent;
     private SlidingMenu sm;
     byte[] data;
+
+    TextToSpeech tts;
 
     Fragment leftFragment;
     KeenbraceApplication application;
@@ -68,6 +79,16 @@ public class MainActivity extends SlidingFragmentActivity {
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
+        //初始化后台  重复初始化导致死机
+        /*
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                        .applicationId("mVk8EhlQ0G1NUzcOIeZZdmcZeC4k8jj64TCzprlc")
+                        .clientKey("45jjlLqFoIPGcquSw4IUbqCWKZgSpRMFMkkH4PeP")
+                        .server("https://parseapi.back4app.com/").build()
+        );
+        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
+        */
+
         //切换到选择运动的activity
         switchConent(new MainFragment());
 
@@ -80,11 +101,21 @@ public class MainActivity extends SlidingFragmentActivity {
         // mypDialog.setIcon(R.mipmap.w);
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(true);
+
+        tts = new TextToSpeech(this, this);
+
+        /* //后台测试代码
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+        */
     }
 
     public void reConnectBLE(){
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
     }
+
+
 
     @Override
     protected void onResume() {
@@ -115,8 +146,24 @@ public class MainActivity extends SlidingFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        tts.shutdown();
         //unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    public void onInit(int status) {
+
+        if (status == TextToSpeech.SUCCESS) {
+            int result = tts.setLanguage(Locale.US);
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "not speek",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            tts.speak("hello",
+                    TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     private void initSlidingMenu(Bundle savedInstanceState) {
