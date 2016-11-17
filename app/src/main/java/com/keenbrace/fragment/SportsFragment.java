@@ -26,17 +26,10 @@ import butterknife.OnClick;
 
 
 /**
- * Created by zrq on 16/1/28.
+ * Created by ken on 16/1/28.
  */
-public class MainFragment extends BaseFragment {
-    /*
-    @Bind(R.id.tx_times)
-    TextView tx_times;
-    @Bind(R.id.tx_warnings)
-    TextView tx_warnings;
-    @Bind(R.id.tx_mileage)
-    TextView tx_mileage;
-    */
+public class SportsFragment extends BaseFragment {
+
     @Bind(R.id.tv_msg)
     TextView tv_msg;
 
@@ -316,7 +309,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_sport_select;
+        return R.layout.frame_sport_select;
     }
 
     @Override

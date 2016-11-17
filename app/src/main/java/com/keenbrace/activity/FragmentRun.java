@@ -1,11 +1,19 @@
 package com.keenbrace.activity;
 
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.keenbrace.R;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.util.DateUitl;
 import com.keenbrace.widget.CircularProgressBar;
 import com.keenbrace.widget.GifView;
+import com.keenbrace.widget.MyValueFormatter;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,8 +35,9 @@ import org.w3c.dom.Text;
 public class FragmentRun extends Fragment implements OnClickListener {
 
     TextView tv_factors, tv_sumtimes, tv_steprate, tv_stride, tv_step, tv_speed, tv_distance, tv_calories;
-    CircularProgressBar pd_circle1, pd_circle2, pd_circle3;
+    CircularProgressBar pd_circle3;
     RelativeLayout rl_time;
+    LinearLayout ll_rundatabox;
     private long id = -1;
     float weight = 65;
 
@@ -40,6 +50,8 @@ public class FragmentRun extends Fragment implements OnClickListener {
     TextView tx_count_title;
     TextView restTime;
     int count_minutes, count_seconds;
+
+    LineChart lc_muscle;
 
     //不同的运动种类显示不同动画
     GifView gif_anima;
@@ -71,6 +83,9 @@ public class FragmentRun extends Fragment implements OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frame_history, null);
 
+        ll_rundatabox = (LinearLayout) view.findViewById(R.id.rundatabox);
+        ll_rundatabox.setOnClickListener(this);
+
         rl_cadence = (RelativeLayout) view.findViewById(R.id.rl_cadence);
         rl_stride = (RelativeLayout) view.findViewById(R.id.rl_stride);
         rl_step = (RelativeLayout) view.findViewById(R.id.rl_step);
@@ -81,6 +96,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
         tv_distance_t = (TextView) view.findViewById(R.id.tv_distance_t);
         tv_calories_t = (TextView) view.findViewById(R.id.tv_calories_t);
 
+        lc_muscle = (LineChart) view.findViewById(R.id.lc_muscle);
+        lc_muscle.setVisibility(View.GONE);
+
+        initLineChart(view);
+
         //倒计时秒表
         rl_countdown = (RelativeLayout) view.findViewById(R.id.rl_countdown);
         restTime = (TextView) view.findViewById(R.id.restTime);
@@ -90,6 +110,9 @@ public class FragmentRun extends Fragment implements OnClickListener {
         indicate_message = (TextView) view.findViewById(R.id.indicate_message);
         indicate_box = (ImageView) view.findViewById(R.id.indicate_box);
         indicate_box.setOnClickListener(this);
+
+        indicate_box.setVisibility(View.GONE);
+        indicate_message.setVisibility(View.GONE);
 
         reps_number = (TextView) view.findViewById(R.id.reps_number);
 
@@ -112,6 +135,11 @@ public class FragmentRun extends Fragment implements OnClickListener {
             case UtilConstants.sport_running:
                 gif_anima.setMovieResource(R.raw.still_male);
 
+                indicate_box.setVisibility(View.VISIBLE);
+                indicate_message.setVisibility(View.VISIBLE);
+
+                lc_muscle.setVisibility(View.GONE);
+
                 rl_cadence.setVisibility(View.VISIBLE);
                 rl_stride.setVisibility(View.VISIBLE);
                 rl_step.setVisibility(View.VISIBLE);
@@ -123,15 +151,21 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.dumbbellcount);
                 gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 rl_cadence.setVisibility(View.GONE);
                 rl_stride.setVisibility(View.GONE);
                 rl_step.setVisibility(View.GONE);
                 rl_sporttitle.setVisibility(View.VISIBLE);
 
+                //直接在原有的界面资源里设置成不同的内容 共用 要注意区分
                 sport_title.setText("Dumb bell");
                 train_target.setText("Biceps");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -140,10 +174,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.squat);
                 gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 sport_title.setText("Squat");
                 train_target.setText("Quadriceps");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -153,10 +192,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 //gif_anima.setMovieResource(R.raw.plank);
                 //gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 sport_title.setText("Plank");
                 train_target.setText("Core");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -165,7 +209,12 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 sport_title.setText("Pull up");
                 train_target.setText("Lats");
 
-                tv_speed_t.setText("Muscle Used");
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
 
@@ -178,10 +227,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.basicpushup);
                 gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 sport_title.setText("Push Up");
                 train_target.setText("Chest");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -190,10 +244,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.closestancefrontsquat);
                 gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 sport_title.setText("Dumbbells Squat");
                 train_target.setText("Quadriceps");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -202,10 +261,15 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 gif_anima.setMovieResource(R.raw.bicyclesitup);
                 gif_anima.setPaused(true);
 
+                indicate_box.setVisibility(View.GONE);
+                indicate_message.setVisibility(View.GONE);
+
+                lc_muscle.setVisibility(View.VISIBLE);
+
                 sport_title.setText("Bicycle Sit Up");
                 train_target.setText("Core");
 
-                tv_speed_t.setText("Muscle Used");
+                tv_speed_t.setText("Muscle Activation");
                 tv_distance_t.setText("Duration");
                 tv_calories_t.setText("Stability");
                 break;
@@ -221,8 +285,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
             tv_plantitle.setVisibility(View.VISIBLE);
         }
 
-        //pd_circle1 = (CircularProgressBar) view.findViewById(R.id.pd_circle_red);
-        //pd_circle2 = (CircularProgressBar) view.findViewById(R.id.pd_circle_yellow);
         pd_circle3 = (CircularProgressBar) view.findViewById(R.id.pd_circle_blue);
         tv_factors = (TextView) view.findViewById(R.id.tv_factors);
         tv_sumtimes = (TextView) view.findViewById(R.id.tv_sumtimes);
@@ -233,14 +295,13 @@ public class FragmentRun extends Fragment implements OnClickListener {
         tv_distance = (TextView) view.findViewById(R.id.tv_distance);
         tv_calories = (TextView) view.findViewById(R.id.tv_calories);
         rl_time = (RelativeLayout) view.findViewById(R.id.rl_time);
-        //pd_circle1.setCircleWidth(30);
-        //pd_circle1.setPrimaryColor(Color.rgb(252, 128, 48));
-        //pd_circle2.setCircleWidth(30);
-        //pd_circle2.setPrimaryColor(Color.rgb(252, 248, 0));
+
         pd_circle3.setCircleWidth(30);
         rl_time.setOnClickListener(this);
         return view;
     }
+
+    int ancount = 0;
 
     @Override
     public void onClick(View v) {
@@ -248,6 +309,16 @@ public class FragmentRun extends Fragment implements OnClickListener {
         {
             //点击indicate box去查看演示动作
             case R.id.indicate_box:
+
+                updateAnimation(ancount, 1);
+
+                if(ancount <= UtilConstants.eventWalk)
+                {
+                    ancount++;
+                }
+                break;
+
+            case R.id.rundatabox:
                 updateAnimation(0, 1);
                 break;
         }
@@ -316,6 +387,8 @@ public class FragmentRun extends Fragment implements OnClickListener {
         tv_speed.setText(""+muscle+" %");
         tv_distance.setText("" + minisec + " sec");
         tv_calories.setText("" + stability + " %");
+
+        //addLineEntry(muscle);
     }
 
     //gif动画放在这个位置update ken
@@ -517,11 +590,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
         pd_circle3.setMax((int) mins);
         pd_circle3.setProgress(blue);
 
-        //pd_circle2.setMax((int) mins);
-        //pd_circle2.setProgress(yellow);
-
-        //pd_circle1.setMax((int) mins);
-        //pd_circle1.setProgress(red);
     }
 
     //开始倒计时
@@ -589,5 +657,82 @@ public class FragmentRun extends Fragment implements OnClickListener {
         tv_planrules.setVisibility(View.GONE);
         tv_plantitle.setVisibility(View.GONE);
     }
+
+    //--------------------------------------------------------
+    public void initLineChart(View view)
+    {
+        lc_muscle.setDescription("");
+        lc_muscle.setHighlightEnabled(true);
+        lc_muscle.setDrawGridBackground(false);
+        lc_muscle.setDragEnabled(true);
+        lc_muscle.setScaleEnabled(true);
+        lc_muscle.setNoDataText(" ");
+        XAxis xAxis = lc_muscle.getXAxis();
+
+        Legend mLegend = lc_muscle.getLegend(); // 设置比例图标示
+
+        mLegend.setTextColor(Color.GRAY);//(Color.rgb(107, 181, 77));// 下标颜色
+        mLegend.setTextSize(12f);
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setSpaceBetweenLabels(2);
+        YAxis leftAxis = lc_muscle.getAxisLeft();
+        leftAxis.setLabelCount(5, false);
+        leftAxis.setAxisMaxValue(255);
+        leftAxis.setAxisMinValue(0);
+        leftAxis.setValueFormatter(new MyValueFormatter());
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setStartAtZero(true);
+        leftAxis.setDrawGridLines(false);
+        lc_muscle.getAxisRight().setEnabled(false);
+        //隐藏Y轴
+        lc_muscle.getAxisLeft().setEnabled(false);
+        lc_muscle.setData(new LineData());
+        lc_muscle.invalidate();
+    }
+
+    int linValue = -1;
+
+    public void addLineEntry(int power) {
+        if (linValue == power)
+            return;
+        linValue = power;
+        LineData data = lc_muscle.getData();
+        if (data != null) {
+
+            LineDataSet set = data.getDataSetByIndex(0);
+            if (set == null) {
+                set = createSet("");
+                data.addDataSet(set);
+            }
+            data.addXValue("");
+            data.addEntry(new Entry(power, set.getEntryCount()), 0);
+            lc_muscle.notifyDataSetChanged();
+            lc_muscle.setVisibleXRangeMaximum(50);
+            lc_muscle.moveViewTo(data.getXValCount() - 50, 0.0f,
+                    YAxis.AxisDependency.LEFT);
+            lc_muscle.invalidate();
+        }
+    }
+
+    private LineDataSet createSet(String title) {
+        LineDataSet set = new LineDataSet(null, "muscle activation");
+
+        set.setColor(Color.rgb(0x1C, 0xA6, 0xDC));
+        set.setDrawCubic(true);
+        set.setCubicIntensity(0.2f);
+        set.setLineWidth(2f);
+        set.setCircleSize(5f);
+        set.setDrawCircleHole(false);
+        set.setDrawValues(false);
+        set.setDrawFilled(true);
+        set.setFillColor(Color.rgb(0x1C, 0xA6, 0xDC));
+        set.setDrawCircles(false);
+
+        return set;
+    }
+
 
 }

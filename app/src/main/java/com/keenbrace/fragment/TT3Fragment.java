@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import com.keenbrace.R;
 import com.keenbrace.base.BaseFragment;
 
-public class RoutineFragment extends BaseFragment {
+public class TT3Fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-
-    public RoutineFragment() {
+    public TT3Fragment() {
         // Required empty public constructor
     }
 
@@ -23,23 +23,9 @@ public class RoutineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_routine, container, false);
+        View view = inflater.inflate(R.layout.fragment_tt3, container, false);
 
         return view;
-    }
-
-    @Override
-    public void initData() {
-
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_plan_main;
-    }
-
-    @Override
-    public void initView() {
     }
 
 }

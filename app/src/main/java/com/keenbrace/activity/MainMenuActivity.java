@@ -51,6 +51,7 @@ import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.base.KeenbraceApplication;
 import com.keenbrace.greendao.CommonResult;
 import com.keenbrace.greendao.CommonResultDao;
+import com.keenbrace.greendao.ShortPlan;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
 import com.keenbrace.util.ByteHelp;
@@ -64,10 +65,9 @@ public class MainMenuActivity extends BaseActivity implements
 
     KeenbraceApplication application;
 
-    FragmentRun fragmentHistory;
+    FragmentRun fragmentRun;
     FragmentMapGoogle fragmentMapGoogle;
     FragmentMap fragmentMap;
-    FragmentReport fragmentReport;
     RelativeLayout rl_map, rl_performance,rl_report;
     private Fragment mLastFragment;
 
@@ -295,9 +295,6 @@ public class MainMenuActivity extends BaseActivity implements
 
         updateViewIcon();
         //将当前界面分为4个Fragment
-        fragmentReport = new FragmentReport();
-        changeFragment(this, fragmentReport, null, null);
-
         if(UtilConstants.MapType==UtilConstants.MAP_GAODE) {
             fragmentMap = new FragmentMap();
             changeFragment(this, fragmentMap, null, null);
@@ -306,7 +303,7 @@ public class MainMenuActivity extends BaseActivity implements
             changeFragment(this, fragmentMapGoogle, null, null);
         }
 
-        fragmentHistory = new FragmentRun();
+        fragmentRun = new FragmentRun();
         //得到运动类型 再传到fragment
         sport_type = this.getIntent().getIntExtra("sport_type",0);
         data2Fragment.putInt("sport_type", sport_type);
@@ -324,6 +321,13 @@ public class MainMenuActivity extends BaseActivity implements
             switch2runner.setVisibility(View.GONE);
 
             //加载挑战的几项运动 进入计时自动切换模式
+        }
+
+        //从训练计划开始的
+        if(startFrom == UtilConstants.fromPlan)
+        {
+            //读取计划的内容
+
         }
 
         //导航条标题
@@ -355,17 +359,17 @@ public class MainMenuActivity extends BaseActivity implements
                 this.setActionBarTitle(getString(R.string.tx_dumbbellsquat));
         }
 
-        fragmentHistory.setArguments(data2Fragment);
-        changeFragment(this, fragmentHistory, null, null);
+        fragmentRun.setArguments(data2Fragment);
+        changeFragment(this, fragmentRun, null, null);
 
         if(sport_type != UtilConstants.sport_running)
         {
             //不是跑步的话两个按钮就变成上一种 或 下一种运动
-            switch2map.setImageResource(R.mipmap.next_training);
-            switch2map.setVisibility(View.VISIBLE);
+            //switch2map.setImageResource(R.mipmap.next_training);
+            switch2map.setVisibility(View.GONE);
 
-            switch2runner.setImageResource(R.mipmap.prev_training);
-            switch2runner.setVisibility(View.VISIBLE);
+            //switch2runner.setImageResource(R.mipmap.prev_training);
+            switch2runner.setVisibility(View.GONE);
         }
 
         tv_nowday = (TextView) findViewById(R.id.tv_nowday);
@@ -375,7 +379,7 @@ public class MainMenuActivity extends BaseActivity implements
 
         tv_duration = (TextView) findViewById(R.id.tv_duration);
 
-        //开始1秒的循环
+        //启动线程
         handler.post(runnable);
     }
 
@@ -410,16 +414,15 @@ public class MainMenuActivity extends BaseActivity implements
     {
         Date d = new Date();
         if (BluetoothConstant.mConnected) {
-            if (BluetoothConstant.mBluetoothLeService != null
-                    && BluetoothConstant.mwriteCharacteristic != null) {
-                handler.sendEmptyMessage(199);
-                handler.sendEmptyMessageDelayed(7, 300);
-                handler.sendEmptyMessage(5);
-                updateTimer = new Timer();
-                updateUiTimerTask = new UpdateUiTimerTask();
-                updateTimer.schedule(updateUiTimerTask, 0,
-                        ACQ_TASK_TIMER_PERIOD);
-            }
+            handler.sendEmptyMessage(199);
+            runSwitch = 1;
+            //handler.sendEmptyMessageDelayed(7, 500);
+            handler.sendEmptyMessage(5);
+            updateTimer = new Timer();
+            updateUiTimerTask = new UpdateUiTimerTask();
+            updateTimer.schedule(updateUiTimerTask, 0,
+                    ACQ_TASK_TIMER_PERIOD);
+
 
         }
         else{
@@ -439,7 +442,6 @@ public class MainMenuActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
 
         switch (v.getId()) {
 
@@ -493,9 +495,9 @@ public class MainMenuActivity extends BaseActivity implements
                     btn_continue.setVisibility(View.GONE);
                     updateBG();
 
-                    if (fragmentHistory == null)
-                        fragmentHistory = new FragmentRun();
-                    changeFragment(this, fragmentHistory, null, null);
+                    if (fragmentRun == null)
+                        fragmentRun = new FragmentRun();
+                    changeFragment(this, fragmentRun, null, null);
                 }
                 else{
                     //上一種運动 leave
@@ -535,7 +537,7 @@ public class MainMenuActivity extends BaseActivity implements
                 application.setIsStartWorkout(isStartRun);
 
                 //告诉fragment已经开始运动
-                fragmentHistory.setIsStartRun(isStartRun);
+                fragmentRun.setIsStartRun(isStartRun);
 
                 Date d = new Date();
 
@@ -559,8 +561,8 @@ public class MainMenuActivity extends BaseActivity implements
 
                 //在数据库中插入一个新的项 ken 注意ID是在插入数据库时生成的
                 commonResult.setId(CommonResultDBHelper.getInstance(this).insertCommonResult(commonResult));
-                if (fragmentHistory != null)
-                    fragmentHistory.updateBleId(commonResult.getId());
+                if (fragmentRun != null)
+                    fragmentRun.updateBleId(commonResult.getId());
 
                 break;
 
@@ -592,15 +594,19 @@ public class MainMenuActivity extends BaseActivity implements
 
     }
 
+    //创建了一个线程 每秒一次循环
     Runnable runnable = new Runnable() {
 
         @Override
         public void run() {
-            if(sport_type == UtilConstants.sport_running) {
-                handler.sendEmptyMessage(19);
-            }
+            //训练计划的管理
 
-            handler.postDelayed(runnable, 1000);
+            //跑步运动的定时线程管理
+            //if(sport_type == UtilConstants.sport_running) {
+                handler.sendEmptyMessage(19);
+
+                handler.postDelayed(runnable, 1000);
+            //}
 
         }
 
@@ -630,7 +636,7 @@ public class MainMenuActivity extends BaseActivity implements
 
                 //检测到有动作 播放动画
                 case 2:
-                    if (mLastFragment == fragmentHistory) {
+                    if (mLastFragment == fragmentRun) {
                         if(sport_type == UtilConstants.sport_running)
                         {
                             if(anino < UtilConstants.eventStill)
@@ -655,10 +661,10 @@ public class MainMenuActivity extends BaseActivity implements
                                 }
                             }
 
-                            fragmentHistory.updateAnimation(anino, steprate);
+                            fragmentRun.updateAnimation(anino, steprate);
                         }
                         else {
-                            fragmentHistory.updateAnimation(0, 0);
+                            fragmentRun.updateAnimation(0, 0);
                         }
                     }
                     break;
@@ -668,7 +674,7 @@ public class MainMenuActivity extends BaseActivity implements
                     if (countdown_times > 0) {
                         countdown_times--;
 
-                        fragmentHistory.DuringCountDown(0, countdown_times);
+                        fragmentRun.DuringCountDown(0, countdown_times);
 
                         if(countdown_times <= 10)
                         {
@@ -682,14 +688,16 @@ public class MainMenuActivity extends BaseActivity implements
                     }
                     else
                     {
-                        fragmentHistory.CountDownEnd();
+                        fragmentRun.CountDownEnd();
                     }
                     break;
 
                 case 5:
-                    runningSlowAnalysis();
+                    if(sport_type == UtilConstants.sport_running) {
+                        runningSlowAnalysis();
 
-                    handler.sendEmptyMessageDelayed(5, 5000);  //定时5秒
+                        handler.sendEmptyMessageDelayed(5, 5000);  //定时5秒
+                    }
                     break;
                 case 6:
                     //fragmentReport.addLineEntry(power_valid);
@@ -697,16 +705,16 @@ public class MainMenuActivity extends BaseActivity implements
                     //
                     if (updateStep != step_true) {
 
-                        if (mLastFragment == fragmentHistory)
-                            fragmentHistory.updateView(wrCount, steprate, stride,
+                        if (mLastFragment == fragmentRun)
+                            fragmentRun.updateView(wrCount, steprate, stride,
                                     bkstep, milli_second, distance);
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateView(wrCount, steprate, stride,
                                     bkstep, milli_second, distance);
                     } else {
 
-                        if (mLastFragment == fragmentHistory)
-                            fragmentHistory.updateView(wrCount, steprate, stride,
+                        if (mLastFragment == fragmentRun)
+                            fragmentRun.updateView(wrCount, steprate, stride,
                                     step_true, milli_second, distance);
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateView(wrCount, steprate, stride,
@@ -723,8 +731,10 @@ public class MainMenuActivity extends BaseActivity implements
 
                 case 8:
                     //更新跑步以外运动的参数框
-                    if (mLastFragment == fragmentHistory) {
-                        fragmentHistory.updateParaBox(reps, muscleDec, commDuration, stability);
+                    if (mLastFragment == fragmentRun) {
+                        fragmentRun.updateParaBox(reps, musclePeakPeak, commDuration, stability);
+
+                        fragmentRun.addLineEntry(zAngle);
                     }
                     break;
 
@@ -766,38 +776,26 @@ public class MainMenuActivity extends BaseActivity implements
                             duration_sec = 0;
                         }
 
-                        if(duration_sec == 2)
-                        {
-                            if(step_true == 0)
-                            {
+
+                        if (duration_sec == 2) {
+                            if (step_true == 0) {
                                 if (BluetoothConstant.mBluetoothLeService != null
                                         && BluetoothConstant.mwriteCharacteristic != null) {
-                                    BluetoothConstant.mBluetoothLeService.emgSwitch(0);
+                                    BluetoothConstant.mBluetoothLeService.emgSwitch(1);
 
-                                    runSwitch = 0;
+                                    runSwitch = 1;
                                     handler.sendEmptyMessageDelayed(7, 300);
+                                    application.setIsSendBleEnd(false);
                                 }
                             }
                         }
 
-                        if(duration_sec == 4)
-                        {
-                            if (BluetoothConstant.mBluetoothLeService != null
-                                    && BluetoothConstant.mwriteCharacteristic != null) {
-                                BluetoothConstant.mBluetoothLeService.emgSwitch(1);
-                            }
-
-                            runSwitch = 1;
-                            handler.sendEmptyMessageDelayed(7, 300);
-
-                            application.setIsSendBleEnd(false);
-                        }
 
                         String str_duration = String.format("%02d:%02d:%02d",duration_hour,duration_min,duration_sec);
                         tv_duration.setText("Duration :  "+str_duration);
 
-                        //if (mLastFragment == fragmentHistory)
-                        //fragmentHistory.updateTime(milli_second / 1000, blue, yellow, red);
+                        //if (mLastFragment == fragmentRun)
+                        //fragmentRun.updateTime(milli_second / 1000, blue, yellow, red);
 
                         if (mLastFragment == fragmentMap)
                             fragmentMap.updateTime(str_duration);
@@ -812,34 +810,9 @@ public class MainMenuActivity extends BaseActivity implements
                     break;
 
                 case 199:
-                    int st = 0;
-                    if(sport_type == UtilConstants.sport_running)
-                        st = 0;
-
-                    if(sport_type == UtilConstants.sport_squat)
-                        st = 3;
-
-                    if(sport_type == UtilConstants.sport_pushup)
-                        st = 4;
-
-                    if(sport_type == UtilConstants.sport_pullup)
-                        st = 5;
-
-                    if(sport_type == UtilConstants.sport_dumbbell)
-                        st = 6;
-
-                    if(sport_type == UtilConstants.sport_plank)
-                        st = 9;
-
-                    if(sport_type == UtilConstants.sport_bicyclesitup)
-                        st = 10;
-
-                    if(sport_type == UtilConstants.sport_closestancesquat)
-                        st = 3;
-
                     if (BluetoothConstant.mBluetoothLeService != null
                             && BluetoothConstant.mwriteCharacteristic != null) {
-                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte) st,
+                        BluetoothConstant.mBluetoothLeService.startRun(1, (byte)sport_type,
                                 new Date());
                     }
 
@@ -985,7 +958,7 @@ public class MainMenuActivity extends BaseActivity implements
     int commDuration;
     int bias;
     int stability;
-    int muscleDec;
+    int musclePeakPeak;
     String strCommResult;
     int xAngle, yAngle, zAngle, xAcc, yAcc, zAcc;
 
@@ -998,7 +971,7 @@ public class MainMenuActivity extends BaseActivity implements
             //实时数据包
             case (byte) 0xa5:
 
-                com.umeng.socialize.utils.Log.e("data-------------------"
+                com.umeng.socialize.utils.Log.e("run data-------------------"
                         + data[0] + "_______" + data[1]);
 
                 if (data.length == 20)
@@ -1019,6 +992,9 @@ public class MainMenuActivity extends BaseActivity implements
 
             //跑步以外的其他运动参数及提示
             case (byte)0xab:
+
+                com.umeng.socialize.utils.Log.e("rep sports data-------------------"
+                        + data[0] + "_______" + data[1]);
 
                 if(data[15] != 0x03)
                 {
@@ -1062,6 +1038,9 @@ public class MainMenuActivity extends BaseActivity implements
                                 }
                             }
 
+                            com.umeng.socialize.utils.Log.e("reps-------------------"
+                                    + reps + "_______" + old_reps);
+
                             strCommResult = "" + reps;
                             tts.speak(strCommResult,
                                     TextToSpeech.QUEUE_FLUSH, null);
@@ -1077,7 +1056,7 @@ public class MainMenuActivity extends BaseActivity implements
 
                 bias = (data[6]  & 0xff);
                 stability = (data[7] & 0xff) ;
-                muscleDec = (data[8] & 0xff);
+                musclePeakPeak = (data[8] & 0xff);
 
                 //X angle
                 xAngle = (int)data[9];
@@ -1105,7 +1084,6 @@ public class MainMenuActivity extends BaseActivity implements
                 }
                 //X acc
                 zAcc = (int)data[14];
-
 
                 old_reps = reps;
 
@@ -1333,23 +1311,20 @@ public class MainMenuActivity extends BaseActivity implements
 
         //开始一个新运动的时候先检查原来的旧运动有没有正确结束
         //没结束的补一个结束 结束是不管哪种运动的
-
-        if(isStartRun)
-        {
-            if (BluetoothConstant.mBluetoothLeService != null
-                    && BluetoothConstant.mwriteCharacteristic != null) {
-                BluetoothConstant.mBluetoothLeService.emgSwitch(1);
-            }
-
-            runSwitch = 1;
-            handler.sendEmptyMessageDelayed(7, 300);
+        if (BluetoothConstant.mBluetoothLeService != null
+                && BluetoothConstant.mwriteCharacteristic != null) {
+            BluetoothConstant.mBluetoothLeService.emgSwitch(0);
         }
+
+        runSwitch = 0;
+        handler.sendEmptyMessageDelayed(7, 300);
+
 
 
         //testing
         /*
         countdown_times = 40;
-        fragmentHistory.CountDownBegin();
+        fragmentRun.CountDownBegin();
         handler.sendEmptyMessage(3);
         */
     }
@@ -1727,7 +1702,7 @@ public class MainMenuActivity extends BaseActivity implements
 
             //用这种方法更新速度 如果地图不动值就是错的
             fragmentMap.updateSpeed(speed * 3600);
-            fragmentHistory.updateSpeed(speed * 3600);
+            fragmentRun.updateSpeed(speed * 3600);
             distance_old = distance;
 
             //速度大于6前提下

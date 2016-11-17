@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="00:00"
+                    android:text="15:30"
                     android:id="@+id/tx_duration"
                     android:textColor="#FFDD15"
                     android:textStyle="bold"
@@ -150,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
+                android:text="biceps"
                 android:id="@+id/tv_target"
                 android:layout_marginStart="10dp"
                 android:layout_alignBaseline="@+id/tx_target"
@@ -172,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
+                android:text="5"
                 android:id="@+id/tv_set"
                 android:layout_alignTop="@+id/tx_set"
                 android:layout_toEndOf="@+id/tx_set"
@@ -193,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
+                android:text="70"
                 android:id="@+id/tv_reps"
                 android:layout_alignBaseline="@+id/tx_reps"
                 android:layout_alignBottom="@+id/tx_reps"
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Duration:"
+                android:text="workout time:"
                 android:id="@+id/text_duration"
                 android:layout_below="@+id/tx_target"
                 android:layout_alignStart="@+id/tx_target"
@@ -215,12 +215,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="00:00"
+                android:text="10:51"
                 android:id="@+id/tv_duration"
                 android:textColor="@color/bgparent"
+                android:layout_marginLeft="10dp"
                 android:layout_alignTop="@+id/text_duration"
-                android:layout_alignStart="@+id/tv_target"
-                android:layout_marginLeft="10dp" />
+                android:layout_toEndOf="@+id/text_duration" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -235,7 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="00:00"
+                android:text="04:39"
                 android:id="@+id/tv_resttime"
                 android:textColor="@color/bgparent"
                 android:layout_alignTop="@+id/tx_resttime"
@@ -254,20 +254,22 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:id="@+id/back_home"
         android:src="@mipmap/home"
+        android:visibility="visible"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="5dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="5dp"
-        android:visibility="visible" />
+        android:layout_marginTop="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:layout_below="@+id/map"
-        android:id="@+id/rl_runresult">
+        android:id="@+id/rl_runresult"
+        android:visibility="visible">
 
         <com.github.mikephil.charting.charts.LineChart
             android:layout_width="wrap_content"

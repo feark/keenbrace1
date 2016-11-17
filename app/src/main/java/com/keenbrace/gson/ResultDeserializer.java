@@ -11,7 +11,7 @@ import com.keenbrace.core.utils.WLoger;
 import java.lang.reflect.Type;
 
 /**
- * Created by zrq on 16/1/20.
+ * Created by ken on 16/1/20.
  */
 public class ResultDeserializer<T> implements JsonDeserializer<T> {
 

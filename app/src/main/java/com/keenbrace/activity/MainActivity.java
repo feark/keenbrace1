@@ -16,49 +16,39 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.keenbrace.R;
 import com.keenbrace.adapter.LeDeviceListAdapter;
-import com.keenbrace.bean.ChallengeDBHelper;
 import com.keenbrace.constants.UtilConstants;
 import com.keenbrace.core.base.KeenbraceApplication;
 import com.keenbrace.core.slidemenu.lib.SlidingMenu;
 import com.keenbrace.core.slidemenu.lib.app.SlidingFragmentActivity;
 import com.keenbrace.core.utils.PreferenceHelper;
-import com.keenbrace.core.utils.WLoger;
-import com.keenbrace.AppConfig;
 import com.keenbrace.AppContext;
-import com.keenbrace.api.KeenbraceRetrofit;
+import com.keenbrace.fragment.IndexFragment;
 import com.keenbrace.fragment.LeftFragment;
-import com.keenbrace.fragment.MainFragment;
-import com.keenbrace.greendao.Challenge;
+import com.keenbrace.fragment.PlanFragment;
+import com.keenbrace.fragment.SportsFragment;
 import com.keenbrace.services.BluetoothConstant;
 import com.keenbrace.services.BluetoothLeService;
 
 import java.util.Date;
 import java.util.Locale;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
-
-public class MainActivity extends SlidingFragmentActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends SlidingFragmentActivity implements View.OnClickListener, TextToSpeech.OnInitListener {
 
     private long firstTime = 0;
     private Fragment mContent;
+    private Fragment fragment_index, fragment_plan, fragment_sports;
     private SlidingMenu sm;
     byte[] data;
+    ImageView iv_tab_index, iv_tab_plan, iv_tab_sports;
+    RelativeLayout rl_tab_index, rl_tab_plan, rl_tab_sports;
 
     TextToSpeech tts;
 
@@ -79,18 +69,12 @@ public class MainActivity extends SlidingFragmentActivity implements TextToSpeec
 
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 
-        //初始化后台  重复初始化导致死机
-        /*
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                        .applicationId("mVk8EhlQ0G1NUzcOIeZZdmcZeC4k8jj64TCzprlc")
-                        .clientKey("45jjlLqFoIPGcquSw4IUbqCWKZgSpRMFMkkH4PeP")
-                        .server("https://parseapi.back4app.com/").build()
-        );
-        Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
-        */
+        fragment_index = new IndexFragment();
+        fragment_plan = new PlanFragment();
+        fragment_sports = new SportsFragment();
 
         //切换到选择运动的activity
-        switchConent(new MainFragment());
+        switchConent(fragment_index);
 
         application = (KeenbraceApplication) getApplication();
 
@@ -104,6 +88,19 @@ public class MainActivity extends SlidingFragmentActivity implements TextToSpeec
 
         tts = new TextToSpeech(this, this);
 
+        iv_tab_index = (ImageView) findViewById(R.id.iv_index);
+        iv_tab_plan = (ImageView) findViewById(R.id.iv_plan);
+        iv_tab_sports = (ImageView) findViewById(R.id.iv_sports);
+
+        rl_tab_index = (RelativeLayout) findViewById(R.id.rl_index);
+        rl_tab_index.setOnClickListener(this);
+        rl_tab_plan = (RelativeLayout) findViewById(R.id.rl_plan);
+        rl_tab_plan.setOnClickListener(this);
+        rl_tab_sports = (RelativeLayout) findViewById(R.id.rl_sports);
+        rl_tab_sports.setOnClickListener(this);
+
+
+        iv_tab_index.setImageResource(R.mipmap.index_sl);
         /* //后台测试代码
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
@@ -147,7 +144,7 @@ public class MainActivity extends SlidingFragmentActivity implements TextToSpeec
     protected void onDestroy() {
         super.onDestroy();
         tts.shutdown();
-        //unregisterReceiver(mGattUpdateReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
@@ -161,8 +158,41 @@ public class MainActivity extends SlidingFragmentActivity implements TextToSpeec
                         Toast.LENGTH_SHORT).show();
             }
 
-            tts.speak("hello",
+            tts.speak("Welcome to keen brace",
                     TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.rl_index:
+                iv_tab_index.setImageResource(R.mipmap.index_sl);
+                iv_tab_plan.setImageResource(R.mipmap.plan_uns);
+                iv_tab_sports.setImageResource(R.mipmap.sports_uns);
+
+                switchConent(fragment_index);
+                break;
+
+            case R.id.rl_plan:
+                iv_tab_index.setImageResource(R.mipmap.index_uns);
+                iv_tab_plan.setImageResource(R.mipmap.plan_sl);
+                iv_tab_sports.setImageResource(R.mipmap.sports_uns);
+
+                switchConent(fragment_plan);
+                break;
+
+            case R.id.rl_sports:
+                iv_tab_index.setImageResource(R.mipmap.index_uns);
+                iv_tab_plan.setImageResource(R.mipmap.plan_uns);
+                iv_tab_sports.setImageResource(R.mipmap.sports_sl);
+
+                switchConent(fragment_sports);
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -174,7 +204,7 @@ public class MainActivity extends SlidingFragmentActivity implements TextToSpeec
         }
 
         if (mContent == null) {
-            mContent = new  MainFragment();
+            mContent = new  SportsFragment();
         }
 
         // 设置左侧滑动菜单

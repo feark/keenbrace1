@@ -81,9 +81,16 @@ public class UserDBHelper {
         shortPlanDao.update(shortPlan);
     }
 
-    public ShortPlan queryShortPlanByLoginName(String loginName)
+    //根据用户登录名得到训练计划
+    public ShortPlan queryShortPlanByPlanName(String planName)
     {
-        return  shortPlanDao.queryBuilder().where(ShortPlanDao.Properties.LoginName.eq(loginName)).unique();
+        return  shortPlanDao.queryBuilder().where(ShortPlanDao.Properties.ShortPlanName.eq(planName)).unique();
+    }
+
+    //更新计划
+    public void updateShortPlan(String planName)
+    {
+
     }
 
     //Long Plan ---------------------------------------
@@ -96,9 +103,9 @@ public class UserDBHelper {
         longPlanDao.update(longPlan);
     }
 
-    public LongPlan queryLongPlanByLoginName(String loginName)
+    public LongPlan queryLongPlanByLoginName(String planName)
     {
-        return  longPlanDao.queryBuilder().where(LongPlanDao.Properties.LoginName.eq(loginName)).unique();
+        return  longPlanDao.queryBuilder().where(LongPlanDao.Properties.LongPlanName.eq(planName)).unique();
     }
 
     //History ---------------------------------------

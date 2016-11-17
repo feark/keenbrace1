@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.keenbrace.fragment.OwnPlanIndexFragment"
-    android:background="@color/bgparent">
+    android:background="@color/colorPrimaryDark">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -226,7 +226,7 @@
             android:id="@+id/iv_littleBoy"
             android:layout_gravity="center"
             android:src="@mipmap/male"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />

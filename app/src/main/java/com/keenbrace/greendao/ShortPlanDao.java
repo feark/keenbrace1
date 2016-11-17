@@ -24,7 +24,7 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property LoginName = new Property(1, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property ShortPlanName = new Property(1, String.class, "ShortPlanName", false, "SHORT_PLAN_NAME");
         public final static Property SingleTrainID = new Property(2, Integer.class, "singleTrainID", false, "SINGLE_TRAIN_ID");
         public final static Property WarmUpTime = new Property(3, Integer.class, "warmUpTime", false, "WARM_UP_TIME");
         public final static Property Distance = new Property(4, Integer.class, "distance", false, "DISTANCE");
@@ -55,7 +55,7 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SHORT_PLAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"LOGIN_NAME\" TEXT UNIQUE ," + // 1: loginName
+                "\"SHORT_PLAN_NAME\" TEXT UNIQUE ," + // 1: ShortPlanName
                 "\"SINGLE_TRAIN_ID\" INTEGER," + // 2: singleTrainID
                 "\"WARM_UP_TIME\" INTEGER," + // 3: warmUpTime
                 "\"DISTANCE\" INTEGER," + // 4: distance
@@ -88,9 +88,9 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
             stmt.bindLong(1, id);
         }
  
-        String loginName = entity.getLoginName();
-        if (loginName != null) {
-            stmt.bindString(2, loginName);
+        String ShortPlanName = entity.getShortPlanName();
+        if (ShortPlanName != null) {
+            stmt.bindString(2, ShortPlanName);
         }
  
         Integer singleTrainID = entity.getSingleTrainID();
@@ -175,7 +175,7 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     public ShortPlan readEntity(Cursor cursor, int offset) {
         ShortPlan entity = new ShortPlan( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // loginName
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // ShortPlanName
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // singleTrainID
             cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // warmUpTime
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // distance
@@ -198,7 +198,7 @@ public class ShortPlanDao extends AbstractDao<ShortPlan, Long> {
     @Override
     public void readEntity(Cursor cursor, ShortPlan entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setLoginName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setShortPlanName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setSingleTrainID(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setWarmUpTime(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
         entity.setDistance(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));

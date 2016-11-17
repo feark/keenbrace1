@@ -408,7 +408,8 @@
                     android:src="@mipmap/indicate_box"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="25dp" />
+                    android:layout_marginBottom="25dp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/indicate_message"
@@ -420,7 +421,8 @@
                     android:layout_marginBottom="62dp"
                     android:layout_alignBottom="@+id/indicate_box"
                     android:layout_centerHorizontal="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -480,6 +482,15 @@
                     android:layout_below="@+id/tv_plantitle"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:id="@+id/lc_muscle"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="65dp"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 

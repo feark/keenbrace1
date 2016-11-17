@@ -3,9 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <FrameLayout
-        android:id="@+id/content_frame"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/ly_tab" />
+
+        <LinearLayout
+            android:id="@+id/ly_tab"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimaryDark"
+            android:layout_gravity="bottom">
+
+            <RelativeLayout
+                android:id="@+id/rl_index"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0">
+
+                <ImageView
+                    android:id="@+id/iv_index"
+                    android:layout_width="47.0dip"
+                    android:layout_height="47.0dip"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/index_uns"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_plan"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0">
+
+                <ImageView
+                    android:id="@+id/iv_plan"
+                    android:layout_width="47.0dip"
+                    android:layout_height="47.0dip"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/plan_uns"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_sports"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0">
+
+                <ImageView
+                    android:id="@+id/iv_sports"
+                    android:layout_width="47.0dip"
+                    android:layout_height="47.0dip"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/sports_uns"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

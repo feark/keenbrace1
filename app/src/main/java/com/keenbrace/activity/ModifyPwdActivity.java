@@ -20,7 +20,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ModifyPwdActivity extends BaseActivity {
-
+/*
     @Bind(R.id.et_pwd)
     EditText etPwd;
     @Bind(R.id.et_pwd_again)
@@ -52,10 +52,15 @@ public class ModifyPwdActivity extends BaseActivity {
         return R.layout.aty_modify_pwd;
     }
 
+
     @Override
     public void initView() {
         mobile = getIntent().getExtras().getString("mobile");
         newPwd = getIntent().getExtras().getString("newPwd");
+    }
+*/
+    @Override
+    public void initView() {
     }
 
     @Override

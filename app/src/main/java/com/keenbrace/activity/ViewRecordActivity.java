@@ -169,7 +169,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         circle_workoutSecond.setPrimaryColor(Color.rgb(28, 166, 220));
 
         circle_workoutSecond.setProgress(15);
-        circle_workoutMinute.setProgress(35);
+        circle_workoutMinute.setProgress(30);
 
         //柱状图
         repsNset_barChart = (BarChart) findViewById(R.id.bar_repsnset);
@@ -187,9 +187,12 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         initPieChart();
 
         //测试柱状图 leave
-        addRepsBarEntry(10);
-        addRepsBarEntry(20);
+        addRepsBarEntry(12);
+        addRepsBarEntry(18);
         addRepsBarEntry(15);
+        addRepsBarEntry(15);
+        addRepsBarEntry(10);
+
 
         //得到数据 如果是从history进入 这个就成了问题
         commonResult = (CommonResult) this.getIntent().getSerializableExtra("CommonResult");
@@ -221,6 +224,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
             this.setActionBarTitle(getString(R.string.tx_running));
             mapView.setVisibility(View.VISIBLE);
 
+            //非跑步的界面元素在跑步运动中 隐藏起来
             rl_commresult.setVisibility(View.GONE);
             rl_runresult.setVisibility(View.VISIBLE);
 
@@ -467,6 +471,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         mChart.setTouchEnabled(false);
         mChart.setDescription("");
         mChart.setNoDataText("");
+        //mChart.getAxisLeft().setEnabled(false);
         //mChart.setMaxVisibleValueCount(60);
         mChart.setDrawGridBackground(false);
 
@@ -514,7 +519,7 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
     int barValue = -1;
 
 
-    void addRepsBarEntry(int set){addBarEntry(set, repsNset_barChart);}
+    void addRepsBarEntry(int reps){addBarEntry(reps, repsNset_barChart);}
 
     public void addBarEntry(int reps, BarChart mChart) {
 
@@ -582,9 +587,8 @@ public class ViewRecordActivity extends BaseActivity implements OnMapLoadedListe
         // mPieChart.setOnChartValueSelectedListener(this);
 
         TreeMap<String, Float> data = new TreeMap<>();
-        data.put("data1", 0.5f);
-        data.put("data2", 0.3f);
-        data.put("data3", 0.2f);
+        data.put("workout", 0.5f);
+        data.put("rest", 0.3f);
         setData(data);
 
         // 设置动画

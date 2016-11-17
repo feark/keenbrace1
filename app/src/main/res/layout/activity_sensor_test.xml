@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.keenbrace.activity.SensorTestActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView3"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentBottom="true" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+    </ScrollView>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/line_emg"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line_emg"
+        android:id="@+id/rl_distance">
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radar_distance"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_angle"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/rl_distance">
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radar_angle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="235dp"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/rl_distance"
+        android:layout_toEndOf="@+id/rl_distance"
+        android:id="@+id/rl_bias">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:id="@+id/bar_bias"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/tx_num"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/bar_bias"
+            android:textAlignment="center"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="#fbd321"
+            android:gravity="center_vertical" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_valid"
+            android:layout_below="@+id/bar_bias"
+            android:src="@mipmap/mvalid"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/tx_num"
+            android:layout_margin="5dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

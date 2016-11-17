@@ -22,7 +22,7 @@ import java.util.List;
 
 
 /**
- * Created by zrq on 15/12/24.
+ * Created by ken on 15/12/24.
  */
 public class BleDataItemAdapter extends ArrayAdapter<CommonResult> {
 

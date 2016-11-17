@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bgparent"
+    android:visibility="visible">
+    <RelativeLayout
+        android:id="@+id/rl_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10"
+            android:src="@mipmap/icon_more"
+            android:layout_alignParentLeft="true"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/iv_more"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/main_log"
+            android:layout_width="150.0dip"
+            android:layout_height="80.0dip"
+            android:layout_marginTop="23dp"
+            android:src="@mipmap/main_logo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <com.keenbrace.widget.WheelView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sports_wheel"
+            android:fillViewport="false"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:id="@+id/ll_record"
+        android:background="@drawable/btn_version_white_corners_bg"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="100dp"
+        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="time"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="distance"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="calories"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="alarm"
+                    android:textColor="#6DCAEC" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_v"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_mileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tx_warnings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+
+                    android:textSize="@dimen/text_size_20"
+                    android:textColor="@color/colorTextOrange"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose your sport."
+        android:textColor="@color/white"
+        android:textSize="15.0dip"
+        android:visibility="visible"
+        android:layout_above="@+id/horizontalScrollView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-10dp" />
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:id="@+id/howtowear"
+        android:src="@mipmap/wear_on_thigh"
+        android:layout_below="@+id/rl_more"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/ss_start"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:background="@mipmap/select"
+        android:textColor="#ffffffff"
+        android:textSize="20.0dip"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/start_loading"
+        android:src="@mipmap/select"
+        android:visibility="gone"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignStart="@+id/ss_start"
+        android:layout_alignEnd="@+id/ss_start"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView"
+        android:fillViewport="false"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/ss_start"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:id="@+id/iv_squat"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_squat_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:id="@+id/iv_run"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_run_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_dumbbell"
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:src="@mipmap/main_dumbbell_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_plank"
+                android:src="@mipmap/main_plank_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_pullup"
+                android:src="@mipmap/main_pullup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_pushup"
+                android:src="@mipmap/main_pushup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_bicyclesitup"
+                android:src="@mipmap/main_bicyclesitup_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <ImageView
+                android:layout_width="70.0dip"
+                android:layout_height="93.0dip"
+                android:id="@+id/iv_closestandsquat"
+                android:src="@mipmap/main_closestandsquat_w"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_below="@+id/howtowear"
+        android:layout_above="@+id/tv_msg">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_outdoor"
+            android:src="@mipmap/outdoor_sports"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginLeft="10dp" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_apparatus"
+            android:src="@mipmap/facilities_sports"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_bodyweight"
+            android:src="@mipmap/non_apparatus_sports"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

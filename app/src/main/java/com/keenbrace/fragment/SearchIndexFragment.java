@@ -15,8 +15,9 @@ import com.keenbrace.base.BaseFragment;
 
 import butterknife.Bind;
 
+//改成搜索运动的一种分类方式
 
-public class OwnPlanIndexFragment extends BaseFragment{
+public class SearchIndexFragment extends BaseFragment{
     // TODO: Rename parameter arguments, choose names that match
     TextView txTriceps, txBiceps, txShoulder, txForearm, txChest, txCardio, txBack, txAbs, txGlutes,
     txUpperleg, txLowerleg, txWhole;
@@ -49,7 +50,7 @@ public class OwnPlanIndexFragment extends BaseFragment{
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_plan_main;
+        return R.layout.activity_search_main;
     }
 
     @Override

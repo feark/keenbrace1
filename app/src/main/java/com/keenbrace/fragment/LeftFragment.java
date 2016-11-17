@@ -9,12 +9,10 @@ import com.keenbrace.activity.AddCustomActivity;
 import com.keenbrace.activity.ChallengeActivity;
 import com.keenbrace.activity.HistoryActivity;
 import com.keenbrace.activity.MainActivity;
-import com.keenbrace.activity.PlanMainActivity;
-import com.keenbrace.activity.ProgressActivity;
 import com.keenbrace.activity.SettingActivity;
 import com.keenbrace.activity.StoreActivity;
 
-import com.keenbrace.api.KeenbraceRetrofit;
+import com.keenbrace.activity.TutorialActivity;
 import com.keenbrace.base.BaseFragment;
 
 import butterknife.Bind;
@@ -25,11 +23,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by zrq on 16/1/28.
+ * Created by ken on 16/1/28.
  */
 public class LeftFragment extends BaseFragment {
-    @Bind(R.id.ll_plan)
-    LinearLayout ll_plan;
 
     @Bind(R.id.device_list)
     ImageView device_list;
@@ -46,11 +42,8 @@ public class LeftFragment extends BaseFragment {
     @Bind(R.id.ll_custom)
     LinearLayout ll_custom;
 
-    @OnClick(R.id.ll_plan)
-    void openPlanSettings() { readyGo(PlanMainActivity.class); }
-
     @OnClick(R.id.ll_custom)
-    void openProgress(){ readyGo(AddCustomActivity.class); }
+    void openProgress(){ readyGo(TutorialActivity.class); }
 
     @OnClick(R.id.ll_challenge)
     void openChallenge(){ readyGo(ChallengeActivity.class);}

@@ -8,7 +8,7 @@ import com.keenbrace.greendao.User;
 //这里用于放全局变量 ken
 
 /**
- * Created by zrq on 16/1/21.
+ * Created by ken on 16/1/21.
  */
 public class Constant {
 

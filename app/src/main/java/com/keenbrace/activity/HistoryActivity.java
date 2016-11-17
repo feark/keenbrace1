@@ -64,7 +64,7 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
         initBarChart(trainWeekday, "Workout sets of the recent week", Color.rgb(28, 166, 220));
         trainWeekday.animateY(2000);
 
-        //leave
+        //leave 实际使用时用数据代替
         addBarEntry(10, trainWeekday);
         addBarEntry(15, trainWeekday);
         addBarEntry(8,trainWeekday);
@@ -213,7 +213,7 @@ public class HistoryActivity extends BaseActivity implements View.OnClickListene
     public void initRadarChart(RadarChart mChart)
     {
         // 描述，在底部
-        mChart.setDescription("我是描述");
+        mChart.setDescription("Muscle Map");
         // 绘制线条宽度，圆形向外辐射的线条
         mChart.setWebLineWidth(1.5f);
         // 内部线条宽度，外面的环状线条

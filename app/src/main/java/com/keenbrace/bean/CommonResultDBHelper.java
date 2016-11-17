@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by zrq on 16/1/12.
+ * Created by ken on 16/1/12.
  */
 public class CommonResultDBHelper {
 

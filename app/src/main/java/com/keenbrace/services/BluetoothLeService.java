@@ -557,6 +557,9 @@ public class BluetoothLeService extends Service {
             sends[1] = 0x00;
         }
 
+        Log.e(TAG, "startRun*******************************"
+                + t + "type***************" + sport_type);
+
         sends[2] = (byte) (d.getYear() - 100);
         sends[3] = (byte) d.getMonth();
         sends[4] = (byte) d.getDay();
@@ -590,6 +593,7 @@ public class BluetoothLeService extends Service {
             sends[1] = 0x00;
         }
 
+        /*
         BluetoothConstant.mwriteCharacteristic.setValue(sends);
         writeCharacteristic(BluetoothConstant.mwriteCharacteristic);
         BluetoothGattDescriptor descriptor = BluetoothConstant.mreadCharacteristic
@@ -600,7 +604,7 @@ public class BluetoothLeService extends Service {
                 writeDescriptor(descriptor);
             }
         }
-
+        */
     }
 
     public void RequestHistoryData(long times) {

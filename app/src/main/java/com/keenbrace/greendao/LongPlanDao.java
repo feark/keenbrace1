@@ -24,7 +24,7 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property LoginName = new Property(1, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property LongPlanName = new Property(1, String.class, "LongPlanName", false, "LONG_PLAN_NAME");
         public final static Property Weekdays = new Property(2, Integer.class, "weekdays", false, "WEEKDAYS");
         public final static Property Start_date = new Property(3, java.util.Date.class, "start_date", false, "START_DATE");
         public final static Property End_date = new Property(4, java.util.Date.class, "end_date", false, "END_DATE");
@@ -49,7 +49,7 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"LONG_PLAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"LOGIN_NAME\" TEXT UNIQUE ," + // 1: loginName
+                "\"LONG_PLAN_NAME\" TEXT UNIQUE ," + // 1: LongPlanName
                 "\"WEEKDAYS\" INTEGER," + // 2: weekdays
                 "\"START_DATE\" INTEGER," + // 3: start_date
                 "\"END_DATE\" INTEGER," + // 4: end_date
@@ -76,9 +76,9 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
             stmt.bindLong(1, id);
         }
  
-        String loginName = entity.getLoginName();
-        if (loginName != null) {
-            stmt.bindString(2, loginName);
+        String LongPlanName = entity.getLongPlanName();
+        if (LongPlanName != null) {
+            stmt.bindString(2, LongPlanName);
         }
  
         Integer weekdays = entity.getWeekdays();
@@ -133,7 +133,7 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     public LongPlan readEntity(Cursor cursor, int offset) {
         LongPlan entity = new LongPlan( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // loginName
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // LongPlanName
             cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // weekdays
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // start_date
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // end_date
@@ -150,7 +150,7 @@ public class LongPlanDao extends AbstractDao<LongPlan, Long> {
     @Override
     public void readEntity(Cursor cursor, LongPlan entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setLoginName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setLongPlanName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setWeekdays(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setStart_date(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
         entity.setEnd_date(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));

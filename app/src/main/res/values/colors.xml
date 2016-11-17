@@ -18,4 +18,5 @@
     <color name="bg_color_grep">#e1e1e1</color>
     <color name="text_color_grep">#1c1c1c</color>
     <color name="colorTextOrange">#fba545</color>
+    <color name="holo_blue">#FF33E5B5</color>
 </resources>

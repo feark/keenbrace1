@@ -42,6 +42,7 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.btn_login)
     ImageView btnLogin;
 
+    //点击login 检查用户名与密码的输入
     @OnClick(R.id.btn_login) void login(){
         if(StringUtils.isEmpty(etAccount.getText())){
             Snackbar.make(btnLogin, "account name", Snackbar.LENGTH_SHORT).show();
@@ -54,6 +55,7 @@ public class LoginActivity extends BaseActivity {
         loginLogic();
     };
 
+    //注册
     @OnClick (R.id.btn_register) void register(){
         //readyGo(RegisterActivity.class);
         Toast.makeText(
@@ -62,6 +64,7 @@ public class LoginActivity extends BaseActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+    //忘记密码
     @OnClick (R.id.btn_visitor) void forgetPwd(){
         //将登录状态和登录名写入配置文件 ken ++
         PreferenceHelper.write(AppContext.getInstance(),UtilConstants.SHARE_PREF, UtilConstants.KEY_HAS_LOGIN, true);
