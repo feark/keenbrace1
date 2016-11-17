@@ -167,11 +167,11 @@ public class GreenDaoGenerate {
         Entity user = schema.addEntity("ShortPlan");
         user.addIdProperty();
 
-        user.addStringProperty("loginName").unique();
+        //根据登录名找到对应的训练计划
+        user.addStringProperty("ShortPlanName").unique();
 
         user.addIntProperty("singleTrainID");   //单次计划的ID号
-
-        //单次 跑步
+         //单次 跑步
         user.addIntProperty("warmUpTime");      //热身时间
         user.addIntProperty("distance");
         user.addIntProperty("section");         //分几次跑
@@ -196,7 +196,7 @@ public class GreenDaoGenerate {
         Entity user = schema.addEntity("LongPlan");
         user.addIdProperty();
 
-        user.addStringProperty("loginName").unique();
+        user.addStringProperty("LongPlanName").unique();
 
         user.addIntProperty("weekdays");    //一周几天练
         user.addDateProperty("start_date"); //训练计划的开始日期
