@@ -23,7 +23,7 @@ public class WeekDayView extends View {
 	private int mWeekSize = 14;
 	private Paint paint;
 	private DisplayMetrics mDisplayMetrics;
-	private String[] weekString = new String[]{"日","一","二","三","四","五","六"};
+	private String[] weekString = new String[]{"SUN","MON","TUE","WED","THU","FRI","SAT"};
 	public WeekDayView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mDisplayMetrics = getResources().getDisplayMetrics();
@@ -68,7 +68,7 @@ public class WeekDayView extends View {
 			int fontWidth = (int) paint.measureText(text);
 			int startX = columnWidth * i + (columnWidth - fontWidth)/2;
 			int startY = (int) (height/2 - (paint.ascent() + paint.descent())/2);
-			if(text.indexOf("日") > -1|| text.indexOf("六") > -1){
+			if(text.indexOf("SUN") > -1|| text.indexOf("SAT") > -1){
 				paint.setColor(mWeekendColor);
 			}else{
 				paint.setColor(mWeedayColor);

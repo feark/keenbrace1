@@ -170,6 +170,16 @@
     <string name="tx_indicate_tap">Tap here to see the move</string>
     <string name="tx_run_equipment">None</string>
 
+    <string-array name="week_name">
+        <item>SUN</item>
+        <item>MON</item>
+        <item>TUE</item>
+        <item>WED</item>
+        <item>THU</item>
+        <item>FRI</item>
+        <item>SAT</item>
+    </string-array>
+
     <!-- running -->
     <string name="tx_running_welcome">Let\'s go!</string>
     <string name="tx_relax_smooth">Relaxed, smooth, quick, and efficient</string>

@@ -204,7 +204,7 @@
                     android:id="@+id/tv_fiexd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fiexd"
+                    android:text="Fixed"
                     android:textColor="@color/font_back"
                     android:textSize="20dp" />
 

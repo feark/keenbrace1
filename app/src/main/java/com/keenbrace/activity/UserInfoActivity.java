@@ -47,10 +47,6 @@ public class UserInfoActivity extends BaseActivity {
     @Bind(R.id.btn_calibrate)
     ImageView btn_calibrate;
 
-    @Bind(R.id.tv_email)
-    TextView tvEmail;
-    @Bind(R.id.tv_mobile)
-    TextView tvMobile;
     @Bind(R.id.tv_height)
     TextView tvHeight;
     @Bind(R.id.tv_weight)
@@ -216,22 +212,12 @@ public class UserInfoActivity extends BaseActivity {
 
 
 
-    @OnClick(R.id.rl_mobile)
-    void openMobileInput()
-    {
-        openInput(2, tvMobile.getText().toString());
-    }
     @OnClick(R.id.rl_name)
     void openNameInput()
     {
         openInput(0, tvName.getText().toString());
     }
 
-    @OnClick(R.id.rl_mail)
-    void openEmailInput()
-    {
-        openInput(1, tvEmail.getText().toString());
-    }
 
 
     void saveUser()
@@ -242,8 +228,6 @@ public class UserInfoActivity extends BaseActivity {
         //要换成年龄 leave
         //users.setBirthday(com.keenbrace.core.utils.DateUtils.convertServerDate2(tvBirthday.getText() + " 00:00:00"));
         users.setNickname(tvName.getText().toString());
-        users.setEmail(tvEmail.getText().toString());
-        users.setMobile(tvMobile.getText().toString());
         UserDBHelper.getInstance(this).upateUser(users);
         finish();
     }
@@ -317,8 +301,6 @@ public class UserInfoActivity extends BaseActivity {
             }
             //换成年龄
             //tvBirthday.setText(DateUitl.getDatetoString(Constant.user.getBirthday().getTime()));
-            tvEmail.setText(Constant.user.getEmail());
-            tvMobile.setText(Constant.user.getMobile());
 
         }
     }
@@ -331,14 +313,14 @@ public class UserInfoActivity extends BaseActivity {
             tvName.setText(value);
         }else if(resultCode==1)
         {
-            Bundle mBundle = data.getExtras();
-            String value = mBundle.getString("value");
-            tvEmail.setText(value);
+
         }else if(resultCode==2)
         {
+            /*
             Bundle mBundle = data.getExtras();
             String value = mBundle.getString("value");
             tvMobile.setText(value);
+            */
         }
     }
 }

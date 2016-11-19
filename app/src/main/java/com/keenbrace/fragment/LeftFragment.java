@@ -9,6 +9,7 @@ import com.keenbrace.activity.AddCustomActivity;
 import com.keenbrace.activity.ChallengeActivity;
 import com.keenbrace.activity.HistoryActivity;
 import com.keenbrace.activity.MainActivity;
+import com.keenbrace.activity.SensorTestActivity;
 import com.keenbrace.activity.SettingActivity;
 import com.keenbrace.activity.StoreActivity;
 
@@ -43,7 +44,7 @@ public class LeftFragment extends BaseFragment {
     LinearLayout ll_custom;
 
     @OnClick(R.id.ll_custom)
-    void openProgress(){ readyGo(TutorialActivity.class); }
+    void openProgress(){ readyGo(SensorTestActivity.class); }
 
     @OnClick(R.id.ll_challenge)
     void openChallenge(){ readyGo(ChallengeActivity.class);}

@@ -414,7 +414,9 @@ public class MainMenuActivity extends BaseActivity implements
     {
         Date d = new Date();
         if (BluetoothConstant.mConnected) {
-            handler.sendEmptyMessage(199);
+            BluetoothConstant.mBluetoothLeService.emgSwitch(1);
+
+            handler.sendEmptyMessageDelayed(199, 800);
             runSwitch = 1;
             //handler.sendEmptyMessageDelayed(7, 500);
             handler.sendEmptyMessage(5);
@@ -776,7 +778,7 @@ public class MainMenuActivity extends BaseActivity implements
                             duration_sec = 0;
                         }
 
-
+                        /*
                         if (duration_sec == 2) {
                             if (step_true == 0) {
                                 if (BluetoothConstant.mBluetoothLeService != null
@@ -789,7 +791,7 @@ public class MainMenuActivity extends BaseActivity implements
                                 }
                             }
                         }
-
+                        */
 
                         String str_duration = String.format("%02d:%02d:%02d",duration_hour,duration_min,duration_sec);
                         tv_duration.setText("Duration :  "+str_duration);
@@ -986,110 +988,95 @@ public class MainMenuActivity extends BaseActivity implements
                         }
                     } catch (IOException e) {
                     }
+
+                    updateView();
                 }
-                updateView();
             break;
 
             //跑步以外的其他运动参数及提示
             case (byte)0xab:
-
-                com.umeng.socialize.utils.Log.e("rep sports data-------------------"
-                        + data[0] + "_______" + data[1]);
-
-                if(data[15] != 0x03)
-                {
-                    break;
-                }
-
-                try{
-                    if(fos != null) {
-                        fos.write(data, 0, 16);
+                if (data.length == 16) {
+                    if (data[15] != 0x03) {
+                        break;
                     }
-                }catch (IOException e) {
-                }
 
-                //动作次数
-                reps = ByteHelp.byteArrayToInt(new byte[]{data[2], data[3]});
-                if(reps == 0)
-                {
-                    isAnyMove = false;
-                }
-                else if((reps - old_reps) > 5)
-                {
-                    break;
-                }
-                else
-                {
-                    //将每一个计数读出来
-                    //如果是平板支撑 一直变化的rep说明没处在运动姿势 leave
-                    if(sport_type == UtilConstants.sport_plank)
-                    {
-                        reps++;
-                    }
-                    else
-                    {
-                        if(reps != old_reps)
-                        {
-                            commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
-
-                            if(sport_type == UtilConstants.sport_dumbbell) {
-                                if (commDuration < 1) {
-                                    reps = reps / 2;
-                                }
-                            }
-
-                            com.umeng.socialize.utils.Log.e("reps-------------------"
-                                    + reps + "_______" + old_reps);
-
-                            strCommResult = "" + reps;
-                            tts.speak(strCommResult,
-                                    TextToSpeech.QUEUE_FLUSH, null);
-
-                            //播动画
-                            handler.sendEmptyMessage(2);
+                    try {
+                        if (fos != null) {
+                            fos.write(data, 0, 16);
                         }
+                    } catch (IOException e) {
                     }
 
+                    //动作次数
+                    reps = ByteHelp.byteArrayToInt(new byte[]{data[2], data[3]});
+                    if (reps == 0) {
+                        isAnyMove = false;
+                    } else if ((reps - old_reps) > 5) {
+                        break;
+                    } else {
+                        //将每一个计数读出来
+                        //如果是平板支撑 一直变化的rep说明没处在运动姿势 leave
+                        if (sport_type == UtilConstants.sport_plank) {
+                            reps++;
+                        } else {
+                            if (reps != old_reps) {
+                                commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
+
+                                if (sport_type == UtilConstants.sport_dumbbell) {
+                                    if (commDuration < 1) {
+                                        reps = reps / 2;
+                                    }
+                                }
+
+                                com.umeng.socialize.utils.Log.e("reps-------------------"
+                                        + reps + "_______" + old_reps);
+
+                                strCommResult = "" + reps;
+                                tts.speak(strCommResult,
+                                        TextToSpeech.QUEUE_FLUSH, null);
+
+                                //播动画
+                                handler.sendEmptyMessage(2);
+                            }
+                        }
+
+                    }
+
+                    commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
+
+                    bias = (data[6] & 0xff);
+                    stability = (data[7] & 0xff);
+                    musclePeakPeak = (data[8] & 0xff);
+
+                    //X angle
+                    xAngle = (int) data[9];
+                    if (xAngle > 0x80) {
+                        xAngle = xAngle - 0xFF - 1;
+                    }
+                    //X acc
+                    xAcc = (int) data[10];
+
+                    //X angle
+                    yAngle = (int) data[11];
+                    if (yAngle > 0x80) {
+                        yAngle = yAngle - 0xFF - 1;
+                    }
+                    //X acc
+                    yAcc = (int) data[12];
+
+                    //X angle
+                    zAngle = (int) data[13];
+                    if (zAngle > 0x80) {
+                        zAngle = zAngle - 0xFF - 1;
+                    }
+                    //X acc
+                    zAcc = (int) data[14];
+
+                    old_reps = reps;
+
+                    //更新参数
+                    handler.sendEmptyMessage(8);
                 }
-
-                commDuration = ByteHelp.byteArrayToInt(new byte[]{data[4], data[5]});
-
-                bias = (data[6]  & 0xff);
-                stability = (data[7] & 0xff) ;
-                musclePeakPeak = (data[8] & 0xff);
-
-                //X angle
-                xAngle = (int)data[9];
-                if(xAngle > 0x80)
-                {
-                    xAngle = xAngle - 0xFF - 1;
-                }
-                //X acc
-                xAcc = (int)data[10];
-
-                //X angle
-                yAngle = (int)data[11];
-                if(yAngle > 0x80)
-                {
-                    yAngle = yAngle - 0xFF - 1;
-                }
-                //X acc
-                yAcc = (int)data[12];
-
-                //X angle
-                zAngle = (int)data[13];
-                if(zAngle > 0x80)
-                {
-                    zAngle = zAngle - 0xFF - 1;
-                }
-                //X acc
-                zAcc = (int)data[14];
-
-                old_reps = reps;
-
-                //更新参数
-                handler.sendEmptyMessage(8);
-
             break;
 
         }

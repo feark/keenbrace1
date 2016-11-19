@@ -76,8 +76,10 @@
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,8 +118,10 @@
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -157,8 +161,10 @@
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -210,8 +216,10 @@
             android:layout_width="match_parent"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -256,97 +264,6 @@
                 android:textColor="#7F7F7F"
 
                 android:text="0"
-                />
-        </RelativeLayout>
-        <TextView
-            style="@style/match_wrap"
-            android:textSize="@dimen/text_size_19"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_marginLeft="@dimen/space_10"
-            android:layout_marginBottom="@dimen/space_10"
-            android:textColor="#ffffff"
-            android:text="CONTACT"
-            />
-        <RelativeLayout
-            android:id="@+id/rl_mail"
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/match_wrap"
-                android:textSize="@dimen/text_size_17"
-
-                android:layout_marginLeft="@dimen/space_10"
-                android:textColor="#7F7F7F"
-                android:layout_alignParentLeft="true"
-                android:text="@string/email"
-                />
-
-            <ImageView
-
-                android:layout_width="30dp"
-                android:layout_height="27dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/space_10"
-                android:background="@mipmap/icon_goto_grep"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/match_wrap"
-                android:layout_alignParentRight="true"
-                android:textSize="@dimen/text_size_17"
-                android:layout_marginRight="45dp"
-                android:textColor="#7F7F7F"
-                android:id="@+id/tv_email"
-                android:text="test@test.com"
-                />
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/rl_mobile"
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/space_1"
-            android:layout_height="50dp"
-            android:layout_marginBottom="1dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/match_wrap"
-                android:textSize="@dimen/text_size_17"
-
-                android:layout_marginLeft="@dimen/space_10"
-                android:textColor="#7F7F7F"
-                android:layout_alignParentLeft="true"
-                android:text="@string/mobile"
-                />
-
-            <ImageView
-
-                android:layout_width="30dp"
-                android:layout_height="27dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/space_10"
-                android:background="@mipmap/icon_goto_grep"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/match_wrap"
-                android:layout_alignParentRight="true"
-                android:textSize="@dimen/text_size_17"
-                android:layout_marginRight="45dp"
-                android:textColor="#7F7F7F"
-                android:id="@+id/tv_mobile"
-                android:text="138001380000"
                 />
         </RelativeLayout>
 

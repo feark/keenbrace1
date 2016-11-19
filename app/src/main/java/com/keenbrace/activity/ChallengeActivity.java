@@ -57,7 +57,7 @@ public class ChallengeActivity extends BaseActivity implements OnClickListener, 
 
             //将KeenBrace Challenge的内容在这里加入
             fartlekChallenge.setTitle("Fartlek");
-            fartlekChallenge.setChallengeLogo(R.mipmap.fartlek);
+            fartlekChallenge.setChallengeLogo(R.mipmap.kb_fartlek);
             fartlekChallenge.setDescription((String) getText(R.string.tx_fartlek_description));
             fartlekChallenge.setRules((String) getText(R.string.tx_fartlek_rules));
 

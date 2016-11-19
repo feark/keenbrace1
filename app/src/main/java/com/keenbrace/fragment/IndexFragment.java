@@ -271,7 +271,11 @@ public class IndexFragment extends BaseFragment {
         mChart.setDescription("");
         mChart.setNoDataText("");
         mChart.setDrawGridBackground(false);
-        mChart.getAxisRight().setEnabled(false);
+
+        //mChart.getAxisRight().setEnabled(false);
+        mChart.getAxisRight().setAxisLineColor(Color.WHITE);
+        mChart.getAxisRight().setGridColor(color);
+        mChart.getAxisRight().setDrawLabels(false);
 
         Legend mLegend = mChart.getLegend(); // 设置比例图标示
         mLegend.setEnabled(false);

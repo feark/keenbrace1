@@ -90,12 +90,14 @@ public class MonthDateView extends View {
 			}
 			canvas.drawText(dayString, startX, startY, mPaint);
 			if(tv_date != null){
-				tv_date.setText(mSelYear + "年" + (mSelMonth + 1) + "月");
+				tv_date.setText(mSelYear + "-" + (mSelMonth + 1) + "-" + mSelDay);
 			}
-			
+
+			/*
 			if(tv_week != null){
 				tv_week.setText("第" + weekRow  +"周");
 			}
+			*/
 		}
 	}
 	

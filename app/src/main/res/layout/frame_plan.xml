@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
     tools:context="com.keenbrace.fragment.PlanFragment"
     android:background="@color/bg_color">
 
@@ -25,4 +27,93 @@
     </RelativeLayout>
 
 
-</RelativeLayout>
+    <!-- 日历时间选择栏 -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="#ffffff"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="3dp">
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@null"
+            android:background="@mipmap/prev_training"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="3dp" />
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:contentDescription="@null"
+            android:background="@mipmap/next_training"
+            android:layout_marginRight="5dp"
+            android:layout_alignTop="@+id/iv_left"
+            android:layout_alignParentEnd="true" />
+        <LinearLayout
+            android:id="@+id/date_operator_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/tv_today"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="13dp"
+                android:text="Today"
+                android:gravity="center"
+                android:background="#FFD700"
+                android:textColor="#ffffff"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/date_text"
+                style="@style/myschedule_current_month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="#93C73C"
+                android:textSize="20sp"
+                android:text="" />
+            <TextView
+                android:id="@+id/week_text"
+                style="@style/myschedule_current_month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:textColor="#93C73C"
+                android:textSize="20sp"
+                android:text="" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <com.keenbrace.calendar.WeekDayView
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+        <com.keenbrace.calendar.MonthDateView
+            android:id="@+id/monthDateView"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_contentofdate"></RelativeLayout>
+</LinearLayout>

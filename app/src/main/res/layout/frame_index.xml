@@ -120,25 +120,38 @@
                 android:layout_weight="1.0"
                 android:id="@+id/rl_basic_center">
 
-                <com.keenbrace.widget.RoundImageView
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:id="@+id/ri_portrait"
-                    android:background="@mipmap/default_headphoto"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp" />
-
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/iv_body"
+                    android:src="@mipmap/body5" />
+
+                <TextView
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Ken"
-                    android:id="@+id/tv_name_index"
-                    android:layout_below="@+id/ri_portrait"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@android:color/white" />
+                    android:text="muscle"
+                    android:id="@+id/tv_muscle"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:textAlignment="center"
+                    android:background="#ef930a"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="fat"
+                    android:id="@+id/tx_fat"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:textAlignment="center"
+                    android:background="#dae6e4"
+                    android:textSize="16dp" />
+
             </RelativeLayout>
 
             <RelativeLayout

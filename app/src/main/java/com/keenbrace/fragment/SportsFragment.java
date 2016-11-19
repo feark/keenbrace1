@@ -337,7 +337,6 @@ public class SportsFragment extends BaseFragment {
 
 
     public void readyGo(Class c)
-
     {
         Intent intent1 = new Intent(this.getActivity(),c);
         intent1.putExtra("sport_type", sport_type);
