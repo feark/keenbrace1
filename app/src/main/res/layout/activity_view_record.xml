@@ -127,7 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/relativeLayout4"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:background="@color/bg_color">
 
             <TextView
                 android:layout_width="match_parent"
@@ -272,12 +273,11 @@
         android:visibility="visible">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
             android:id="@+id/lc_speed"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp" />
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false" />
 
         <TextView
             android:layout_width="match_parent"
@@ -415,9 +415,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rl_runresult">
+        android:background="@color/bg_color"
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:layout_width="60dp"
@@ -425,24 +426,24 @@
             android:id="@+id/btn_comment"
             android:src="@mipmap/comment"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="30dp" />
+            android:layout_marginLeft="30dp"
+            android:visibility="gone" />
 
         <ImageView
-            android:layout_width="60dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_share"
             android:src="@mipmap/share"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginStart="75dp"
+            android:layout_toEndOf="@+id/btn_comment" />
 
         <ImageView
-            android:layout_width="60dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_load"
             android:src="@mipmap/loads"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="30dp" />
+            android:layout_marginEnd="75dp"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="match_parent"
@@ -450,7 +451,8 @@
             android:background="#D1D2D4"
             android:id="@+id/textView15"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </RelativeLayout>

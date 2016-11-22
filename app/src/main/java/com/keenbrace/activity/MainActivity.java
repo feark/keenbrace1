@@ -386,6 +386,7 @@ public class MainActivity extends SlidingFragmentActivity implements View.OnClic
         return intentFilter;
     }
 
+    //自定义弹出窗口
     AlertDialog popupWindow;
     LeDeviceListAdapter leDeviceListAdapter;
 

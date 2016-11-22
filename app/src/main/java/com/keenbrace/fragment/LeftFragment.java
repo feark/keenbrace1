@@ -44,7 +44,7 @@ public class LeftFragment extends BaseFragment {
     LinearLayout ll_custom;
 
     @OnClick(R.id.ll_custom)
-    void openProgress(){ readyGo(SensorTestActivity.class); }
+    void openProgress(){ readyGo(TutorialActivity.class); }
 
     @OnClick(R.id.ll_challenge)
     void openChallenge(){ readyGo(ChallengeActivity.class);}

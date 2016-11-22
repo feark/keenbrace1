@@ -51,15 +51,16 @@
         android:id="@+id/train_weekday"
         android:layout_below="@+id/train_radar"
         android:layout_alignStart="@+id/train_radar"
-        android:layout_alignEnd="@+id/train_radar" />
+        android:layout_alignEnd="@+id/train_radar"
+        android:layout_above="@+id/rl_activity" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_below="@+id/train_weekday"
-        android:layout_centerHorizontal="true"
         android:background="#FFFFFF"
-        android:id="@+id/rl_activity">
+        android:id="@+id/rl_activity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="match_parent"
@@ -107,7 +108,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/rl_activity"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -124,7 +126,8 @@
             android:src="@mipmap/gallery_bg"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="visible" />
 
         <TextView
             android:layout_width="wrap_content"

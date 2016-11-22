@@ -6,7 +6,7 @@
     android:layout_centerInParent="true"
     android:orientation="vertical"
     tools:context="com.keenbrace.fragment.PlanFragment"
-    android:background="@color/bg_color">
+    android:background="@android:color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -115,5 +115,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rl_contentofdate"></RelativeLayout>
+        android:id="@+id/rl_contentofdate">
+
+        <com.keenbrace.widget.SwipeListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/trainofthedate"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 </LinearLayout>

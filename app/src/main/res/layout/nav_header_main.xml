@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ll_custom"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="50dp"
@@ -123,7 +123,7 @@
                 style="@style/wrap_wrap"
                 android:textSize="@dimen/text_size_16"
                 android:textColor="#747474"
-                android:text="CUSTOM"
+                android:text="ASSESSMENT"
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

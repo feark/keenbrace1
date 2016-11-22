@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.keenbrace.R;
+import com.keenbrace.fragment.TT0Fragment;
 import com.keenbrace.fragment.TT1Fragment;
 import com.keenbrace.fragment.TT2Fragment;
 import com.keenbrace.fragment.TT3Fragment;
@@ -49,10 +50,12 @@ public class TutorialActivity extends FragmentActivity {
         LayoutInflater mInflater = getLayoutInflater();
         View activityView = mInflater.inflate(R.layout.fragment_tt1, null);
 
+        TT0Fragment tt0Fragment = new TT0Fragment();
         TT1Fragment tt1Fragment = new TT1Fragment();
         TT2Fragment tt2Fragment = new TT2Fragment();
         TT3Fragment tt3Fragment = new TT3Fragment();
 
+        fragmentList.add(tt0Fragment);
         fragmentList.add(tt1Fragment);
         fragmentList.add(tt2Fragment);
         fragmentList.add(tt3Fragment);

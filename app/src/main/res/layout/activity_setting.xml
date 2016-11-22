@@ -34,7 +34,7 @@
                 android:contentDescription="@string/app_name"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:src="@mipmap/default_headphoto" />
+                android:src="@mipmap/profile_setting" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                     android:id="@+id/tv_userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Money Sky"
+                    android:text="Test"
                     android:textColor="@color/font_back"
                     android:textSize="20dp" />
 

@@ -108,8 +108,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="aws-android-sdk-s3-2.2.9" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.0.0-beta3" level="project" />
-    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.0.0-beta3" level="project" />
+    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="aws-android-sdk-core-2.2.9" level="project" />

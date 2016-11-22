@@ -71,8 +71,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
     TextView train_target;
     TextView tv_speed_t, tv_distance_t, tv_calories_t;
 
-    TextView tv_plantitle, tv_planrules;
-
     //------------------------------------------------------
     //挑战或计划的界同调度
     boolean isStartRun = false;
@@ -81,7 +79,7 @@ public class FragmentRun extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frame_history, null);
+        View view = inflater.inflate(R.layout.frame_workout, null);
 
         ll_rundatabox = (LinearLayout) view.findViewById(R.id.rundatabox);
         ll_rundatabox.setOnClickListener(this);
@@ -121,12 +119,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
         sport_type = getArguments().getInt("sport_type");
 
         start_from = getArguments().getInt("StartFrom");
-
-        //plan或challenge的标题 一开始并不显示
-        tv_planrules = (TextView) view.findViewById(R.id.tv_planrules);
-        tv_plantitle = (TextView) view.findViewById(R.id.tv_plantitle);
-        tv_planrules.setVisibility(View.GONE);
-        tv_plantitle.setVisibility(View.GONE);
 
         indicate_message.setText(R.string.tx_indicate_tap);
 
@@ -278,13 +270,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
                 break;
         }
 
-        if(start_from == UtilConstants.fromChallenge)
-        {
-            gif_anima.setVisibility(View.GONE);
-            tv_planrules.setVisibility(View.VISIBLE);
-            tv_plantitle.setVisibility(View.VISIBLE);
-        }
-
         pd_circle3 = (CircularProgressBar) view.findViewById(R.id.pd_circle_blue);
         tv_factors = (TextView) view.findViewById(R.id.tv_factors);
         tv_sumtimes = (TextView) view.findViewById(R.id.tv_sumtimes);
@@ -307,15 +292,17 @@ public class FragmentRun extends Fragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId())
         {
-            //点击indicate box去查看演示动作
             case R.id.indicate_box:
 
+                /*
                 updateAnimation(ancount, 1);
 
                 if(ancount <= UtilConstants.eventWalk)
                 {
                     ancount++;
                 }
+                */
+                showCountDown(0, 35, true);
                 break;
 
             case R.id.rundatabox:
@@ -389,6 +376,23 @@ public class FragmentRun extends Fragment implements OnClickListener {
         tv_calories.setText("" + stability + " %");
 
         //addLineEntry(muscle);
+    }
+
+    // 显示倒计时
+    public void showCountDown(int minute, int second, Boolean enShow)
+    {
+        //显示倒计时
+        if(enShow) {
+            rl_countdown.setVisibility(View.VISIBLE);
+            tx_count_title.setText("Rest");
+            restTime.setText(String.format("%02d : %02d", minute, second));
+
+            gif_anima.setVisibility(View.GONE);
+        }else
+        {
+            rl_countdown.setVisibility(View.GONE);
+            gif_anima.setVisibility(View.VISIBLE);
+        }
     }
 
     //gif动画放在这个位置update ken
@@ -654,8 +658,6 @@ public class FragmentRun extends Fragment implements OnClickListener {
 
         //重新显示出动画
         gif_anima.setVisibility(View.VISIBLE);
-        tv_planrules.setVisibility(View.GONE);
-        tv_plantitle.setVisibility(View.GONE);
     }
 
     //--------------------------------------------------------

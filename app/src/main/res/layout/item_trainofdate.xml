@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="@dimen/space_5"
+        android:background="@drawable/gray_corners_bg">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/iv_workoutlogo"
+                android:src="@mipmap/kb_challenge"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/tx_workouttitle"
+                android:layout_alignTop="@+id/iv_workoutlogo"
+                android:layout_toEndOf="@+id/iv_workoutlogo"
+                android:layout_marginTop="10dp"
+                android:typeface="serif"
+                android:textColor="#363636"
+                android:text="KeenBrace CrossFit" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/tx_workouttitle"
+                android:layout_toEndOf="@+id/iv_workoutlogo">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:id="@+id/iv_workoutstatus"
+                    android:src="@mipmap/wrong_s"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="3dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Intense"
+                    android:id="@+id/tx_workoutstrength"
+                    android:textSize="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#2a8001"
+                    android:layout_above="@+id/iv_workoutstatus"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Full Body"
+                    android:id="@+id/tx_workoutpos"
+                    android:textSize="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignTop="@+id/iv_workoutstatus"
+                    android:layout_alignStart="@+id/tx_workoutstrength"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="30-Minutes"
+                    android:id="@+id/tx_workouttime"
+                    android:textSize="15dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_alignTop="@+id/tx_workoutpos"
+                    android:layout_centerHorizontal="true" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -90,6 +90,20 @@ public class IndexFragment extends BaseFragment {
         addBmrLineEntry(0);
         addBodyFatLineEntry(0);
 
+        //leave 预览效果
+        addBmrLineEntry(2560);
+        addBmrLineEntry(2700);
+        addBmrLineEntry(2590);
+        addBmrLineEntry(3100);
+        addBmrLineEntry(2900);
+
+        addBodyFatLineEntry(22);
+        addBodyFatLineEntry(20);
+        addBodyFatLineEntry(18);
+        addBodyFatLineEntry(21);
+        addBodyFatLineEntry(17);
+
+
         initBarChart(hb_intake, " ", Color.rgb(255, 255, 255));
         hb_intake.getAxisLeft().setAxisMaxValue(3000);
         hb_intake.getAxisLeft().setAxisMinValue(0);
@@ -201,7 +215,7 @@ public class IndexFragment extends BaseFragment {
         xAxis.setSpaceBetweenLabels(2);
         YAxis leftAxis = lc_bodyfat.getAxisLeft();
         leftAxis.setLabelCount(5, false);
-        leftAxis.setAxisMaxValue(100);
+        leftAxis.setAxisMaxValue(50);
         leftAxis.setAxisMinValue(0);
         leftAxis.setValueFormatter(new MyValueFormatter());
         leftAxis.setSpaceTop(15f);

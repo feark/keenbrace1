@@ -169,6 +169,11 @@ public class GreenDaoGenerate {
 
         //根据登录名找到对应的训练计划
         user.addStringProperty("ShortPlanName").unique();
+        user.addIntProperty("totalTime");       //总时长
+        user.addStringProperty("pos"); //训练部位
+        user.addIntProperty("intense"); //训练强度
+        user.addIntProperty("status");  //状况
+        user.addIntProperty("logo");    //logo
 
         user.addIntProperty("singleTrainID");   //单次计划的ID号
          //单次 跑步
@@ -179,7 +184,6 @@ public class GreenDaoGenerate {
         user.addByteArrayProperty("duration");  //内容的时长
         user.addIntProperty("cadence");         //限定步频
         user.addIntProperty("speed");
-        user.addIntProperty("totalTime");       //总时长
 
         //单次 无氧
         user.addByteArrayProperty("type");      //做哪几种运动
