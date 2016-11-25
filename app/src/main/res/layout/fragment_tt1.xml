@@ -34,11 +34,181 @@
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/textView17"
-            android:layout_centerHorizontal="true"></RelativeLayout>
+            android:layout_alignParentStart="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.25">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="What are your fitness goals?\nPick up to two."
+                    android:id="@+id/textView34"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="14dp"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textView34"
+                    android:layout_centerHorizontal="true">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Lose weight"
+                        android:id="@+id/checkBox"
+                        android:layout_weight="1"
+                        android:allowUndo="true"
+                        android:theme="@style/AppTheme"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Strengthen core"
+                        android:id="@+id/checkBox2"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Target upper body"
+                        android:id="@+id/checkBox3"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Target lower body"
+                        android:id="@+id/checkBox4"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Build muscle"
+                        android:id="@+id/checkBox5"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Tone muscle"
+                        android:id="@+id/checkBox6"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Improve endurance"
+                        android:id="@+id/checkBox7"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text="Improve flexibility"
+                        android:id="@+id/checkBox8"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="115dp"
+                        android:layout_marginTop="15dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView9"
+                        android:src="@mipmap/unch_page"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView8"
+                        android:src="@mipmap/chosen_page"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView10"
+                        android:src="@mipmap/unch_page"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView11"
+                        android:src="@mipmap/unch_page"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
     </RelativeLayout>
+
+
 
 </FrameLayout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,9 @@ public class PlanFragment extends BaseFragment {
     private MonthDateView monthDateView;
 
     //计划视图
-    SwipeListView trainOfDateList;
+    //SwipeListView trainOfDateList;
+    ListView lv_dateplan;
+
     List<ShortPlan> shortPlanItems;
     TrainOfDateItemAdapter adapter;
 
@@ -103,11 +106,13 @@ public class PlanFragment extends BaseFragment {
             return;
         }
 
-        adapter = new TrainOfDateItemAdapter(getActivity(), R.layout.item_trainofdate, shortPlanItems);
+        adapter = new TrainOfDateItemAdapter(this.getActivity(), R.layout.item_trainofdate, shortPlanItems);
         //adapter.setOnChallengeItemListener(this);
-        trainOfDateList.setAdapter(adapter);
 
-        trainOfDateList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //trainOfDateList.setAdapter(adapter);
+        lv_dateplan.setAdapter(adapter);
+
+        lv_dateplan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
@@ -121,6 +126,7 @@ public class PlanFragment extends BaseFragment {
                 //finish();
             }
         });
+
 
     }
 
@@ -145,7 +151,7 @@ public class PlanFragment extends BaseFragment {
         tv_date = (TextView) view.findViewById(R.id.date_text);
         tv_week  =(TextView) view.findViewById(R.id.week_text);
         tv_today = (TextView) view.findViewById(R.id.tv_today);
-        monthDateView.setTextView(tv_date,tv_week);
+        monthDateView.setTextView(tv_date, tv_week);
         monthDateView.setDaysHasThingList(list);
         monthDateView.setDateClick(new MonthDateView.DateClick() {
             @Override
@@ -155,9 +161,9 @@ public class PlanFragment extends BaseFragment {
         });
         setOnlistener();
 
-        trainOfDateList = (SwipeListView) view.findViewById(R.id.trainofthedate);
-
-        trainOfDateList.setPressed(false);
+        //trainOfDateList = (SwipeListView) this.getActivity().findViewById(R.id.trainofthedate);
+        //trainOfDateList = (SwipeListView) view.findViewById(R.id.trainofthedate);
+        lv_dateplan = (ListView) view.findViewById(R.id.lv_dateplan);
 
         initData();
 
