@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.keenbrace.fragment.TT1Fragment"
-    android:background="@mipmap/tutorialbk2">
+    android:background="@mipmap/tutorialbk2"
+    android:id="@+id/root">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -11,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top">
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/rl1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,38 +42,42 @@
             android:layout_below="@+id/textView4"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white" />
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/textView17"
-            android:layout_centerHorizontal="true">
+            android:layout_height="480dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/rl1">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="25dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
                 android:id="@+id/rl_as_name">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Gender"
                     android:id="@+id/textView18"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@android:color/white" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/rl_as_name1">
 
                 <RadioGroup
                     android:layout_width="240dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:orientation="horizontal"
                     android:id="@+id/rg_gender"
                     android:layout_alignParentBottom="true"
-                    android:layout_below="@+id/textView18"
                     android:layout_alignParentStart="false"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="40dp">
@@ -96,50 +108,49 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="89dp"
                 android:layout_weight="1"
                 android:id="@+id/rl_as_age">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Age"
-                    android:id="@+id/textView28"
                     android:textColor="@android:color/white"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="13dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="30"
-                    android:id="@+id/tv_set_age"
-                    android:layout_below="@+id/textView28"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="14dp"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="2px"
+                    android:layout_width="90dp"
+                    android:layout_height="1px"
                     android:background="#D1D2D4"
-                    android:id="@+id/textView15"
                     android:layout_alignParentBottom="false"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignBottom="@+id/tv_set_age"
-                    android:layout_marginBottom="-3dp" />
+                    android:layout_alignBottom="@+id/btn_date"
+                    android:layout_marginBottom="5dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@color/alpha_50_white"
+                    android:text="选择日期1"
+                    android:textColor="@color/alpha_45_white"
+                    android:id="@+id/btn_date"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="89dp"
                 android:layout_weight="1"
-                android:id="@+id/rl_as_weight">
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -150,34 +161,37 @@
                     android:textColor="@android:color/white"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="13dp" />
+                    android:layout_marginTop="10dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="75 kg"
-                    android:id="@+id/tv_set_weight"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/textView29"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="14dp" />
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="2px"
+                    android:layout_width="90dp"
+                    android:layout_height="1px"
                     android:background="#D1D2D4"
                     android:id="@+id/textView30"
                     android:layout_alignParentBottom="false"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignBottom="@+id/tv_set_weight"
-                    android:layout_marginBottom="-3dp" />
+                    android:layout_alignBottom="@+id/editText1"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:ems="5"
+                    android:id="@+id/editText1"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="输入体重"
+                    android:gravity="center_vertical|center"
+                    android:textColor="@color/alpha_45_white"
+                    android:textSize="14sp" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="89dp"
                 android:layout_weight="1"
                 android:id="@+id/rl_as_height">
 
@@ -190,32 +204,38 @@
                     android:textColor="@android:color/white"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="13dp" />
+                    android:layout_marginTop="10dp" />
+
 
                 <TextView
+                    android:layout_width="90dp"
+                    android:layout_height="1px"
+                    android:background="#D1D2D4"
+                    android:id="@+id/textView32"
+                    android:layout_alignParentBottom="false"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignBottom="@+id/editText2"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="175 cm"
-                    android:id="@+id/textView32"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/textView31"
+                    android:inputType="number"
+                    android:ems="5"
+                    android:id="@+id/editText2"
+                    android:text="输入身高"
+                    android:gravity="center_vertical|center"
+                    android:textColor="@color/alpha_45_white"
+                    android:textSize="14sp"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="14dp" />
+                    android:layout_marginBottom="10dp" />
 
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="2px"
-                    android:background="#D1D2D4"
-                    android:id="@+id/textView33"
-                    android:layout_below="@+id/textView32"
-                    android:layout_centerHorizontal="true" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="140dp"
-                android:layout_height="match_parent"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal">
 
@@ -259,7 +279,13 @@
                         android:layout_gravity="center_vertical" />
                 </LinearLayout>
             </RelativeLayout>
+
         </LinearLayout>
 
     </RelativeLayout>
+
+
+
+
+
 </FrameLayout>

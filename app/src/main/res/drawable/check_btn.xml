@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--单击选中时 -->
+
+    <!--没有选中时 -->
+    <item android:state_checked="true" android:state_enabled="true" android:drawable="@android:drawable/checkbox_on_background" />
+    <item android:state_checked="false" android:state_enabled="true" android:drawable="@android:drawable/checkbox_off_background" />
+</selector>

@@ -38,6 +38,7 @@
             android:textSize="20dp" />
     </RelativeLayout>
 
+
     <LinearLayout
         android:id="@+id/ll_name"
         android:layout_width="match_parent"
@@ -45,9 +46,9 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@mipmap/top"
         android:gravity="center"
-        android:layout_above="@+id/btn_visitor"
+        android:layout_below="@+id/rl_left"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="86dp">
+        android:layout_marginTop="35dp">
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -75,8 +76,9 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@mipmap/below"
         android:gravity="center"
-        android:layout_above="@+id/ll_name"
-        android:layout_alignParentLeft="true">
+        android:layout_alignTop="@+id/ll_name"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="46dp">
 
         <ImageView
             android:id="@+id/Upload"
@@ -97,7 +99,6 @@
             android:selectAllOnFocus="true"
             android:textColor="@color/selector_text"></EditText>
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/btn_forget"

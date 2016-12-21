@@ -19,24 +19,24 @@
     <color name="upload_progress_bg">#00b544</color>
     <color name="red">#ff0000</color>
     <color name="alpha_05_white">#0DFFFFFF</color>
-    <color name="alpha_10_white">#1AFFFFFF</color>
+    <color name="alpha_10_white">#1affffff</color>
     <color name="alpha_15_white">#26FFFFFF</color>
     <color name="alpha_20_white">#33FFFFFF</color>
     <color name="alpha_25_white">#40FFFFFF</color>
     <color name="alpha_30_white">#4DFFFFFF</color>
     <color name="alpha_35_white">#59FFFFFF</color>
     <color name="alpha_40_white">#66FFFFFF</color>
-    <color name="alpha_45_white">#73FFFFFF</color>
-    <color name="alpha_50_white">#80FFFFFF</color>
+    <color name="alpha_45_white">#73ffffff</color>
+    <color name="alpha_50_white">#00000000</color>
     <color name="alpha_55_white">#8CFFFFFF</color>
-    <color name="alpha_60_white">#99FFFFFF</color>
-    <color name="alpha_65_white">#A6FFFFFF</color>
+    <color name="alpha_60_white">#99ffffff</color>
+    <color name="alpha_65_white">#21ffffff</color>
     <color name="alpha_70_white">#B3FFFFFF</color>
     <color name="alpha_75_white">#BFFFFFFF</color>
-    <color name="alpha_80_white">#CCFFFFFF</color>
-    <color name="alpha_85_white">#D9FFFFFF</color>
-    <color name="alpha_90_white">#E6FFFFFF</color>
-    <color name="alpha_95_white">#F2FFFFFF</color>
+    <color name="alpha_80_white">#ccffffff</color>
+    <color name="alpha_85_white">#d9ffffff</color>
+    <color name="alpha_90_white">#e6ffffff</color>
+    <color name="alpha_95_white">#f5ebeb</color>
 
 
     <color name="alpha_05_black">#0D000000</color>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="btn_version_corners_color">#4a91c7</color>
-<color name="bg_red">#C70704</color>
-    <color name="btn_bg_red">#E84544</color>
-    <color name="gray">#F0F0F0</color>
+    <color name="btn_version_corners_color">#a5be6a</color>
+<color name="bg_red">#c70704</color>
+    <color name="btn_bg_red">#d9f5a5</color>
+    <color name="gray">#f0f0f0</color>
     <color name="white">#FFFFFF</color>
     <color name="tab_selected">#28bebc</color>
     <color name="tab_normal">#5f6a7c</color>
@@ -15,9 +15,9 @@
     <color name="zt">#38d7db</color>
     <color name="transparent">#00000000</color>
     <color name="bgparent">#3DC4E9</color>
-    <color name="bg_color_grep">#e1e1e1</color>
+    <color name="bg_color_grep">#f73434</color>
     <color name="text_color_grep">#1c1c1c</color>
-    <color name="colorTextOrange">#fba545</color>
+    <color name="colorTextOrange">#cefb45</color>
     <color name="holo_blue">#FF33E5B5</color>
     <!-- 奇数行颜色 -->
     <color name="even">#FFADD8E6</color>
@@ -40,5 +40,5 @@
     <color name="split_line_grey">#EBEBEB</color>
     <color name="translate">#00000000</color>
     <color name="blue_black">#3bac</color>
-    <color name="green_black">#549008</color>
+    <color name="green_black">#659008</color>
 </resources>
